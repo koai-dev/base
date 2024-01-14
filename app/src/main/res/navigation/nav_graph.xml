@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/detailContactScreen">
+
+    <fragment
+        android:id="@+id/detailContactScreen"
+        android:name="com.koai.example.contact.screen.detailContact.DetailContactScreen"
+        android:label="DetailContactScreen" />
+    <fragment
+        android:id="@+id/listContactScreen"
+        android:name="com.koai.example.contact.screen.listContact.ListContactScreen"
+        android:label="ListContactScreen" />
+    <action
+        android:id="@+id/action_global_detailContactScreen"
+        app:destination="@id/detailContactScreen" />
+    <action
+        android:id="@+id/action_global_listContactScreen"
+        app:destination="@id/listContactScreen" />
+</navigation>

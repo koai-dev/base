@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">base</string>
+    <string name="you_are_offline">You are offline, please check your internet!</string>
+</resources>
