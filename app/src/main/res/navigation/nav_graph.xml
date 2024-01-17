@@ -2,8 +2,22 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detailContactScreen">
+    app:startDestination="@id/splashScreen">
 
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="com.koai.example.app.splash.SplashScreen"
+        android:label="SplashScreen" />
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="com.koai.example.app.home.HomeScreen"
+        android:label="HomeScreen" />
+    <action
+        android:id="@+id/action_homeScreen"
+        app:destination="@id/homeScreen" />
+    <action
+        android:id="@+id/action_splashScreen"
+        app:destination="@id/splashScreen" />
     <fragment
         android:id="@+id/detailContactScreen"
         android:name="com.koai.example.contact.screen.detailContact.DetailContactScreen"

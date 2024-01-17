@@ -77,4 +77,5 @@ dependencies {
     api ("androidx.fragment:fragment-ktx:1.6.2")
 
     api("androidx.multidex:multidex:2.0.1")
+    api("com.airbnb.android:lottie:5.0.2")
 }
