@@ -46,6 +46,7 @@ dependencies {
     api("androidx.appcompat:appcompat:1.6.1")
     api("com.google.android.material:material:1.11.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
+    api("com.github.bumptech.glide:glide:4.12.0")
 
     //firebase
     api("com.google.firebase:firebase-analytics:21.5.0")
