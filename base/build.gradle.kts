@@ -49,8 +49,8 @@ dependencies {
 
     //firebase
     api("com.google.firebase:firebase-analytics:21.5.0")
-    api("com.google.firebase:firebase-auth:22.3.0")
-    api("com.google.firebase:firebase-crashlytics:18.6.0")
+    api("com.google.firebase:firebase-auth:22.3.1")
+    api("com.google.firebase:firebase-crashlytics:18.6.1")
     api("androidx.navigation:navigation-fragment-ktx:2.7.6")
 
     testApi("junit:junit:4.13.2")
@@ -70,10 +70,10 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //lifecycle
-    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    api("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     api("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    api("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    api("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     api ("androidx.fragment:fragment-ktx:1.6.2")
 
     api("androidx.multidex:multidex:2.0.1")
