@@ -9,7 +9,15 @@
         android:name="com.koai.example.app.splash.SplashScreen"
         android:label="SplashScreen" >
         <action
-            android:id="@+id/action_splashScreen_to_homeScreen"
+            android:id="@+id/action_splashScreen_to_loginScreen"
+            app:destination="@id/loginScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginScreen"
+        android:name="com.koai.example.app.login.LoginScreen"
+        android:label="LoginScreen" >
+        <action
+            android:id="@+id/action_loginScreen_to_homeScreen"
             app:destination="@id/homeScreen" />
     </fragment>
     <fragment
@@ -17,8 +25,8 @@
         android:name="com.koai.example.app.home.HomeScreen"
         android:label="HomeScreen" />
     <action
-        android:id="@+id/action_homeScreen"
-        app:destination="@id/homeScreen" />
+        android:id="@+id/action_loginScreen"
+        app:destination="@id/loginScreen" />
     <action
         android:id="@+id/action_splashScreen"
         app:destination="@id/splashScreen" />

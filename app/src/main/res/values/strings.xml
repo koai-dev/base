@@ -2,4 +2,11 @@
     <string name="app_name">BaseProject</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_01">01</string>
+    <string name="hi_let_s_get_started">Hi , LET’S GET STARTED :)</string>
+    <string name="link_your_account">Link your account with Facebook for a better experience. Do you want to link?</string>
+    <string name="yes">YES</string>
+    <string name="by_continue_you_agree_to_our_terms_privacy_policy"><![CDATA[by continue you agree to our Terms & Privacy POLICY]]></string>
+    <string name="no">No</string>
+    <string name="play_now">PLAY NOW</string>
+    <string name="leader_board">LEADER BOARD</string>
 </resources>

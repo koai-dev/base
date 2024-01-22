@@ -1,4 +1,4 @@
-package com.koai.example.app.home
+package com.koai.example.app.login
 
 import com.koai.base.main.action.router.BaseRouter
 
