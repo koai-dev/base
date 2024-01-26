@@ -2,33 +2,33 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_splash"
-        >
+        app:layoutDescription="@xml/screen_splash_xml_constraintlayout_scene">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeableImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/logo_splash"
             android:scaleX="0.5"
             android:scaleY="0.5"
+            android:src="@drawable/logo_splash"
             android:translationY="@dimen/_250sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeableButton"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_200sdp"
             android:src="@drawable/bg_image_button"
-            android:translationY="-100dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

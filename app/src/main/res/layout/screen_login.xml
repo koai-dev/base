@@ -2,11 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
 
+        android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_login">
+        android:background="@drawable/bg_splash"
+        app:layoutDescription="@xml/screen_login_xml_constraintlayout_scene">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeable_image_view_level"
@@ -19,6 +21,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/super_corn"
@@ -29,112 +32,122 @@
             app:layout_constraintStart_toEndOf="@+id/shapeable_image_view_level"
             app:layout_constraintTop_toTopOf="@+id/shapeable_image_view_level" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_home"
+            android:translationY="@dimen/_250sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shapeable_image_view_level">
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:background="@drawable/bg_textview_login"
+                android:fontFamily="@font/super_corn"
+                android:gravity="center"
+                android:padding="@dimen/_20sdp"
+                android:text="@string/link_your_account"
+                android:textColor="#fcb6cf"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/button_yes"
+                android:layout_width="@dimen/_124sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginTop="@dimen/_60sdp"
+                android:background="@drawable/bg_button_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/super_corn"
+                    android:text="@string/yes"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/_26sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:src="@drawable/ic_fb"
+                    android:translationY="@dimen/_3sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/button_no"
+                android:layout_width="@dimen/_124sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/bg_button_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_yes">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/super_corn"
+                    android:text="@string/no"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="@dimen/_26sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:src="@drawable/ic_no"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/text_view"
+                android:layout_width="@dimen/_158sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_70sdp"
+                android:fontFamily="@font/super_corn"
+                android:gravity="center"
+                android:text="@string/by_continue_you_agree_to_our_terms_privacy_policy"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_no" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/loginImageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
             android:layout_marginBottom="300dp"
             android:padding="70dp"
             android:src="@drawable/bg_image_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_textview_login"
-            android:fontFamily="@font/super_corn"
-            android:gravity="center"
-            android:padding="@dimen/_20sdp"
-            android:text="@string/link_your_account"
-            android:textColor="#fcb6cf"
+            android:translationY="300dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_yes"
-            android:layout_width="@dimen/_124sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_60sdp"
-            android:background="@drawable/bg_button_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/super_corn"
-                android:text="@string/yes"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageView"
-                android:layout_width="@dimen/_26sdp"
-                android:layout_height="@dimen/_26sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:src="@drawable/ic_fb"
-                android:translationY="@dimen/_3sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_no"
-            android:layout_width="@dimen/_124sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_35sdp"
-            android:background="@drawable/bg_button_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_yes">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/super_corn"
-                android:text="@string/no"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="@dimen/_26sdp"
-                android:layout_height="@dimen/_26sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:src="@drawable/ic_no"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/text_view"
-            android:layout_width="@dimen/_158sdp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/super_corn"
-            android:textColor="@color/white"
-            android:layout_marginBottom="@dimen/_50sdp"
-            android:gravity="center"
-            android:text="@string/by_continue_you_agree_to_our_terms_privacy_policy"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

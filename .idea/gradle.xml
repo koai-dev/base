@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
             <option value="$PROJECT_DIR$/wordSdk" />
+            <option value="$PROJECT_DIR$/workSdk" />
+            <option value="$PROJECT_DIR$/worksdk" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

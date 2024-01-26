@@ -15,13 +15,8 @@ import com.koai.example.databinding.ScreenSplashBinding
 class SplashScreen : BaseScreen<ScreenSplashBinding, SplashRouter, MainNavigator>(R.layout.screen_splash) {
 
     override fun initView(savedInstanceState: Bundle?, binding: ScreenSplashBinding) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.shapeableImageView.translationY = -200f
-            binding.shapeableImageView.scaleX = 1f
-            binding.shapeableImageView.scaleY = 1f
-            binding.shapeableButton.visibility = View.VISIBLE
-        }, 2000)
-        binding.shapeableButton.setClickableWithScale {
+        binding.motionLayout.transitionToState(R.id.end)
+        binding.shapeableButton.setOnClickListener {
             findNavController().navigate(R.id.action_splashScreen_to_loginScreen)
         }
     }

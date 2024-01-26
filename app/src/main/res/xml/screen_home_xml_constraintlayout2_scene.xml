@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+        <KeyFrameSet >
+            <KeyAttribute
+                motion:motionTarget="@+id/motionLayout2"
+                motion:framePosition="99"
+                android:alpha="0" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/homeImageView"
+            android:layout_width="@dimen/_122sdp"
+            android:layout_height="@dimen/_140sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:translationX="-10dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/bg_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_home"
+            android:translationY="@dimen/_250sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/shapeable_image_view_level" />
+        <Constraint
+            android:id="@+id/shapeable_image_view_level"
+            android:layout_width="@dimen/_54sdp"
+            android:layout_height="@dimen/_54sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/ic_user"
+            android:translationY="900dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_info_home"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:translationY="900dp"
+            motion:layout_constraintBottom_toBottomOf="@+id/shapeable_image_view_level"
+            motion:layout_constraintStart_toEndOf="@+id/shapeable_image_view_level"
+            motion:layout_constraintTop_toTopOf="@+id/shapeable_image_view_level" />
+        <Constraint
+            android:id="@+id/button_play_now"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:translationY="900dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        <Constraint
+            android:id="@+id/button_leader_board"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:translationY="900dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/button_yes" />
+        <Constraint
+            android:id="@+id/shapeableImageView2"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_70sdp"
+            android:translationY="900dp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/shapeableImageView3"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:translationY="900dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/motionLayout2"
+            android:elevation="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:alpha="0.7" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/homeImageView"
+            android:layout_width="@dimen/_197sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/logo_splash"
+            android:translationY="-10dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/bg_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_home" />
+        <Constraint
+            android:id="@+id/shapeable_image_view_level"
+            android:layout_width="@dimen/_54sdp"
+            android:layout_height="@dimen/_54sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/ic_user"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_info_home"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            motion:layout_constraintBottom_toBottomOf="@+id/shapeable_image_view_level"
+            motion:layout_constraintStart_toEndOf="@+id/shapeable_image_view_level"
+            motion:layout_constraintTop_toTopOf="@+id/shapeable_image_view_level" />
+        <Constraint
+            android:id="@+id/button_yes"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        <Constraint
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/button_yes" />
+        <Constraint
+            android:id="@+id/shapeableImageView2"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_70sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/shapeableImageView3"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/motionLayout2"
+            android:elevation="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:alpha="0.7" />
+    </ConstraintSet>
+</MotionScene>

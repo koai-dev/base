@@ -49,6 +49,10 @@ abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             statusBarColor = Color.TRANSPARENT
         }
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         rootView = DataBindingUtil.inflate(layoutInflater, R.layout.activity_base, null, false)
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, rootView.container, true)
         rootView.loading.addView(getLoadingView())

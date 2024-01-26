@@ -23,7 +23,15 @@
     <fragment
         android:id="@+id/homeScreen"
         android:name="com.koai.example.app.home.HomeScreen"
-        android:label="HomeScreen" />
+        android:label="HomeScreen" >
+        <action
+            android:id="@+id/action_homeScreen_to_playScreen"
+            app:destination="@id/playScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/playScreen"
+        android:name="com.koai.example.app.play.PlayScreen"
+        android:label="PlayScreen" />
     <action
         android:id="@+id/action_loginScreen"
         app:destination="@id/loginScreen" />

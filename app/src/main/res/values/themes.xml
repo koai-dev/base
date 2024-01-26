@@ -3,6 +3,8 @@
     <style name="Base.Theme.BaseProject" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.BaseProject" parent="Base.Theme.BaseProject" />

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1400">
+       <KeyFrameSet>
+           <KeyAttribute
+               motion:motionTarget="@+id/shapeableButton"
+               motion:framePosition="69"
+               android:translationY="250dp" />
+       </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/shapeableButton"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            android:translationY="250dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/shapeableImageView"
+            android:scaleX="1"
+            android:scaleY="1"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:translationY="-200dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/shapeableButton"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            android:translationY="-100dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+    </ConstraintSet>
+</MotionScene>

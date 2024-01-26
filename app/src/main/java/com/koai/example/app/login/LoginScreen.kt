@@ -24,9 +24,7 @@ class LoginScreen :
     }
 
     private fun actionViews() {
-        binding.loginImageView.setClickableWithScale {
-            binding.loginImageView.loadImage(R.drawable.logo_splash)
-        }
+        binding.motionLayout.transitionToState(R.id.end)
         binding.buttonNo.setOnClickListener {
             findNavController().navigate(R.id.action_loginScreen_to_homeScreen)
         }
