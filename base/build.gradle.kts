@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -42,6 +45,7 @@ android {
     publishing {
         singleVariant("release") {
             withSourcesJar()
+            withJavadocJar()
         }
     }
 }
@@ -85,21 +89,66 @@ dependencies {
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.3.0")
+    api("com.intuit.sdp:sdp-android:1.1.0")
+    api("com.intuit.ssp:ssp-android:1.1.0")
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.koai"
-            artifactId = "base"
-            version = "1.0.0"
+afterEvaluate{
+    publishing {
+        publications {
+            register<MavenPublication>("release") {
+                groupId = "com.koai"
+                artifactId = "base"
+                version = "1.0.1"
 
-            afterEvaluate {
-                from(components["release"])
+                afterEvaluate {
+                    from(components["release"])
+                }
+            }
+        }
+        repositories{
+            val propsFile = rootProject.file("github.properties")
+            val props = Properties()
+            props.load(FileInputStream(propsFile))
+            maven(url = "${props["mavenRepo"]}"){
+                credentials{
+                    username = props["username"].toString()
+                    password = props["token"].toString()
+                }
             }
         }
     }
 }
-tasks.register("localbuild"){
-    dependsOn("base:assemble")
+
+tasks.register("localBuild"){
+    dependsOn("assembleRelease")
 }
+
+tasks.register("createReleaseTag"){
+    doLast{
+        val tagName = "v" + android.defaultConfig.versionName
+        try {
+            exec{
+                commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
+            }
+
+            exec{
+                commandLine("git", "push", "origin", tagName)
+            }
+        }catch (e: Exception){
+            println(e.toString())
+        }
+    }
+}
+
+tasks.register("cleanBuildPublish"){
+    dependsOn("clean")
+    dependsOn("localBuild")
+    dependsOn("publishReleasePublicationToMavenRepository")
+    val assembleReleaseTask = getTasksByName("localBuild", false).stream().findFirst().orElse(null)
+    if (assembleReleaseTask!=null){
+        assembleReleaseTask.mustRunAfter("clean")
+        assembleReleaseTask.finalizedBy("publishReleasePublicationToMavenRepository")
+    }
+}
+
