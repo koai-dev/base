@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
@@ -33,7 +34,8 @@ import com.koai.base.utils.NetworkUtil
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
-abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>(private val layoutId: Int) : AppCompatActivity(), BaseRouter{
+abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int) :
+    AppCompatActivity(), BaseRouter {
     var navController: NavController? = null
     lateinit var binding: T
     protected lateinit var navigator: F
@@ -54,12 +56,12 @@ abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>
         rootView.loading.addView(getLoadingView())
         setContentView(rootView.root)
         val navHostFragment = supportFragmentManager
-            .findFragmentByTag("nav_host_fragment") as NavHostFragment?
+            .findFragmentById(R.id.container) as NavHostFragment?
         navController = navHostFragment?.navController
         navigator = getModelNavigator()
         try {
             router = navigator.router as Router
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
 
@@ -69,10 +71,10 @@ abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>
         onNavigationEvent()
     }
 
-    private fun onNavigationEvent(){
+    private fun onNavigationEvent() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                for (event in navigator.receive){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                for (event in navigator.receive) {
                     onNavigationEvent(event)
                 }
             }
@@ -117,19 +119,19 @@ abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>
         return false
     }
 
-    override fun onSessionTimeout(action: Int, extras: Bundle?){
+    override fun onSessionTimeout(action: Int, extras: Bundle?) {
         Toast.makeText(this, "Hello recognized sasdnjas", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onOtherErrorDefault(action: Int, extras: Bundle?){
+    override fun onOtherErrorDefault(action: Int, extras: Bundle?) {
 
     }
 
-    override fun onShareFile(action: Int, extras: Bundle?){
+    override fun onShareFile(action: Int, extras: Bundle?) {
 
     }
 
-    override fun gotoComingSoon(action: Int, extras: Bundle?){
+    override fun gotoComingSoon(action: Int, extras: Bundle?) {
 
     }
 
@@ -149,10 +151,14 @@ abstract class BaseActivity<T: ViewBinding,Router: BaseRouter, F: BaseNavigator>
 
     }
 
-    private fun checkNetwork(){
+    private fun checkNetwork() {
         NetworkUtil(this).observe(this) {
-            if (!it){
-                Toast.makeText(this, resources.getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show()
+            if (!it) {
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.you_are_offline),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
