@@ -126,7 +126,7 @@ tasks.register("localBuild"){
 
 tasks.register("createReleaseTag"){
     doLast{
-        val tagName = "v" + android.defaultConfig.versionName
+        val tagName = "v$version"
         try {
             exec{
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
@@ -140,7 +140,11 @@ tasks.register("createReleaseTag"){
         }
     }
 }
-
+/**
+ * to build new version library: run in terminal
+ *  ./gradlew cleanBuildPublish
+ *
+ */
 tasks.register("cleanBuildPublish"){
     dependsOn("clean")
     dependsOn("localBuild")
