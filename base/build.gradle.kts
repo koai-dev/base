@@ -89,8 +89,6 @@ dependencies {
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.3.0")
-    api("com.intuit.sdp:sdp-android:1.1.0")
-    api("com.intuit.ssp:ssp-android:1.1.0")
 }
 
 afterEvaluate{
@@ -99,7 +97,7 @@ afterEvaluate{
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.0.2"
+                version = "1.0.3"
 
                 afterEvaluate {
                     from(components["release"])
