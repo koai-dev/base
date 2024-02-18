@@ -97,7 +97,7 @@ afterEvaluate{
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.0.4"
+                version = "1.0.6"
 
                 afterEvaluate {
                     from(components["release"])
