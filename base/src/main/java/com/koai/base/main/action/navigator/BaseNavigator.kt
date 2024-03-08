@@ -16,30 +16,37 @@ open class BaseNavigator : ViewModel(), BaseRouter {
     var router: BaseRouter? = null
     val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
 
-    val receive : ReceiveChannel<NavigationEvent> get() = navigation
+    val receive: ReceiveChannel<NavigationEvent> get() = navigation
+
     init {
         router = this
     }
 
-    fun offNavScreen(action: Int, extras: Bundle? = null){
+    fun offNavScreen(
+        action: Int,
+        extras: Bundle? = null,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             navigation.trySend(NextScreen(action, extras))
         }
     }
 
-    fun offNavScreen(nextScreen: NextScreen){
+    fun offNavScreen(nextScreen: NextScreen) {
         viewModelScope.launch(Dispatchers.IO) {
             navigation.send(nextScreen)
         }
     }
 
-    fun sendEvent(navigationEvent: NavigationEvent){
+    fun sendEvent(navigationEvent: NavigationEvent) {
         viewModelScope.launch(Dispatchers.IO) {
             navigation.send(navigationEvent)
         }
     }
 
-    override fun onNextScreen(action: Int, extras: Bundle?): Boolean {
+    override fun onNextScreen(
+        action: Int,
+        extras: Bundle?,
+    ): Boolean {
         offNavScreen(action, extras)
         return true
     }
@@ -48,27 +55,45 @@ open class BaseNavigator : ViewModel(), BaseRouter {
         TODO("Not yet implemented")
     }
 
-    override fun onSessionTimeout(action: Int, extras: Bundle?) {
+    override fun onSessionTimeout(
+        action: Int,
+        extras: Bundle?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun onOtherErrorDefault(action: Int, extras: Bundle?) {
+    override fun onOtherErrorDefault(
+        action: Int,
+        extras: Bundle?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun onShareFile(action: Int, extras: Bundle?) {
+    override fun onShareFile(
+        action: Int,
+        extras: Bundle?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun gotoComingSoon(action: Int, extras: Bundle?) {
+    override fun gotoComingSoon(
+        action: Int,
+        extras: Bundle?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun backToHome(action: Int, extras: Bundle?) {
+    override fun backToHome(
+        action: Int,
+        extras: Bundle?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun openDeeplink(extras: Bundle?, context: Context) {
+    override fun openDeeplink(
+        extras: Bundle?,
+        context: Context,
+    ) {
         TODO("Not yet implemented")
     }
 

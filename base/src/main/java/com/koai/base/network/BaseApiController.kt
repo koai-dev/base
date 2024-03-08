@@ -18,7 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-abstract class BaseApiController<T: Any> {
+abstract class BaseApiController<T : Any> {
     companion object {
         const val TIME_OUT = 60L
     }
@@ -34,10 +34,11 @@ abstract class BaseApiController<T: Any> {
 
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
-        val okHttpClient = builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .dispatcher(dispatcher)
-            .build()
+        val okHttpClient =
+            builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .dispatcher(dispatcher)
+                .build()
 
         val retrofit =
             Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create())
@@ -53,5 +54,6 @@ abstract class BaseApiController<T: Any> {
     }
 
     abstract fun getBaseUrl(): String
+
     abstract fun getApiService(): Class<*>
 }

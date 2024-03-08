@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
@@ -29,50 +28,54 @@ import com.koai.base.main.action.event.SessionTimeout
 import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.launch
 
 /**
  * Base journey screen (base main navigation)
  */
-abstract class BaseJourney<T: ViewBinding, Router: BaseRouter, F: BaseNavigator>(private val layoutId: Int = 0) : Fragment(), BaseRouter {
+abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
+    private val layoutId: Int = 0,
+) : Fragment(), BaseRouter {
     lateinit var binding: T
     var navController: NavController? = null
-    lateinit var activity: BaseActivity<*,*,*>
+    lateinit var activity: BaseActivity<*, *, *>
     protected lateinit var navigator: F
     protected var router: Router? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        activity = requireActivity() as BaseActivity<*,*,*>
+        activity = requireActivity() as BaseActivity<*, *, *>
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         navigator = getModelNavigator()
 
         try {
             router = navigator.router as Router
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
         initView(savedInstanceState, binding)
-        val navHostFragment = childFragmentManager
-            .findFragmentById(R.id.container) as NavHostFragment?
+        val navHostFragment =
+            childFragmentManager
+                .findFragmentById(R.id.container) as NavHostFragment?
         navController = navHostFragment?.navController
         onNavigationEvent()
     }
 
-    private fun onNavigationEvent(){
+    private fun onNavigationEvent() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED){
-                for (event in navigator.receive){
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                for (event in navigator.receive) {
                     onNavigationEvent(event)
                 }
             }
@@ -94,7 +97,10 @@ abstract class BaseJourney<T: ViewBinding, Router: BaseRouter, F: BaseNavigator>
         }
     }
 
-    override fun onNextScreen(action: Int, extras: Bundle?): Boolean {
+    override fun onNextScreen(
+        action: Int,
+        extras: Bundle?,
+    ): Boolean {
         try {
             navController?.navigate(action, extras)
             return true
@@ -110,45 +116,60 @@ abstract class BaseJourney<T: ViewBinding, Router: BaseRouter, F: BaseNavigator>
                 n.currentBackStackEntry?.let {
                     if (n.popBackStack()) return true
                     n.previousBackStackEntry
-                    n.navigate(it.destination.id)//reload here
+                    n.navigate(it.destination.id) // reload here
                 }
             }
         }
         return false
     }
 
-    override fun onSessionTimeout(action: Int, extras: Bundle?){
+    override fun onSessionTimeout(
+        action: Int,
+        extras: Bundle?,
+    ) {
         Toast.makeText(activity, "Hello recognized sasdnjas", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onOtherErrorDefault(action: Int, extras: Bundle?){
-
+    override fun onOtherErrorDefault(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun onShareFile(action: Int, extras: Bundle?){
-
+    override fun onShareFile(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun gotoComingSoon(action: Int, extras: Bundle?){
-
+    override fun gotoComingSoon(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun backToHome(action: Int, extras: Bundle?) {
-
+    override fun backToHome(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun openDeeplink(extras: Bundle?, context: Context) {
-
+    override fun openDeeplink(
+        extras: Bundle?,
+        context: Context,
+    ) {
     }
 
     override fun notImplemented() {
-
     }
 
     override fun notRecognized() {
-
     }
-    abstract fun initView(savedInstanceState: Bundle?, binding: T)
-    abstract fun getModelNavigator(): F
 
+    abstract fun initView(
+        savedInstanceState: Bundle?,
+        binding: T,
+    )
+
+    abstract fun getModelNavigator(): F
 }

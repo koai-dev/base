@@ -4,14 +4,44 @@ import android.content.Context
 import android.os.Bundle
 
 interface BaseRouter {
-    fun onNextScreen(action: Int, extras: Bundle?): Boolean
+    fun onNextScreen(
+        action: Int,
+        extras: Bundle?,
+    ): Boolean
+
     fun onPopScreen(): Boolean
-    fun onSessionTimeout(action: Int, extras: Bundle?)
-    fun onOtherErrorDefault(action: Int, extras: Bundle?)
-    fun onShareFile(action: Int, extras: Bundle?)
-    fun gotoComingSoon(action: Int, extras: Bundle?)
-    fun backToHome(action: Int, extras: Bundle?)
-    fun openDeeplink(extras: Bundle?, context: Context)
+
+    fun onSessionTimeout(
+        action: Int,
+        extras: Bundle?,
+    )
+
+    fun onOtherErrorDefault(
+        action: Int,
+        extras: Bundle?,
+    )
+
+    fun onShareFile(
+        action: Int,
+        extras: Bundle?,
+    )
+
+    fun gotoComingSoon(
+        action: Int,
+        extras: Bundle?,
+    )
+
+    fun backToHome(
+        action: Int,
+        extras: Bundle?,
+    )
+
+    fun openDeeplink(
+        extras: Bundle?,
+        context: Context,
+    )
+
     fun notImplemented()
+
     fun notRecognized()
 }

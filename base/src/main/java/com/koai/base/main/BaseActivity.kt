@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
@@ -55,8 +54,9 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, rootView.container, true)
         rootView.loading.addView(getLoadingView())
         setContentView(rootView.root)
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.container) as NavHostFragment?
+        val navHostFragment =
+            supportFragmentManager
+                .findFragmentById(R.id.container) as NavHostFragment?
         navController = navHostFragment?.navController
         navigator = getModelNavigator()
         try {
@@ -96,7 +96,10 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         }
     }
 
-    override fun onNextScreen(action: Int, extras: Bundle?): Boolean {
+    override fun onNextScreen(
+        action: Int,
+        extras: Bundle?,
+    ): Boolean {
         try {
             navController?.navigate(action, extras)
             return true
@@ -112,43 +115,54 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                 n.currentBackStackEntry?.let {
                     if (n.popBackStack()) return true
                     n.previousBackStackEntry
-                    n.navigate(it.destination.id)//reload here
+                    n.navigate(it.destination.id) // reload here
                 }
             }
         }
         return false
     }
 
-    override fun onSessionTimeout(action: Int, extras: Bundle?) {
+    override fun onSessionTimeout(
+        action: Int,
+        extras: Bundle?,
+    ) {
         Toast.makeText(this, "Hello recognized sasdnjas", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onOtherErrorDefault(action: Int, extras: Bundle?) {
-
+    override fun onOtherErrorDefault(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun onShareFile(action: Int, extras: Bundle?) {
-
+    override fun onShareFile(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun gotoComingSoon(action: Int, extras: Bundle?) {
-
+    override fun gotoComingSoon(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun backToHome(action: Int, extras: Bundle?) {
-
+    override fun backToHome(
+        action: Int,
+        extras: Bundle?,
+    ) {
     }
 
-    override fun openDeeplink(extras: Bundle?, context: Context) {
-
+    override fun openDeeplink(
+        extras: Bundle?,
+        context: Context,
+    ) {
     }
 
     override fun notImplemented() {
-
     }
 
     override fun notRecognized() {
-
     }
 
     private fun checkNetwork() {
@@ -157,22 +171,26 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                 Toast.makeText(
                     this,
                     resources.getString(R.string.you_are_offline),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_SHORT,
                 ).show()
             }
         }
     }
 
-    abstract fun initView(savedInstanceState: Bundle?, binding: T)
+    abstract fun initView(
+        savedInstanceState: Bundle?,
+        binding: T,
+    )
 
     abstract fun getModelNavigator(): F
 
     open fun getLoadingView(): View {
         return BaseLoadingView(this).apply {
-            layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT
-            )
+            layoutParams =
+                ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                )
         }
     }
 

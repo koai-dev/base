@@ -7,7 +7,8 @@
  */
 
 package com.koai.base.network
-//implement this class
+
+// implement this class
 interface BaseApiService
 /**
  * should use suspend func

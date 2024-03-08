@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("maven-publish")
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
 }
 
 android {
@@ -27,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -58,7 +59,7 @@ dependencies {
     api("androidx.constraintlayout:constraintlayout:2.1.4")
     api("com.github.bumptech.glide:glide:4.16.0")
 
-    //firebase
+    // firebase
     api("com.google.firebase:firebase-analytics:21.5.0")
     api("com.google.firebase:firebase-auth:22.3.1")
     api("com.google.firebase:firebase-crashlytics:18.6.1")
@@ -68,7 +69,7 @@ dependencies {
     androidTestApi("androidx.test.ext:junit:1.1.5")
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
 
-    //retrofit
+    // retrofit
     api("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.google.code.gson:gson:2.10.1")
     api("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -76,22 +77,22 @@ dependencies {
     api("com.facebook.stetho:stetho:1.6.0")
     api("com.facebook.stetho:stetho-okhttp3:1.6.0")
 
-    //coroutine
+    // coroutine
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    //lifecycle
+    // lifecycle
     api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     api("androidx.lifecycle:lifecycle-extensions:2.2.0")
     api("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    api ("androidx.fragment:fragment-ktx:1.6.2")
+    api("androidx.fragment:fragment-ktx:1.6.2")
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.3.0")
 }
 
-afterEvaluate{
+afterEvaluate {
     publishing {
         publications {
             register<MavenPublication>("release") {
@@ -104,12 +105,12 @@ afterEvaluate{
                 }
             }
         }
-        repositories{
+        repositories {
             val propsFile = rootProject.file("github.properties")
             val props = Properties()
             props.load(FileInputStream(propsFile))
-            maven(url = "${props["mavenRepo"]}"){
-                credentials{
+            maven(url = "${props["mavenRepo"]}") {
+                credentials {
                     username = props["username"].toString()
                     password = props["token"].toString()
                 }
@@ -118,22 +119,22 @@ afterEvaluate{
     }
 }
 
-tasks.register("localBuild"){
+tasks.register("localBuild") {
     dependsOn("assembleRelease")
 }
 
-tasks.register("createReleaseTag"){
-    doLast{
+tasks.register("createReleaseTag") {
+    doLast {
         val tagName = "v$version"
         try {
-            exec{
+            exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
             }
 
-            exec{
+            exec {
                 commandLine("git", "push", "origin", tagName)
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             println(e.toString())
         }
     }
@@ -143,14 +144,13 @@ tasks.register("createReleaseTag"){
  *  ./gradlew cleanBuildPublish
  *
  */
-tasks.register("cleanBuildPublish"){
+tasks.register("cleanBuildPublish") {
     dependsOn("clean")
     dependsOn("localBuild")
     dependsOn("publishReleasePublicationToMavenRepository")
     val assembleReleaseTask = getTasksByName("localBuild", false).stream().findFirst().orElse(null)
-    if (assembleReleaseTask!=null){
+    if (assembleReleaseTask != null) {
         assembleReleaseTask.mustRunAfter("clean")
         assembleReleaseTask.finalizedBy("publishReleasePublicationToMavenRepository")
     }
 }
-

@@ -4,7 +4,10 @@ import android.app.Activity
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 
-fun Fragment.showKeyboard(activity: Activity, view: EditText) {
+fun Fragment.showKeyboard(
+    activity: Activity,
+    view: EditText,
+) {
     activity.showKeyboard(view)
 }
 

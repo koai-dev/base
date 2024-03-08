@@ -6,7 +6,6 @@ import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.imageview.ShapeableImageView
@@ -15,12 +14,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-object ClickableViewExtensions{
+object ClickableViewExtensions {
     private var mLastClickTime = 0L
+
     @SuppressLint("ClickableViewAccessibility")
     fun View.setClickableWithScale(onClick: () -> Unit) {
         setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
@@ -41,6 +41,7 @@ object ClickableViewExtensions{
             false
         }
     }
+
     fun ShapeableImageView.loadImage(source: Any) {
         when (source) {
             is Drawable -> loadImageFromDrawable(source)
@@ -71,7 +72,6 @@ object ClickableViewExtensions{
             .into(this)
     }
 
-
     fun ImageView.loadImage(source: Any) {
         when (source) {
             is Drawable -> loadImageFromDrawable(source)
@@ -101,5 +101,4 @@ object ClickableViewExtensions{
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(this)
     }
-
 }

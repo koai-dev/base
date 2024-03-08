@@ -47,7 +47,7 @@ dependencies {
     implementation(project(":base"))
 
     //firebase
-    implementation("com.google.firebase:firebase-perf:20.5.1")
+    implementation("com.google.firebase:firebase-perf:20.5.2")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
-    implementation("com.google.firebase:firebase-config:21.6.0")
+    implementation("com.google.firebase:firebase-config:21.6.3")
 }

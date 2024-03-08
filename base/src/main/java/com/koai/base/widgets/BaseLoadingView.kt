@@ -18,28 +18,32 @@ import android.view.animation.RotateAnimation
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.koai.base.databinding.WidgetLoadingBinding
 
-class BaseLoadingView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs) {
-    private var binding: WidgetLoadingBinding
+class BaseLoadingView
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+    ) : ConstraintLayout(context, attrs) {
+        private var binding: WidgetLoadingBinding
 
-    init {
-        val rotate = RotateAnimation(
-            0F,
-            360F,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotate.repeatCount = Animation.INFINITE
-        rotate.interpolator = LinearInterpolator()
-        rotate.duration = 800
-        binding = WidgetLoadingBinding.inflate(LayoutInflater.from(context), this, true)
-        binding.imgRotate.startAnimation(rotate)
-    }
+        init {
+            val rotate =
+                RotateAnimation(
+                    0F,
+                    360F,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                )
+            rotate.repeatCount = Animation.INFINITE
+            rotate.interpolator = LinearInterpolator()
+            rotate.duration = 800
+            binding = WidgetLoadingBinding.inflate(LayoutInflater.from(context), this, true)
+            binding.imgRotate.startAnimation(rotate)
+        }
 
-    fun setLogo(drawable: Drawable){
-        binding.imageView43.setImageDrawable(drawable)
+        fun setLogo(drawable: Drawable) {
+            binding.imageView43.setImageDrawable(drawable)
+        }
     }
-}

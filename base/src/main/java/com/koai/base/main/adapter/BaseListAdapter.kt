@@ -20,10 +20,15 @@ import androidx.viewbinding.ViewBinding
 
 @SuppressLint("DiffUtilEquals")
 class TComparator<T : Any> : DiffUtil.ItemCallback<T>() {
-    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem
+    override fun areItemsTheSame(
+        oldItem: T,
+        newItem: T,
+    ): Boolean = oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem
-
+    override fun areContentsTheSame(
+        oldItem: T,
+        newItem: T,
+    ): Boolean = oldItem == newItem
 }
 
 abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TComparator<T>()) {
@@ -33,18 +38,25 @@ abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TCo
     class VH(val binding: ViewBinding) : ViewHolder(binding.root)
 
     abstract fun getLayoutId(): Int
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): VH {
         return VH(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 getLayoutId(),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
+    override fun onBindViewHolder(
+        holder: VH,
+        position: Int,
+    ) {
         holder.binding.root.setOnClickListener {
             listener?.click(position, getItem(position))
         }
@@ -55,16 +67,25 @@ abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TCo
          * @param position of viewItem
          * @param data of viewItem
          */
-        fun click(position: Int, data: T, code: Int = 0)
+        fun click(
+            position: Int,
+            data: T,
+            code: Int = 0,
+        )
     }
 
-    interface Observer<T>{
+    interface Observer<T> {
         /**
          * @param root is viewItem (for visible handle)
          * @param childView can be child recycle_view or viewpager
          * @param data of item
          * @param code for handle
          */
-        fun subData(root: View, childView: View, data: T, code: Int = 0)
+        fun subData(
+            root: View,
+            childView: View,
+            data: T,
+            code: Int = 0,
+        )
     }
 }

@@ -2,7 +2,7 @@ package com.koai.base.main.action.event
 
 import android.os.Bundle
 
-open class NavigationEvent{
+open class NavigationEvent {
     open val action: Int = 0
     open val extras: Bundle? = null
 }
@@ -16,6 +16,7 @@ data class JourneyFinished(override val action: Int, override val extras: Bundle
     NavigationEvent()
 
 object NotImplementedYet : NavigationEvent()
+
 data class SessionTimeout(override val action: Int = 0, override val extras: Bundle? = null) :
     NavigationEvent()
 
