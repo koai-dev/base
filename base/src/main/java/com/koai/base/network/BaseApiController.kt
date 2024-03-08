@@ -23,7 +23,7 @@ abstract class BaseApiController<T : Any> {
         const val TIME_OUT = 60L
     }
 
-    fun getService(context: Context): T? {
+    fun getService(context: Context, allowVpn: Boolean = false): T? {
         val baseUrl = getBaseUrl()
 
         val builder = okhttp3.OkHttpClient.Builder()
@@ -50,7 +50,7 @@ abstract class BaseApiController<T : Any> {
         val caps: NetworkCapabilities? =
             connectivityManager.getNetworkCapabilities(activeNetwork)
         val vpnInUse = caps?.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ?: false
-        return if (!vpnInUse) (retrofit.create(getApiService()) as T) else null
+        return if (!vpnInUse || allowVpn) (retrofit.create(getApiService()) as T) else null
     }
 
     abstract fun getBaseUrl(): String
