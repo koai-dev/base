@@ -23,7 +23,10 @@ abstract class BaseApiController<T : Any> {
         const val TIME_OUT = 60L
     }
 
-    fun getService(context: Context, allowVpn: Boolean = false): T? {
+    fun getService(
+        context: Context,
+        allowVpn: Boolean = false,
+    ): T? {
         val baseUrl = getBaseUrl()
 
         val builder = okhttp3.OkHttpClient.Builder()
