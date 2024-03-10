@@ -57,13 +57,13 @@ dependencies {
     api("androidx.appcompat:appcompat:1.6.1")
     api("com.google.android.material:material:1.11.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
-    api("com.github.bumptech.glide:glide:4.16.0")
 
     // firebase
     api("com.google.firebase:firebase-analytics:21.5.1")
     api("com.google.firebase:firebase-auth:22.3.1")
     api("com.google.firebase:firebase-crashlytics:18.6.2")
     api("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.1.5")
@@ -90,6 +90,12 @@ dependencies {
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.4.0")
+    api("io.coil-kt:coil:2.6.0")
+    api(platform("io.insert-koin:koin-bom:3.5.0"))
+    api("io.insert-koin:koin-core")
+    api("io.insert-koin:koin-android")
+    api("io.insert-koin:koin-androidx-navigation")
+    api("io.insert-koin:koin-android-compat")
 }
 
 afterEvaluate {
@@ -98,7 +104,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.0.7"
+                version = "1.1.0"
 
                 afterEvaluate {
                     from(components["release"])

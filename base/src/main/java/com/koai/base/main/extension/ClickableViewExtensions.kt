@@ -1,14 +1,13 @@
 package com.koai.base.main.extension
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.material.imageview.ShapeableImageView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import coil.load
+import coil.transform.CircleCropTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,63 +41,38 @@ object ClickableViewExtensions {
         }
     }
 
-    fun ShapeableImageView.loadImage(source: Any) {
-        when (source) {
-            is Drawable -> loadImageFromDrawable(source)
-            is String -> loadImageFromUrl(source)
-            is Int -> loadImageFromColor(source)
-            else -> throw IllegalArgumentException("Unsupported image source type")
+    fun ImageView.loadImage(
+        source: Any,
+        onSuccess: () -> Unit,
+        onFail: () -> Unit,
+    ) {
+        try {
+            this.load(source) {
+                listener(
+                    onStart = { request ->
+                        crossfade(true)
+                        placeholder(
+                            CircularProgressDrawable(context).apply {
+                                strokeWidth = 5f
+                                centerRadius = 30f
+                                start()
+                            },
+                        )
+                        transformations(CircleCropTransformation())
+                    },
+                    onSuccess = { request, result ->
+                        this@loadImage.visible()
+                        onSuccess()
+                    },
+                    onError = { request, result ->
+                        this@loadImage.gone()
+                        onFail()
+                    },
+                )
+            }
+        } catch (e: Exception) {
+            this@loadImage.gone()
+            onFail()
         }
-    }
-
-    private fun ShapeableImageView.loadImageFromDrawable(drawable: Drawable) {
-        Glide.with(this)
-            .load(drawable)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
-    }
-
-    private fun ShapeableImageView.loadImageFromUrl(url: String) {
-        Glide.with(this)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
-    }
-
-    private fun ShapeableImageView.loadImageFromColor(color: Int) {
-        Glide.with(this)
-            .load(color)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
-    }
-
-    fun ImageView.loadImage(source: Any) {
-        when (source) {
-            is Drawable -> loadImageFromDrawable(source)
-            is String -> loadImageFromUrl(source)
-            is Int -> loadImageFromColor(source)
-            else -> throw IllegalArgumentException("Unsupported image source type")
-        }
-    }
-
-    private fun ImageView.loadImageFromDrawable(drawable: Drawable) {
-        Glide.with(this)
-            .load(drawable)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
-    }
-
-    private fun ImageView.loadImageFromUrl(url: String) {
-        Glide.with(this)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
-    }
-
-    private fun ImageView.loadImageFromColor(color: Int) {
-        Glide.with(this)
-            .load(color)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
     }
 }
