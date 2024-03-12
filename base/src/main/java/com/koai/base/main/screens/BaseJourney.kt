@@ -1,6 +1,5 @@
 package com.koai.base.main.screens
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +28,7 @@ import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Base journey screen (base main navigation)
@@ -39,7 +39,8 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     lateinit var binding: T
     var navController: NavController? = null
     lateinit var activity: BaseActivity<*, *, *>
-    protected lateinit var navigator: F
+    private val baseNavigator: BaseNavigator by viewModel()
+    abstract val navigator: F
     protected var router: Router? = null
 
     override fun onCreateView(
@@ -52,15 +53,17 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         return binding.root
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        navigator = getModelNavigator()
 
         try {
-            router = navigator.router as Router
+            (navigator as? Router?)?.let {
+                router = it
+            }
         } catch (e: Exception) {
             throw e
         }
@@ -91,7 +94,7 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
             is ShareFile -> onShareFile(event.action, event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
-            is NavigateWithDeeplink -> openDeeplink(event.extras, activity)
+            is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
             is NotImplementedYet -> notImplemented()
             else -> notRecognized()
         }
@@ -155,8 +158,8 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     }
 
     override fun openDeeplink(
+        action: Int,
         extras: Bundle?,
-        context: Context,
     ) {
     }
 
@@ -171,5 +174,4 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         binding: T,
     )
 
-    abstract fun getModelNavigator(): F
 }

@@ -1,6 +1,5 @@
 package com.koai.base.main
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -32,17 +31,19 @@ import com.koai.base.main.action.router.BaseRouter
 import com.koai.base.utils.NetworkUtil
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int) :
     AppCompatActivity(), BaseRouter {
     var navController: NavController? = null
     lateinit var binding: T
-    protected lateinit var navigator: F
+    abstract val navigator: F
     protected var router: Router? = null
     private lateinit var rootView: ActivityBaseBinding
     var statusBarHeight = 32
     var bottomNavigationHeight = 32
 
+    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.apply {
@@ -58,9 +59,10 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             supportFragmentManager
                 .findFragmentById(R.id.container) as NavHostFragment?
         navController = navHostFragment?.navController
-        navigator = getModelNavigator()
         try {
-            router = navigator.router as Router
+            (navigator as? Router?)?.let {
+                router = it
+            }
         } catch (e: Exception) {
             throw e
         }
@@ -90,7 +92,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is ShareFile -> onShareFile(event.action, event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
-            is NavigateWithDeeplink -> openDeeplink(event.extras, this)
+            is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
             is NotImplementedYet -> notImplemented()
             else -> notRecognized()
         }
@@ -154,8 +156,8 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     }
 
     override fun openDeeplink(
+        action: Int,
         extras: Bundle?,
-        context: Context,
     ) {
     }
 
@@ -181,8 +183,6 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         savedInstanceState: Bundle?,
         binding: T,
     )
-
-    abstract fun getModelNavigator(): F
 
     open fun getLoadingView(): View {
         return BaseLoadingView(this).apply {

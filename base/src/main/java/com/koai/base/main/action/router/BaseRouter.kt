@@ -37,8 +37,8 @@ interface BaseRouter {
     )
 
     fun openDeeplink(
+        action: Int,
         extras: Bundle?,
-        context: Context,
     )
 
     fun notImplemented()

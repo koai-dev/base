@@ -6,6 +6,7 @@ import com.koai.base.main.screens.BaseScreen
 import com.koai.example.R
 import com.koai.example.contact.ContactNavigator
 import com.koai.example.databinding.ScreenListContactBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListContactScreen : BaseScreen<ScreenListContactBinding, ListContactRouter, ContactNavigator>(
     R.layout.screen_list_contact) {
@@ -15,5 +16,6 @@ class ListContactScreen : BaseScreen<ScreenListContactBinding, ListContactRouter
         }
     }
 
-    override fun getModelNavigator() = ViewModelProvider(activity)[ContactNavigator::class.java]
+    override val navigator: ContactNavigator by viewModel()
+
 }

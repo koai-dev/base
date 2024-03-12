@@ -11,14 +11,18 @@ import androidx.viewbinding.ViewBinding
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.qualifier
 
 /**
  * Base ui screen
  */
-abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int = 0) : Fragment() {
+abstract class BaseScreen<T : ViewBinding, Router : BaseRouter,out F : BaseNavigator>(private val layoutId: Int = 0) : Fragment() {
     lateinit var binding: T
     lateinit var activity: BaseActivity<*, *, *>
-    protected var navigator: F? = null
+    abstract val navigator: F
     protected var router: Router? = null
 
     override fun onCreateView(
@@ -31,14 +35,16 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         return binding.root
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        navigator = getModelNavigator()
         try {
-            router = navigator?.router as Router?
+            (navigator as? Router?)?.let {
+                router = it
+            }
         } catch (e: Exception) {
             Log.e("Cast router error: ", e.message.toString())
         }
@@ -49,6 +55,4 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         savedInstanceState: Bundle?,
         binding: T,
     )
-
-    abstract fun getModelNavigator(): F?
 }

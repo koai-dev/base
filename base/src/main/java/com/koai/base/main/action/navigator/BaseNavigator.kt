@@ -1,11 +1,18 @@
 package com.koai.base.main.action.navigator
 
-import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.koai.base.main.action.event.BackToHome
+import com.koai.base.main.action.event.ComingSoon
+import com.koai.base.main.action.event.NavigateWithDeeplink
 import com.koai.base.main.action.event.NavigationEvent
 import com.koai.base.main.action.event.NextScreen
+import com.koai.base.main.action.event.NotImplementedYet
+import com.koai.base.main.action.event.OtherError
+import com.koai.base.main.action.event.PopScreen
+import com.koai.base.main.action.event.SessionTimeout
+import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.router.BaseRouter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -13,14 +20,9 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.launch
 
 open class BaseNavigator : ViewModel(), BaseRouter {
-    var router: BaseRouter? = null
     val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
 
     val receive: ReceiveChannel<NavigationEvent> get() = navigation
-
-    init {
-        router = this
-    }
 
     fun offNavScreen(
         action: Int,
@@ -52,56 +54,57 @@ open class BaseNavigator : ViewModel(), BaseRouter {
     }
 
     override fun onPopScreen(): Boolean {
-        TODO("Not yet implemented")
+        sendEvent(PopScreen())
+        return true
     }
 
     override fun onSessionTimeout(
         action: Int,
         extras: Bundle?,
     ) {
-        TODO("Not yet implemented")
+       sendEvent(SessionTimeout(action, extras))
     }
 
     override fun onOtherErrorDefault(
         action: Int,
         extras: Bundle?,
     ) {
-        TODO("Not yet implemented")
+       sendEvent(OtherError(action, extras))
     }
 
     override fun onShareFile(
         action: Int,
         extras: Bundle?,
     ) {
-        TODO("Not yet implemented")
+        sendEvent(ShareFile(action, extras))
     }
 
     override fun gotoComingSoon(
         action: Int,
         extras: Bundle?,
     ) {
-        TODO("Not yet implemented")
+        sendEvent(ComingSoon(action, extras))
     }
 
     override fun backToHome(
         action: Int,
         extras: Bundle?,
     ) {
-        TODO("Not yet implemented")
+        sendEvent(BackToHome(action, extras))
     }
 
     override fun openDeeplink(
+        action: Int,
         extras: Bundle?,
-        context: Context,
     ) {
-        TODO("Not yet implemented")
+        sendEvent(NavigateWithDeeplink(action, extras))
     }
 
     override fun notImplemented() {
-        TODO("Not yet implemented")
+        sendEvent(NotImplementedYet)
     }
 
     override fun notRecognized() {
-        TODO("Not yet implemented")
+        sendEvent(NavigationEvent())
     }
 }

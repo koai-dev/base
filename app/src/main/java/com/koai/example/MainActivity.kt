@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.koai.base.main.BaseActivity
 import com.koai.example.databinding.ActivityMainBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity :
     BaseActivity<ActivityMainBinding, MainRouter, MainNavigator>(R.layout.activity_main) {
@@ -11,6 +12,5 @@ class MainActivity :
     override fun initView(savedInstanceState: Bundle?, binding: ActivityMainBinding) {
     }
 
-    override fun getModelNavigator(): MainNavigator =
-        ViewModelProvider(this)[MainNavigator::class.java]
+    override val navigator: MainNavigator by viewModel()
 }
