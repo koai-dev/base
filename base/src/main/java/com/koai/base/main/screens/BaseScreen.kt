@@ -11,17 +11,13 @@ import androidx.viewbinding.ViewBinding
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.qualifier
 
 /**
  * Base ui screen
  */
-abstract class BaseScreen<T : ViewBinding, Router : BaseRouter,out F : BaseNavigator>(private val layoutId: Int = 0) : Fragment() {
-    lateinit var binding: T
-    lateinit var activity: BaseActivity<*, *, *>
+abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavigator>(private val layoutId: Int = 0) : Fragment() {
+    protected lateinit var binding: T
+    protected lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F
     protected var router: Router? = null
 

@@ -10,6 +10,7 @@ class MainActivity :
     BaseActivity<ActivityMainBinding, MainRouter, MainNavigator>(R.layout.activity_main) {
 
     override fun initView(savedInstanceState: Bundle?, binding: ActivityMainBinding) {
+        router?.openSomeDestination(this)
     }
 
     override val navigator: MainNavigator by viewModel()

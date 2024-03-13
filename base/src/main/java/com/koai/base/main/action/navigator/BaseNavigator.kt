@@ -62,14 +62,14 @@ open class BaseNavigator : ViewModel(), BaseRouter {
         action: Int,
         extras: Bundle?,
     ) {
-       sendEvent(SessionTimeout(action, extras))
+        sendEvent(SessionTimeout(action, extras))
     }
 
     override fun onOtherErrorDefault(
         action: Int,
         extras: Bundle?,
     ) {
-       sendEvent(OtherError(action, extras))
+        sendEvent(OtherError(action, extras))
     }
 
     override fun onShareFile(

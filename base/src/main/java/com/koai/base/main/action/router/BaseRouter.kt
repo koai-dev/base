@@ -1,6 +1,5 @@
 package com.koai.base.main.action.router
 
-import android.content.Context
 import android.os.Bundle
 
 interface BaseRouter {

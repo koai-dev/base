@@ -28,7 +28,6 @@ import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Base journey screen (base main navigation)
@@ -39,7 +38,6 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     lateinit var binding: T
     var navController: NavController? = null
     lateinit var activity: BaseActivity<*, *, *>
-    private val baseNavigator: BaseNavigator by viewModel()
     abstract val navigator: F
     protected var router: Router? = null
 
@@ -173,5 +171,4 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         savedInstanceState: Bundle?,
         binding: T,
     )
-
 }

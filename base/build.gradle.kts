@@ -91,10 +91,10 @@ dependencies {
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.4.0")
 
-    //load image
+    // load image
     api("io.coil-kt:coil:2.6.0")
 
-    //di
+    // di
     api(platform("io.insert-koin:koin-bom:3.5.0"))
     api("io.insert-koin:koin-core")
     api("io.insert-koin:koin-android")
@@ -108,7 +108,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.1.0"
+                version = "1.3.0"
 
                 afterEvaluate {
                     from(components["release"])

@@ -31,7 +31,6 @@ import com.koai.base.main.action.router.BaseRouter
 import com.koai.base.utils.NetworkUtil
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int) :
     AppCompatActivity(), BaseRouter {

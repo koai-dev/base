@@ -12,7 +12,6 @@ import androidx.viewbinding.ViewBinding
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Base ui dialog fragment
@@ -20,7 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int = 0) : DialogFragment() {
     lateinit var binding: T
     lateinit var activity: BaseActivity<*, *, *>
-    private val baseNavigator: BaseNavigator by viewModel()
     abstract val navigator: F
     protected var router: Router? = null
     protected var gravity: Int = Gravity.CENTER
@@ -56,5 +54,4 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         savedInstanceState: Bundle?,
         binding: T,
     )
-
 }
