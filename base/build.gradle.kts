@@ -70,9 +70,9 @@ dependencies {
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
 
     // retrofit
-    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api("com.squareup.retrofit2:retrofit:2.10.0")
     api("com.google.code.gson:gson:2.10.1")
-    api("com.squareup.retrofit2:converter-gson:2.9.0")
+    api("com.squareup.retrofit2:converter-gson:2.10.0")
     api("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
     api("com.facebook.stetho:stetho:1.6.0")
     api("com.facebook.stetho:stetho-okhttp3:1.6.0")
@@ -95,7 +95,7 @@ dependencies {
     api("io.coil-kt:coil:2.6.0")
 
     // di
-    api(platform("io.insert-koin:koin-bom:3.5.0"))
+    api(platform("io.insert-koin:koin-bom:3.5.3"))
     api("io.insert-koin:koin-core")
     api("io.insert-koin:koin-android")
     api("io.insert-koin:koin-androidx-navigation")
@@ -108,7 +108,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.3.0"
+                version = "1.3.3"
 
                 afterEvaluate {
                     from(components["release"])

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -45,11 +46,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            statusBarColor = Color.TRANSPARENT
-        }
+        enableEdgeToEdge()
         rootView = DataBindingUtil.inflate(layoutInflater, R.layout.activity_base, null, false)
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, rootView.container, true)
         rootView.loading.addView(getLoadingView())
