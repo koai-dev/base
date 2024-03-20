@@ -29,7 +29,7 @@ inline fun <reified T : ViewModel> Module.navigatorViewModel(
     noinline definition: Definition<T>,
 ): KoinDefinition<T> = factory(qualifier, definition)
 
-inline fun <reified T : BaseNavigator> BaseScreen<*, *, T>.screenViewModel(
+inline fun <reified T : ViewModel> BaseScreen<*,*,*>.screenViewModel(
     qualifier: Qualifier? = null,
     noinline ownerProducer: () -> ViewModelStoreOwner = { this },
     noinline extrasProducer: (() -> CreationExtras)? = null,
