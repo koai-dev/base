@@ -43,8 +43,8 @@ object ClickableViewExtensions {
 
     fun ImageView.loadImage(
         source: Any,
-        onSuccess: () -> Unit,
-        onFail: () -> Unit,
+        onSuccess: (() -> Unit)? = null,
+        onFail: (() -> Unit)? = null,
     ) {
         try {
             this.load(source) {
@@ -62,17 +62,23 @@ object ClickableViewExtensions {
                     },
                     onSuccess = { request, result ->
                         this@loadImage.visible()
-                        onSuccess()
+                        if (onSuccess != null) {
+                            onSuccess()
+                        }
                     },
                     onError = { request, result ->
                         this@loadImage.gone()
-                        onFail()
+                        if (onFail != null) {
+                            onFail()
+                        }
                     },
                 )
             }
         } catch (e: Exception) {
             this@loadImage.gone()
-            onFail()
+            if (onFail != null) {
+                onFail()
+            }
         }
     }
 }
