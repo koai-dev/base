@@ -57,11 +57,12 @@ dependencies {
     api("androidx.appcompat:appcompat:1.6.1")
     api("com.google.android.material:material:1.11.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
+    api("androidx.recyclerview:recyclerview:1.3.2")
 
     // firebase
-    api("com.google.firebase:firebase-analytics:21.5.1")
+    api("com.google.firebase:firebase-analytics:21.6.2")
     api("com.google.firebase:firebase-auth:22.3.1")
-    api("com.google.firebase:firebase-crashlytics:18.6.2")
+    api("com.google.firebase:firebase-crashlytics:18.6.4")
     api("androidx.navigation:navigation-fragment-ktx:2.7.7")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
@@ -70,9 +71,9 @@ dependencies {
     androidTestApi("androidx.test.espresso:espresso-core:3.5.1")
 
     // retrofit
-    api("com.squareup.retrofit2:retrofit:2.10.0")
+    api("com.squareup.retrofit2:retrofit:2.11.0")
     api("com.google.code.gson:gson:2.10.1")
-    api("com.squareup.retrofit2:converter-gson:2.10.0")
+    api("com.squareup.retrofit2:converter-gson:2.11.0")
     api("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.12")
     api("com.facebook.stetho:stetho:1.6.0")
     api("com.facebook.stetho:stetho-okhttp3:1.6.0")
@@ -95,7 +96,7 @@ dependencies {
     api("io.coil-kt:coil:2.6.0")
 
     // di
-    api(platform("io.insert-koin:koin-bom:3.5.3"))
+    api(platform("io.insert-koin:koin-bom:3.5.4"))
     api("io.insert-koin:koin-core")
     api("io.insert-koin:koin-android")
     api("io.insert-koin:koin-androidx-navigation")
@@ -108,7 +109,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.3.5"
+                version = "1.4.0"
 
                 afterEvaluate {
                     from(components["release"])

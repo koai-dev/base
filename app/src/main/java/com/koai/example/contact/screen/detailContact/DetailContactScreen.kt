@@ -21,7 +21,7 @@ class DetailContactScreen :
             router?.goToListContact()
         }
 
-        binding.img.setClickableWithScale {
+        binding.img.setClickableWithScale(1000){
 
         }
     }
