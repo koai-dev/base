@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.FullScreenDialog" parent="Theme.NormalDialog">
+        <item name="android:statusBarColor">#B3000000</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="Theme.NormalDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+</resources>

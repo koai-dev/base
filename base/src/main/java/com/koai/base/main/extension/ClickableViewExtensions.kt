@@ -17,7 +17,7 @@ object ClickableViewExtensions {
     private var mLastClickTime = 0L
 
     @SuppressLint("ClickableViewAccessibility")
-    fun View.setClickableWithScale(delayTimeDoubleClick: Int = 1000, onClick: () -> Unit) {
+    fun View.setClickableWithScale(delayTimeDoubleClick: Int = 200, onClick: () -> Unit) {
         setOnClickListener {
             if (SystemClock.elapsedRealtime() - mLastClickTime < delayTimeDoubleClick) {
                 return@setOnClickListener
