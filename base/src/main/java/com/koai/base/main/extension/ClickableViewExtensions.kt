@@ -1,6 +1,8 @@
 package com.koai.base.main.extension
 
 import android.annotation.SuppressLint
+import android.media.MediaDataSource
+import android.media.MediaPlayer
 import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.koai.base.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,6 +27,16 @@ object ClickableViewExtensions {
             }
             mLastClickTime = SystemClock.elapsedRealtime()
             onClick.invoke()
+            try {
+                val mediaPlayer = MediaPlayer.create(this.context, R.raw.click_sound)
+                mediaPlayer.prepareAsync()
+                mediaPlayer.setOnPreparedListener {
+                    it.start()
+                    postDelayed({mediaPlayer.release()},200)
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
         }
         setOnTouchListener { view, event ->
             when (event.action) {
