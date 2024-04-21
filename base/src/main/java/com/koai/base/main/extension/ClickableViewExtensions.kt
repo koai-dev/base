@@ -20,22 +20,24 @@ object ClickableViewExtensions {
     private var mLastClickTime = 0L
 
     @SuppressLint("ClickableViewAccessibility")
-    fun View.setClickableWithScale(delayTimeDoubleClick: Int = 200, onClick: () -> Unit) {
+    fun View.setClickableWithScale(enableSoundEffect: Boolean = true, delayTimeDoubleClick: Int = 200, onClick: () -> Unit) {
         setOnClickListener {
             if (SystemClock.elapsedRealtime() - mLastClickTime < delayTimeDoubleClick) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
             onClick.invoke()
-            try {
-                val mediaPlayer = MediaPlayer.create(this.context, R.raw.click_sound)
-                mediaPlayer.prepareAsync()
-                mediaPlayer.setOnPreparedListener {
-                    it.start()
-                    postDelayed({mediaPlayer.release()},200)
+            if (enableSoundEffect){
+                try {
+                    val mediaPlayer = MediaPlayer.create(this.context, R.raw.click_sound)
+                    mediaPlayer.prepareAsync()
+                    mediaPlayer.setOnPreparedListener {
+                        it.start()
+                        postDelayed({mediaPlayer.release()},200)
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
                 }
-            }catch (e: Exception){
-                e.printStackTrace()
             }
         }
         setOnTouchListener { view, event ->
