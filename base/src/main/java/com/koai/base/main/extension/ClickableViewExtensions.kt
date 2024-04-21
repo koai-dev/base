@@ -18,26 +18,32 @@ import kotlinx.coroutines.launch
 
 object ClickableViewExtensions {
     private var mLastClickTime = 0L
+    private var mediaPlayer: MediaPlayer? = null
+    fun initSoundEffect() {
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource("https://koai-dev.github.io/assets/raw/music/click_sound.mp3")
+        mediaPlayer?.prepareAsync()
+    }
+
+    fun releaseSoundEffect() {
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun View.setClickableWithScale(enableSoundEffect: Boolean = true, delayTimeDoubleClick: Int = 200, onClick: () -> Unit) {
+    fun View.setClickableWithScale(
+        enableSoundEffect: Boolean = true,
+        delayTimeDoubleClick: Int = 200,
+        onClick: () -> Unit
+    ) {
         setOnClickListener {
             if (SystemClock.elapsedRealtime() - mLastClickTime < delayTimeDoubleClick) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
             onClick.invoke()
-            if (enableSoundEffect){
-                try {
-                    val mediaPlayer = MediaPlayer.create(this.context, R.raw.click_sound)
-                    mediaPlayer.prepareAsync()
-                    mediaPlayer.setOnPreparedListener {
-                        it.start()
-                        postDelayed({mediaPlayer.release()},200)
-                    }
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
+            if (enableSoundEffect) {
+                mediaPlayer?.start()
             }
         }
         setOnTouchListener { view, event ->
