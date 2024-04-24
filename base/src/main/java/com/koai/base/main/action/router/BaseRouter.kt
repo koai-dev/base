@@ -21,7 +21,6 @@ interface BaseRouter {
     )
 
     fun onShareFile(
-        action: Int,
         extras: Bundle?,
     )
 

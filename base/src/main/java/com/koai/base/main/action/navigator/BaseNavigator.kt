@@ -73,10 +73,9 @@ open class BaseNavigator : ViewModel(), BaseRouter {
     }
 
     override fun onShareFile(
-        action: Int,
         extras: Bundle?,
     ) {
-        sendEvent(ShareFile(action, extras))
+        sendEvent(ShareFile(extras = extras))
     }
 
     override fun gotoComingSoon(

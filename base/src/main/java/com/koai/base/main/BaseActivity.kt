@@ -1,13 +1,19 @@
 package com.koai.base.main
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
+import android.service.chooser.ChooserAction
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -85,7 +91,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is PopScreen -> onPopScreen()
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
             is OtherError -> onOtherErrorDefault(event.action, event.extras)
-            is ShareFile -> onShareFile(event.action, event.extras)
+            is ShareFile -> onShareFile(event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
             is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
@@ -134,9 +140,23 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     }
 
     override fun onShareFile(
-        action: Int,
         extras: Bundle?,
     ) {
+        val sendIntent = Intent(Intent.ACTION_SEND)
+            .setType("image/*")
+        val contentUri = extras?.getString(ShareFile.EXTRA)?.toUri()
+        if (contentUri != null) {
+            sendIntent.apply {
+                data = contentUri
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                putExtra(Intent.EXTRA_STREAM, contentUri)
+            }
+        }
+
+        val shareIntent =
+            Intent.createChooser(sendIntent, extras?.getString(ShareFile.TITLE))
+
+        startActivity(shareIntent)
     }
 
     override fun gotoComingSoon(

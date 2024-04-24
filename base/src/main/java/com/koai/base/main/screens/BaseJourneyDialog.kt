@@ -90,7 +90,7 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
             is PopScreen -> onPopScreen()
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
             is OtherError -> onOtherErrorDefault(event.action, event.extras)
-            is ShareFile -> onShareFile(event.action, event.extras)
+            is ShareFile -> onShareFile(event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
             is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
@@ -139,7 +139,6 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
     }
 
     override fun onShareFile(
-        action: Int,
         extras: Bundle?,
     ) {
     }

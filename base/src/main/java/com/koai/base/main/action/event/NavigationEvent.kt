@@ -27,7 +27,12 @@ data class OtherError(override val action: Int = 0, override val extras: Bundle?
     NavigationEvent()
 
 data class ShareFile(override val action: Int = 0, override val extras: Bundle? = null) :
-    NavigationEvent()
+    NavigationEvent(){
+        companion object{
+            const val TITLE = "title"
+            const val EXTRA = "extra"
+        }
+    }
 
 data class ComingSoon(override val action: Int = 0, override val extras: Bundle? = null) :
     NavigationEvent()
