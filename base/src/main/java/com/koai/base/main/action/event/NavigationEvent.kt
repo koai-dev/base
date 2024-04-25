@@ -31,6 +31,7 @@ data class ShareFile(override val action: Int = 0, override val extras: Bundle? 
         companion object{
             const val TITLE = "title"
             const val EXTRA = "extra"
+            const val LINK = "link"
         }
     }
 

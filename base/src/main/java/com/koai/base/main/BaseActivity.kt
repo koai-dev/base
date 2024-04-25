@@ -145,17 +145,35 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         val sendIntent = Intent(Intent.ACTION_SEND)
             .setType("image/*")
         val contentUri = extras?.getString(ShareFile.EXTRA)?.toUri()
-        if (contentUri != null) {
-            sendIntent.apply {
+        sendIntent.apply {
+            contentUri?.let {
                 data = contentUri
-                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 putExtra(Intent.EXTRA_STREAM, contentUri)
+            }
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            extras?.getString(ShareFile.LINK)?.let {
+                putExtra(Intent.EXTRA_TEXT, extras.getString(ShareFile.LINK))
             }
         }
 
         val shareIntent =
             Intent.createChooser(sendIntent, extras?.getString(ShareFile.TITLE))
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            val customActions = arrayOf(
+                ChooserAction.Builder(
+                    Icon.createWithResource(this, R.drawable.baseline_mode_edit_outline_24),
+                    "Custom",
+                    PendingIntent.getBroadcast(
+                        this,
+                        1,
+                        Intent(Intent.ACTION_VIEW),
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+                    )
+                ).build()
+            )
+            shareIntent.putExtra(Intent.EXTRA_CHOOSER_CUSTOM_ACTIONS, customActions)
+        }
         startActivity(shareIntent)
     }
 

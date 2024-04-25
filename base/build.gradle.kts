@@ -53,7 +53,7 @@ android {
 
 dependencies {
 
-    api("androidx.core:core-ktx:1.12.0")
+    api("androidx.core:core-ktx:1.13.0")
     api("androidx.appcompat:appcompat:1.6.1")
     api("com.google.android.material:material:1.11.0")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -109,7 +109,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.4.5"
+                version = "1.4.7"
 
                 afterEvaluate {
                     from(components["release"])
