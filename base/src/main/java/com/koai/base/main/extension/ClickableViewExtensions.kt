@@ -72,7 +72,6 @@ object ClickableViewExtensions {
                 listener(
                     onStart = { request ->
                         crossfade(true)
-                        decoderFactory()
                         placeholder(
                             CircularProgressDrawable(context).apply {
                                 strokeWidth = 5f
