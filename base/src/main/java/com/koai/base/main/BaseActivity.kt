@@ -143,16 +143,16 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         extras: Bundle?,
     ) {
         val sendIntent = Intent(Intent.ACTION_SEND)
-            .setType("image/*")
+            .setType("*/*")
         val contentUri = extras?.getString(ShareFile.EXTRA)?.toUri()
         sendIntent.apply {
-            contentUri?.let {
-                data = contentUri
-                putExtra(Intent.EXTRA_STREAM, contentUri)
-            }
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             extras?.getString(ShareFile.LINK)?.let {
                 putExtra(Intent.EXTRA_TEXT, extras.getString(ShareFile.LINK))
+            }
+            contentUri?.let {
+                data = contentUri
+                putExtra(Intent.EXTRA_STREAM, contentUri)
             }
         }
 
