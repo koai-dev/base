@@ -25,7 +25,7 @@ abstract class BaseApiController<T : Any> {
 
     fun getService(
         context: Context,
-        allowVpn: Boolean = false,
+        allowVpn: Boolean = true,
     ): T? {
         val baseUrl = getBaseUrl()
 
