@@ -46,6 +46,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     private lateinit var rootView: ActivityBaseBinding
     var statusBarHeight = 32
     var bottomNavigationHeight = 32
+    var networkConnected = false
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,6 +209,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                     Toast.LENGTH_SHORT,
                 ).show()
             }
+            networkConnected = it
         }
     }
 
