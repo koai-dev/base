@@ -1,3 +1,3 @@
-#Last version: v1.4.10
+#Last version: v1.5.0
 
 #To use: implementation("com.github.koai-dev:base:$lastVersion")
