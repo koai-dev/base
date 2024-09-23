@@ -5,13 +5,6 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 object GsonUtils {
-    fun <T> fromJson(json: String?, classOfT: Class<T>?): T? {
-        return try {
-            Gson().fromJson(json, classOfT)
-        } catch (e: Exception) {
-            null
-        }
-    }
 
     fun toJson(src: Any?): String? {
         return try {
@@ -21,7 +14,15 @@ object GsonUtils {
         }
     }
 
-    fun <T> fromJson(json: String?, typeOfT: Type): T? {
+    fun <T> fromJson(json: String?, classOfT: Class<T>?): T? {
+        return try {
+            Gson().fromJson(json, classOfT)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun <T> fromJson(json: String?, typeOfT: Type?): T? {
         return try {
             Gson().fromJson(json, typeOfT)
         } catch (e: Exception) {
@@ -29,9 +30,9 @@ object GsonUtils {
         }
     }
 
-    fun <T> fromJson(json: String?, typeOfT: TypeToken<T>): T? {
+    fun <T> fromJson(json: String?, typeOfT: TypeToken<T>?): T? {
         return try {
-            Gson().fromJson(json, typeOfT.type)
+            Gson().fromJson(json, typeOfT?.type)
         } catch (e: Exception) {
             null
         }
