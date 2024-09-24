@@ -2,11 +2,8 @@ package com.koai
 
 import com.koai.base.BaseApplication
 import com.koai.base.main.extension.navigatorViewModel
-import com.koai.base.utils.BasePermissionHelper
 import com.koai.base.utils.GsonUtils
-import com.koai.base.utils.PermissionHelper
 import com.koai.example.MainNavigator
-import com.koai.example.Manifest
 import com.koai.example.contact.ContactNavigator
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

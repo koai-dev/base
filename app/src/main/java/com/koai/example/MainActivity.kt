@@ -14,7 +14,6 @@ class MainActivity :
     override fun initView(savedInstanceState: Bundle?, binding: ActivityMainBinding) {
         router?.openSomeDestination(this)
         ClickableViewExtensions.initSoundEffect()
-        PermissionHelper.Camera.hasPermissions(this)
     }
 
     override val navigator: MainNavigator by viewModel()
