@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.extension.ClickableViewExtensions
+import com.koai.base.utils.PermissionHelper
 import com.koai.example.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -13,6 +14,7 @@ class MainActivity :
     override fun initView(savedInstanceState: Bundle?, binding: ActivityMainBinding) {
         router?.openSomeDestination(this)
         ClickableViewExtensions.initSoundEffect()
+        PermissionHelper.Camera.hasPermissions(this)
     }
 
     override val navigator: MainNavigator by viewModel()
