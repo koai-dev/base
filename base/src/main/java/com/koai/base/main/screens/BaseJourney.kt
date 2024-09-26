@@ -137,9 +137,7 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     ) {
     }
 
-    override fun onShareFile(
-        extras: Bundle?,
-    ) {
+    override fun onShareFile(extras: Bundle?) {
     }
 
     override fun gotoComingSoon(

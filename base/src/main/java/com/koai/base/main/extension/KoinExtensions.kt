@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.screens.BaseScreen
 import org.koin.androidx.viewmodel.ext.android.getActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -29,7 +28,7 @@ inline fun <reified T : ViewModel> Module.navigatorViewModel(
     noinline definition: Definition<T>,
 ): KoinDefinition<T> = factory(qualifier, definition)
 
-inline fun <reified T : ViewModel> BaseScreen<*,*,*>.screenViewModel(
+inline fun <reified T : ViewModel> BaseScreen<*, *, *>.screenViewModel(
     qualifier: Qualifier? = null,
     noinline ownerProducer: () -> ViewModelStoreOwner = { this },
     noinline extrasProducer: (() -> CreationExtras)? = null,

@@ -58,7 +58,7 @@ abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TCo
         position: Int,
     ) {
         holder.binding.root.setOnClickListener {
-            listener?.click(position, getItem(position))
+            listener?.click(position, getItem(holder.bindingAdapterPosition))
         }
     }
 

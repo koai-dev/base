@@ -18,14 +18,22 @@ fun View.invisible() {
 /**
  * This function avoid double click -> Avoid user rapid click button.
  */
-fun View.safeClick(debounceTime: Long = 800L, action: () -> Unit) {
-    this.setOnClickListener(object : View.OnClickListener {
-        private var lastClickTime: Long = 0
+fun View.safeClick(
+    debounceTime: Long = 800L,
+    action: () -> Unit,
+) {
+    this.setOnClickListener(
+        object : View.OnClickListener {
+            private var lastClickTime: Long = 0
 
-        override fun onClick(v: View) {
-            if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) return
-            else action()
-            lastClickTime = SystemClock.elapsedRealtime()
-        }
-    })
+            override fun onClick(v: View) {
+                if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) {
+                    return
+                } else {
+                    action()
+                }
+                lastClickTime = SystemClock.elapsedRealtime()
+            }
+        },
+    )
 }

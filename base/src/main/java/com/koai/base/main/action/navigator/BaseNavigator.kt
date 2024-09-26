@@ -26,16 +26,34 @@ open class BaseNavigator : ViewModel(), BaseRouter {
 
     fun offNavScreen(
         action: Int,
-        extras: Bundle? = null,
+        extras: Bundle? = Bundle(),
+        isFinished: Boolean = false,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            navigation.trySend(NextScreen(action, extras))
+            navigation.trySend(
+                NextScreen(
+                    action,
+                    extras?.apply {
+                        putBoolean("isFinished", isFinished)
+                    },
+                ),
+            )
         }
     }
 
-    fun offNavScreen(nextScreen: NextScreen) {
+    fun offNavScreen(
+        nextScreen: NextScreen,
+        isFinished: Boolean = false,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            navigation.send(nextScreen)
+            navigation.send(
+                nextScreen.copy(
+                    extras =
+                        (nextScreen.extras ?: Bundle()).apply {
+                            putBoolean("isFinished", isFinished)
+                        },
+                ),
+            )
         }
     }
 
@@ -72,9 +90,7 @@ open class BaseNavigator : ViewModel(), BaseRouter {
         sendEvent(OtherError(action, extras))
     }
 
-    override fun onShareFile(
-        extras: Bundle?,
-    ) {
+    override fun onShareFile(extras: Bundle?) {
         sendEvent(ShareFile(extras = extras))
     }
 

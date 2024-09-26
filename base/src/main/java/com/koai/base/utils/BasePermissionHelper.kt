@@ -26,8 +26,9 @@ abstract class BasePermissionHelper {
 
     open fun requestPermissions(activity: Activity) {
         ActivityCompat.requestPermissions(
-            activity, permissions(),
-            PERMISSION_ALL
+            activity,
+            permissions(),
+            PERMISSION_ALL,
         )
     }
 }
@@ -38,8 +39,8 @@ sealed class PermissionHelper {
         private const val KEY_APP_UID = "app_uid"
     }
 
-    object Camera
-        : BasePermissionHelper() {
+    object Camera :
+        BasePermissionHelper() {
         override fun permissions(): Array<String> {
             return arrayOf(Manifest.permission.CAMERA)
         }
@@ -121,35 +122,37 @@ sealed class PermissionHelper {
     }
 
     object AllPermission : BasePermissionHelper() {
-        override fun permissions() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                Manifest.permission.POST_NOTIFICATIONS,
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_CONTACTS,
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.WAKE_LOCK
-            )
-        } else {
-            arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_CONTACTS,
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.WAKE_LOCK
-            )
-        }
+        override fun permissions() =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayOf(
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.WAKE_LOCK,
+                )
+            } else {
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.WAKE_LOCK,
+                )
+            }
 
         override fun hasPermissions(context: Context): Boolean {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                super.hasPermissions(context) && NotificationManagerCompat.from(context)
-                    .areNotificationsEnabled()
+                super.hasPermissions(context) &&
+                    NotificationManagerCompat.from(context)
+                        .areNotificationsEnabled()
             } else {
                 super.hasPermissions(context)
             }

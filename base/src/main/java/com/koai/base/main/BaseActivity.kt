@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
 import com.koai.base.databinding.ActivityBaseBinding
@@ -104,7 +105,21 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         extras: Bundle?,
     ): Boolean {
         try {
-            navController?.navigate(action, extras)
+            navController?.navigate(
+                resId = action,
+                args = extras,
+                navOptions =
+                    navOptions {
+                        if (extras?.getBoolean("isFinished", false) == true)
+                            {
+                                launchSingleTop = true
+                                popUpTo("") {
+                                    inclusive = true
+                                    saveState = true
+                                }
+                            }
+                    },
+            )
             return true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -138,11 +153,10 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     ) {
     }
 
-    override fun onShareFile(
-        extras: Bundle?,
-    ) {
-        val sendIntent = Intent(Intent.ACTION_SEND)
-            .setType("*/*")
+    override fun onShareFile(extras: Bundle?) {
+        val sendIntent =
+            Intent(Intent.ACTION_SEND)
+                .setType("*/*")
         val contentUri = extras?.getString(ShareFile.EXTRA)?.toUri()
         sendIntent.apply {
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -159,18 +173,19 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             Intent.createChooser(sendIntent, extras?.getString(ShareFile.TITLE))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            val customActions = arrayOf(
-                ChooserAction.Builder(
-                    Icon.createWithResource(this, R.drawable.baseline_mode_edit_outline_24),
-                    "Custom",
-                    PendingIntent.getBroadcast(
-                        this,
-                        1,
-                        Intent(Intent.ACTION_VIEW),
-                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-                    )
-                ).build()
-            )
+            val customActions =
+                arrayOf(
+                    ChooserAction.Builder(
+                        Icon.createWithResource(this, R.drawable.baseline_mode_edit_outline_24),
+                        "Custom",
+                        PendingIntent.getBroadcast(
+                            this,
+                            1,
+                            Intent(Intent.ACTION_VIEW),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
+                        ),
+                    ).build(),
+                )
             shareIntent.putExtra(Intent.EXTRA_CHOOSER_CUSTOM_ACTIONS, customActions)
         }
         startActivity(shareIntent)

@@ -20,9 +20,7 @@ interface BaseRouter {
         extras: Bundle?,
     )
 
-    fun onShareFile(
-        extras: Bundle?,
-    )
+    fun onShareFile(extras: Bundle?)
 
     fun gotoComingSoon(
         action: Int,

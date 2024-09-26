@@ -1,7 +1,6 @@
 package com.koai.base.main.extension
 
 import android.annotation.SuppressLint
-import android.media.MediaDataSource
 import android.media.MediaPlayer
 import android.os.SystemClock
 import android.view.MotionEvent
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.koai.base.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,6 +16,7 @@ import kotlinx.coroutines.launch
 
 object ClickableViewExtensions {
     private var mediaPlayer: MediaPlayer? = null
+
     fun initSoundEffect() {
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setDataSource("https://koai-dev.github.io/assets/raw/music/click_sound.mp3")
@@ -33,7 +32,7 @@ object ClickableViewExtensions {
     fun View.setClickableWithScale(
         enableSoundEffect: Boolean = true,
         delayTimeDoubleClick: Int = 200,
-        onClick: () -> Unit
+        onClick: () -> Unit,
     ) {
         var mLastClickTime = 0L
         setOnClickListener {

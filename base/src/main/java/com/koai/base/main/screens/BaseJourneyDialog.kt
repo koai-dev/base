@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -138,9 +137,7 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
     ) {
     }
 
-    override fun onShareFile(
-        extras: Bundle?,
-    ) {
+    override fun onShareFile(extras: Bundle?) {
     }
 
     override fun gotoComingSoon(
