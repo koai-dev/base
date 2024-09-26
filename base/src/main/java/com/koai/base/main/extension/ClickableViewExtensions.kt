@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object ClickableViewExtensions {
-    private var mLastClickTime = 0L
     private var mediaPlayer: MediaPlayer? = null
     fun initSoundEffect() {
         mediaPlayer = MediaPlayer()
@@ -36,6 +35,7 @@ object ClickableViewExtensions {
         delayTimeDoubleClick: Int = 200,
         onClick: () -> Unit
     ) {
+        var mLastClickTime = 0L
         setOnClickListener {
             if (SystemClock.elapsedRealtime() - mLastClickTime < delayTimeDoubleClick) {
                 return@setOnClickListener
