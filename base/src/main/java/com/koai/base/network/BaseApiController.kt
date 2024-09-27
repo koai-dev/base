@@ -46,7 +46,7 @@ abstract class BaseApiController<T : Any> {
                         addInterceptor {
                             it.proceed(
                                 it.request().newBuilder()
-                                    .addHeader("Authorization", "Bear $accessToken")
+                                    .addHeader("Authorization", "Bearer $accessToken")
                                     .build(),
                             )
                         }
