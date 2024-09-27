@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
 import com.koai.base.main.BaseActivity
@@ -100,10 +101,23 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
 
     override fun onNextScreen(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle,
     ): Boolean {
         try {
-            navController?.navigate(action, extras)
+            navController?.navigate(
+                resId = action,
+                args = extras,
+                navOptions =
+                    navOptions {
+                        if (extras.getBoolean("isFinished", false)) {
+                            launchSingleTop = true
+                            popUpTo(resources.getString(R.string.app_name)) {
+                                inclusive = true
+                                saveState = true
+                            }
+                        }
+                    },
+            )
             return true
         } catch (e: Exception) {
             e.printStackTrace()

@@ -7,7 +7,7 @@ open class NavigationEvent {
     open val extras: Bundle? = null
 }
 
-data class NextScreen(override val action: Int, override val extras: Bundle? = null) :
+data class NextScreen(override val action: Int, override val extras: Bundle = Bundle()) :
     NavigationEvent()
 
 data class PopScreen(override val extras: Bundle? = null) : NavigationEvent()

@@ -26,14 +26,14 @@ open class BaseNavigator : ViewModel(), BaseRouter {
 
     fun offNavScreen(
         action: Int,
-        extras: Bundle? = Bundle(),
+        extras: Bundle = Bundle(),
         isFinished: Boolean = false,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             navigation.trySend(
                 NextScreen(
                     action,
-                    extras?.apply {
+                    extras.apply {
                         putBoolean("isFinished", isFinished)
                     },
                 ),
@@ -49,7 +49,7 @@ open class BaseNavigator : ViewModel(), BaseRouter {
             navigation.send(
                 nextScreen.copy(
                     extras =
-                        (nextScreen.extras ?: Bundle()).apply {
+                        nextScreen.extras.apply {
                             putBoolean("isFinished", isFinished)
                         },
                 ),
@@ -65,7 +65,7 @@ open class BaseNavigator : ViewModel(), BaseRouter {
 
     override fun onNextScreen(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle,
     ): Boolean {
         offNavScreen(action, extras)
         return true

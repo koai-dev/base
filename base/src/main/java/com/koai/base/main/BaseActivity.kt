@@ -102,7 +102,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
 
     override fun onNextScreen(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle,
     ): Boolean {
         try {
             navController?.navigate(
@@ -110,14 +110,13 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                 args = extras,
                 navOptions =
                     navOptions {
-                        if (extras?.getBoolean("isFinished", false) == true)
-                            {
-                                launchSingleTop = true
-                                popUpTo("") {
-                                    inclusive = true
-                                    saveState = true
-                                }
+                        if (extras.getBoolean("isFinished", false)) {
+                            launchSingleTop = true
+                            popUpTo(resources.getString(R.string.app_name)) {
+                                inclusive = true
+                                saveState = true
                             }
+                        }
                     },
             )
             return true
