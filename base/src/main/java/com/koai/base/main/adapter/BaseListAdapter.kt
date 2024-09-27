@@ -17,27 +17,36 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
+import com.koai.base.utils.LogUtils
 
 @SuppressLint("DiffUtilEquals")
-class TComparator<T : Any> : DiffUtil.ItemCallback<T>() {
+class TComparator<DATA : Any> : DiffUtil.ItemCallback<DATA>() {
     override fun areItemsTheSame(
-        oldItem: T,
-        newItem: T,
+        oldItem: DATA,
+        newItem: DATA,
     ): Boolean = oldItem == newItem
 
     override fun areContentsTheSame(
-        oldItem: T,
-        newItem: T,
+        oldItem: DATA,
+        newItem: DATA,
     ): Boolean = oldItem == newItem
 }
 
-abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TComparator<T>()) {
-    var listener: Action<T>? = null
-    var observer: Observer<T>? = null
+@Suppress("UNCHECKED_CAST")
+abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding> :
+    ListAdapter<DATA, BaseListAdapter.VH>(TComparator<DATA>()) {
+    var listener: Action<DATA>? = null
+    var observer: Observer<DATA>? = null
 
     class VH(val binding: ViewBinding) : ViewHolder(binding.root)
 
     abstract fun getLayoutId(): Int
+
+    abstract fun bindView(
+        holder: VH,
+        binding: VIEW_BINDING,
+        position: Int,
+    )
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -58,7 +67,12 @@ abstract class BaseListAdapter<T : Any> : ListAdapter<T, BaseListAdapter.VH>(TCo
         position: Int,
     ) {
         holder.binding.root.setOnClickListener {
-            listener?.click(position, getItem(holder.bindingAdapterPosition))
+            listener?.click(holder.bindingAdapterPosition, getItem(holder.bindingAdapterPosition))
+        }
+        try {
+            bindView(holder, holder.binding as VIEW_BINDING, holder.bindingAdapterPosition)
+        } catch (e: Exception) {
+            LogUtils.log("BaseListAdapter", e.message.toString())
         }
     }
 
