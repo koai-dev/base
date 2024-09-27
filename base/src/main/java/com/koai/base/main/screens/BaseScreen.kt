@@ -15,7 +15,8 @@ import com.koai.base.main.action.router.BaseRouter
 /**
  * Base ui screen
  */
-abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavigator>(private val layoutId: Int = 0) : Fragment() {
+abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavigator>(private val layoutId: Int = 0) :
+    Fragment() {
     protected lateinit var binding: T
     protected lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F

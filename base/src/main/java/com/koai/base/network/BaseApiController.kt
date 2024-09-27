@@ -26,6 +26,7 @@ abstract class BaseApiController<T : Any> {
     fun getService(
         context: Context,
         allowVpn: Boolean = true,
+        accessToken: String? = null,
     ): T? {
         val baseUrl = getBaseUrl()
 
@@ -40,7 +41,17 @@ abstract class BaseApiController<T : Any> {
         val okHttpClient =
             builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .dispatcher(dispatcher)
+                .dispatcher(dispatcher).apply {
+                    accessToken?.let {
+                        addInterceptor {
+                            it.proceed(
+                                it.request().newBuilder()
+                                    .addHeader("Authorization", "Bear $accessToken")
+                                    .build(),
+                            )
+                        }
+                    }
+                }
                 .build()
 
         val retrofit =
