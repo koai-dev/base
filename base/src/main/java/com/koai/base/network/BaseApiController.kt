@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 abstract class BaseApiController<T : Any> {
     companion object {
-        const val TIME_OUT = 60L
+        const val TIME_OUT = 30L
     }
 
     fun getService(
