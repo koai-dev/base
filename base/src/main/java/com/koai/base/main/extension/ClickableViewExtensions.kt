@@ -65,7 +65,41 @@ object ClickableViewExtensions {
         source: Any?,
         onSuccess: (() -> Unit)? = null,
         onFail: (() -> Unit)? = null,
-        defaultImage: Int? = null,
+    ) {
+        try {
+            this.load(source) {
+                listener(
+                    onStart = { request ->
+                        crossfade(true)
+                        placeholder(
+                            CircularProgressDrawable(context).apply {
+                                strokeWidth = 5f
+                                centerRadius = 30f
+                                start()
+                            },
+                        )
+                        transformations(CircleCropTransformation())
+                    },
+                    onSuccess = { request, result ->
+                        onSuccess?.invoke() ?: this@loadImage.visible()
+                    },
+                    onError = { request, result ->
+                        onFail?.invoke()
+                            ?: this@loadImage.gone()
+                    },
+                )
+            }
+        } catch (e: Exception) {
+            onFail?.invoke()
+                ?: this@loadImage.gone()
+        }
+    }
+
+    fun ImageView.loadImage(
+        source: Any?,
+        onSuccess: (() -> Unit)? = null,
+        onFail: (() -> Unit)? = null,
+        defaultImage: Any? = null,
     ) {
         try {
             this.load(source) {
