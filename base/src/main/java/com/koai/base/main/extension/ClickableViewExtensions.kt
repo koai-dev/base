@@ -62,9 +62,10 @@ object ClickableViewExtensions {
     }
 
     fun ImageView.loadImage(
-        source: Any,
+        source: Any?,
         onSuccess: (() -> Unit)? = null,
         onFail: (() -> Unit)? = null,
+        defaultImage: Int? = null,
     ) {
         try {
             this.load(source) {
@@ -81,24 +82,23 @@ object ClickableViewExtensions {
                         transformations(CircleCropTransformation())
                     },
                     onSuccess = { request, result ->
-                        this@loadImage.visible()
-                        if (onSuccess != null) {
-                            onSuccess()
-                        }
+                        onSuccess?.invoke() ?: this@loadImage.visible()
                     },
                     onError = { request, result ->
-                        this@loadImage.gone()
-                        if (onFail != null) {
-                            onFail()
-                        }
+                        onFail?.invoke()
+                            ?:
+                            defaultImage?.let {
+                                this@loadImage.load(defaultImage)
+                            } ?: this@loadImage.gone()
                     },
                 )
             }
         } catch (e: Exception) {
-            this@loadImage.gone()
-            if (onFail != null) {
-                onFail()
-            }
+            onFail?.invoke()
+                ?:
+                defaultImage?.let {
+                    this@loadImage.load(defaultImage)
+                } ?: this@loadImage.gone()
         }
     }
 }
