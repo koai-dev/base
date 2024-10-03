@@ -21,7 +21,7 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
     lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F
     protected var router: Router? = null
-    protected var gravity: Int = Gravity.CENTER
+    open var gravity: Int = Gravity.CENTER
 
     override fun onCreateView(
         inflater: LayoutInflater,
