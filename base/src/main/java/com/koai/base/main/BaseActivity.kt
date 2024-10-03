@@ -242,7 +242,8 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         }
     }
 
-    fun toggleProgressLoading(isShow: Boolean) {
+    fun toggleProgressLoading(isShow: Boolean, isPreventClicked: Boolean = false) {
         rootView.hasLoading = isShow
+        rootView.preventClicked = isPreventClicked
     }
 }

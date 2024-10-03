@@ -67,11 +67,11 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         binding: T,
     )
 
-    fun showLoading() {
-        activity.toggleProgressLoading(isShow = true)
+    fun showLoading(preventClicked: Boolean = false) {
+        activity.toggleProgressLoading(isShow = true, preventClicked)
     }
 
     fun hideLoading() {
-        activity.toggleProgressLoading(isShow = false)
+        activity.toggleProgressLoading(isShow = false, isPreventClicked = false)
     }
 }

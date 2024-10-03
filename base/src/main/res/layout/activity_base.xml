@@ -1,19 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /**
   ~  * Created by Nguyễn Kim Khánh on 7/18/23, 10:03 AM
   ~  * Copyright (c) 2023 . All rights reserved.
   ~  * Last modified 7/18/23, 10:03 AM
   ~  */
   -->
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="hasLoading"
             type="Boolean" />
-        <import type="android.view.View"/>
+
+        <variable
+            name="preventClicked"
+            type="Boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,7 +32,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/bg_loading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#80424242"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="@{hasLoading?preventClicked?View.VISIBLE:View.GONE:View.GONE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/loading"
