@@ -12,7 +12,9 @@ import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.event.ErrorEvent
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
+import com.koai.base.main.extension.screenViewModel
 import com.koai.base.main.viewmodel.BaseViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * Base ui screen
@@ -25,7 +27,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
     protected lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F
     protected var router: Router? = null
-    protected var viewModel: BaseViewModel? = null
+    open val viewModel: BaseViewModel by screenViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +57,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
     }
 
     private fun observerError() {
-        viewModel?.msgException?.observe(this) { message ->
+        viewModel.msgException.observe(viewLifecycleOwner) { message ->
             navigator.sendEvent(ErrorEvent(message = message))
         }
     }
