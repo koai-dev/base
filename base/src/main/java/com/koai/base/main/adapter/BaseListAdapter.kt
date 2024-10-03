@@ -33,8 +33,8 @@ class TComparator<DATA : Any> : DiffUtil.ItemCallback<DATA>() {
 }
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding> :
-    ListAdapter<DATA, BaseListAdapter.VH>(TComparator<DATA>()) {
+abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator()) :
+    ListAdapter<DATA, BaseListAdapter.VH>(diffUtil) {
     var listener: Action<DATA>? = null
     var observer: Observer<DATA>? = null
 

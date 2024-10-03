@@ -120,8 +120,7 @@ object ClickableViewExtensions {
                     },
                     onError = { request, result ->
                         onFail?.invoke()
-                            ?:
-                            defaultImage?.let {
+                            ?: defaultImage?.let {
                                 this@loadImage.load(defaultImage)
                             } ?: this@loadImage.gone()
                     },
@@ -129,8 +128,7 @@ object ClickableViewExtensions {
             }
         } catch (e: Exception) {
             onFail?.invoke()
-                ?:
-                defaultImage?.let {
+                ?: defaultImage?.let {
                     this@loadImage.load(defaultImage)
                 } ?: this@loadImage.gone()
         }
