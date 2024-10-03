@@ -1,11 +1,15 @@
 package com.koai.base.main.screens
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
@@ -22,6 +26,15 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
     abstract val navigator: F
     protected var router: Router? = null
     open var gravity: Int = Gravity.CENTER
+    open var canceledOnTouchOutside: Boolean = false
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            this.setCanceledOnTouchOutside(canceledOnTouchOutside)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +44,14 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
         activity = requireActivity() as BaseActivity<*, *, *>
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        this@BaseDialog.dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+        )
     }
 
     @Suppress("UNCHECKED_CAST")

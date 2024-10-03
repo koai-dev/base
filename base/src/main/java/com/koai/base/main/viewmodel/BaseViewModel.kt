@@ -23,6 +23,6 @@ open class BaseViewModel : ViewModel() {
     private val _msgException = MutableLiveData<String>()
     val msgException: LiveData<String> = _msgException
     val baseCoroutineContext = Dispatchers.IO + exceptionHandler
-    fun launchCoroutine(block: suspend CoroutineScope.() -> Unit) =
-        viewModelScope.launch(context = baseCoroutineContext, block = block)
+
+    fun launchCoroutine(block: suspend CoroutineScope.() -> Unit) = viewModelScope.launch(context = baseCoroutineContext, block = block)
 }

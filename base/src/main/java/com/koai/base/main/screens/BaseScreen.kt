@@ -14,7 +14,6 @@ import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
 import com.koai.base.main.extension.screenViewModel
 import com.koai.base.main.viewmodel.BaseViewModel
-import org.koin.android.ext.android.inject
 
 /**
  * Base ui screen
