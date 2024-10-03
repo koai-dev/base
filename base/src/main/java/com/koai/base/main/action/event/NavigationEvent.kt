@@ -49,3 +49,5 @@ data class BackToHome(override val action: Int = 0, override val extras: Bundle?
 
 data class FinishJourney(override val action: Int = 0, override val extras: Bundle? = null) :
     NavigationEvent()
+
+class ErrorEvent(val message: String? = null) : NavigationEvent()
