@@ -8,40 +8,16 @@
 
 package com.koai.base.main.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
 import com.koai.base.utils.LogUtils
 
-@SuppressLint("DiffUtilEquals")
-class TComparator<DATA : Any> : DiffUtil.ItemCallback<DATA>() {
-    override fun areItemsTheSame(
-        oldItem: DATA,
-        newItem: DATA,
-    ): Boolean = oldItem == newItem
-
-    override fun areContentsTheSame(
-        oldItem: DATA,
-        newItem: DATA,
-    ): Boolean = oldItem == newItem
-}
-
 @Suppress("UNCHECKED_CAST")
 abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator()) :
-    ListAdapter<DATA, BaseListAdapter.VH>(diffUtil) {
-    var listener: Action<DATA>? = null
-    var observer: Observer<DATA>? = null
-
-    class VH(val binding: ViewBinding) : ViewHolder(binding.root)
-
-    abstract fun getLayoutId(): Int
-
+    BListAdapter<DATA>(diffUtil) {
     abstract fun bindView(
         holder: VH,
         binding: VIEW_BINDING,
@@ -66,40 +42,11 @@ abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(private v
         holder: VH,
         position: Int,
     ) {
-        holder.binding.root.setOnClickListener {
-            listener?.click(holder.bindingAdapterPosition, getItem(holder.bindingAdapterPosition))
-        }
+        super.onBindViewHolder(holder, position)
         try {
             bindView(holder, holder.binding as VIEW_BINDING, holder.bindingAdapterPosition)
         } catch (e: Exception) {
             LogUtils.log("BaseListAdapter", e.message.toString())
         }
-    }
-
-    interface Action<T> {
-        /**
-         * @param position of viewItem
-         * @param data of viewItem
-         */
-        fun click(
-            position: Int,
-            data: T,
-            code: Int = 0,
-        )
-    }
-
-    interface Observer<T> {
-        /**
-         * @param root is viewItem (for visible handle)
-         * @param childView can be child recycle_view or viewpager
-         * @param data of item
-         * @param code for handle
-         */
-        fun subData(
-            root: View,
-            childView: View,
-            data: T,
-            code: Int = 0,
-        )
     }
 }
