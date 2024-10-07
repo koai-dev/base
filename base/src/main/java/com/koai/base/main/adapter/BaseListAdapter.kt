@@ -8,9 +8,6 @@
 
 package com.koai.base.main.adapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewbinding.ViewBinding
 import com.koai.base.utils.LogUtils
@@ -23,20 +20,6 @@ abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(private v
         binding: VIEW_BINDING,
         position: Int,
     )
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): VH {
-        return VH(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                getLayoutId(),
-                parent,
-                false,
-            ),
-        )
-    }
 
     override fun onBindViewHolder(
         holder: VH,
