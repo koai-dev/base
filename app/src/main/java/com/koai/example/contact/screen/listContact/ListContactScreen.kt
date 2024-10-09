@@ -2,6 +2,7 @@ package com.koai.example.contact.screen.listContact
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.extension.journeyViewModel
 import com.koai.base.main.extension.navigatorViewModel
 import com.koai.base.main.screens.BaseScreen
@@ -17,6 +18,7 @@ class ListContactScreen : BaseScreen<ScreenListContactBinding, ListContactRouter
 ) {
     override fun initView(savedInstanceState: Bundle?, binding: ScreenListContactBinding) {
         binding.button2.setOnClickListener {
+            navigator.sendEvent(PermissionResultEvent(0, arrayOf(""), intArrayOf(), 0))
             router?.gotoDetailScreen()
         }
     }

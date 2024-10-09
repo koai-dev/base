@@ -23,6 +23,7 @@ import com.koai.base.main.action.event.NavigationEvent
 import com.koai.base.main.action.event.NextScreen
 import com.koai.base.main.action.event.NotImplementedYet
 import com.koai.base.main.action.event.OtherError
+import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.action.event.PopScreen
 import com.koai.base.main.action.event.SessionTimeout
 import com.koai.base.main.action.event.ShareFile
@@ -95,6 +96,13 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
             is BackToHome -> backToHome(event.action, event.extras)
             is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
             is NotImplementedYet -> notImplemented()
+            is PermissionResultEvent ->
+                activity.onPermissionResult?.invoke(
+                    event.requestCode,
+                    event.permissions,
+                    event.grantResults,
+                    event.deviceId,
+                )
             else -> notRecognized()
         }
     }

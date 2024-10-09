@@ -29,6 +29,7 @@ import com.koai.base.main.action.event.NavigationEvent
 import com.koai.base.main.action.event.NextScreen
 import com.koai.base.main.action.event.NotImplementedYet
 import com.koai.base.main.action.event.OtherError
+import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.action.event.PopScreen
 import com.koai.base.main.action.event.SessionTimeout
 import com.koai.base.main.action.event.ShareFile
@@ -48,6 +49,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     var statusBarHeight = 32
     var bottomNavigationHeight = 32
     var networkConnected = false
+    var onPermissionResult: ((requestCode: Int, permissions: Array<out String>, grantResults: IntArray, deviceId: Int) -> Unit)? = null
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +98,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is BackToHome -> backToHome(event.action, event.extras)
             is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
             is NotImplementedYet -> notImplemented()
+            is PermissionResultEvent -> onPermissionResult?.invoke(event.requestCode, event.permissions, event.grantResults, event.deviceId)
             else -> notRecognized()
         }
     }

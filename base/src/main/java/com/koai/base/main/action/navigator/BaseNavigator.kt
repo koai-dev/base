@@ -1,8 +1,6 @@
 package com.koai.base.main.action.navigator
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.koai.base.main.action.event.BackToHome
 import com.koai.base.main.action.event.ComingSoon
 import com.koai.base.main.action.event.NavigateWithDeeplink
@@ -14,12 +12,11 @@ import com.koai.base.main.action.event.PopScreen
 import com.koai.base.main.action.event.SessionTimeout
 import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.router.BaseRouter
-import kotlinx.coroutines.Dispatchers
+import com.koai.base.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.launch
 
-open class BaseNavigator : ViewModel(), BaseRouter {
+open class BaseNavigator : BaseViewModel(), BaseRouter {
     val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
 
     val receive: ReceiveChannel<NavigationEvent> get() = navigation
@@ -29,8 +26,8 @@ open class BaseNavigator : ViewModel(), BaseRouter {
         extras: Bundle = Bundle(),
         isFinished: Boolean = false,
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            navigation.trySend(
+        launchCoroutine {
+            navigation.send(
                 NextScreen(
                     action,
                     extras.apply {
@@ -45,7 +42,7 @@ open class BaseNavigator : ViewModel(), BaseRouter {
         nextScreen: NextScreen,
         isFinished: Boolean = false,
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCoroutine {
             navigation.send(
                 nextScreen.copy(
                     extras =
@@ -58,7 +55,7 @@ open class BaseNavigator : ViewModel(), BaseRouter {
     }
 
     fun sendEvent(navigationEvent: NavigationEvent) {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCoroutine {
             navigation.send(navigationEvent)
         }
     }
