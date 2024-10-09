@@ -51,3 +51,10 @@ data class FinishJourney(override val action: Int = 0, override val extras: Bund
     NavigationEvent()
 
 class ErrorEvent(val message: String? = null) : NavigationEvent()
+
+class PermissionResultEvent(
+    val requestCode: Int,
+    val permissions: Array<out String>,
+    val grantResults: IntArray,
+    val deviceId: Int,
+) : NavigationEvent()

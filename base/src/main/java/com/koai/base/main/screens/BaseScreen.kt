@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.event.ErrorEvent
+import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
 import com.koai.base.main.extension.screenViewModel
 import com.koai.base.main.viewmodel.BaseViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Base ui screen
@@ -53,7 +58,32 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         }
         initView(savedInstanceState, binding)
         observerError()
+        observerPermission()
     }
+
+    private fun observerPermission() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                for (event in navigator.receive) {
+                    if (event is PermissionResultEvent) {
+                        onPermissionResult(
+                            event.requestCode,
+                            event.permissions,
+                            event.grantResults,
+                            event.deviceId,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    open fun onPermissionResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+        deviceId: Int,
+    ) = Unit
 
     private fun observerError() {
         viewModel.msgException.observe(viewLifecycleOwner) { message ->
