@@ -1,14 +1,20 @@
 package com.koai.base.utils
+
 import android.util.Log
-import com.koai.base.BuildConfig
 
 object LogUtils {
+    private var debugMode = false
+
+    fun setDebugMode(debugMode: Boolean) {
+        this.debugMode = debugMode
+    }
+
     fun log(
         tag: String,
         msg: String,
         type: LogType = LogType.DEBUG,
     ) {
-        if (BuildConfig.DEBUG) {
+        if (debugMode) {
             try {
                 when (type) {
                     LogType.DEBUG -> Log.d(tag, msg)

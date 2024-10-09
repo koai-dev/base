@@ -61,10 +61,10 @@ dependencies {
     api("androidx.recyclerview:recyclerview:1.3.2")
 
     // firebase
-    api("com.google.firebase:firebase-analytics:22.1.0")
+    api("com.google.firebase:firebase-analytics:22.1.2")
     api("com.google.firebase:firebase-auth:23.0.0")
-    api("com.google.firebase:firebase-crashlytics:19.1.0")
-    api("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    api("com.google.firebase:firebase-crashlytics:19.2.0")
+    api("androidx.navigation:navigation-fragment-ktx:2.8.2")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     testApi("junit:junit:4.13.2")
@@ -88,7 +88,7 @@ dependencies {
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     api("androidx.lifecycle:lifecycle-extensions:2.2.0")
     api("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
-    api("androidx.fragment:fragment-ktx:1.8.3")
+    api("androidx.fragment:fragment-ktx:1.8.4")
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.4.1")
@@ -110,7 +110,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.7.1"
+                version = "1.7.2"
 
                 afterEvaluate {
                     from(components["release"])
@@ -137,7 +137,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v1.7.1"
+        val tagName = "v1.7.2"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
