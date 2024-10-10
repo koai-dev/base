@@ -64,7 +64,7 @@ dependencies {
     api("com.google.firebase:firebase-analytics:22.1.2")
     api("com.google.firebase:firebase-auth:23.0.0")
     api("com.google.firebase:firebase-crashlytics:19.2.0")
-    api("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    api("androidx.navigation:navigation-fragment-ktx:2.7.7")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     testApi("junit:junit:4.13.2")
@@ -94,7 +94,7 @@ dependencies {
     api("com.airbnb.android:lottie:6.4.1")
 
     // load image
-    api("io.coil-kt:coil:2.7.0")
+    api("io.coil-kt:coil:2.4.0")
 
     // di
     api(platform("io.insert-koin:koin-bom:3.5.4"))
@@ -137,7 +137,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v1.7.4"
+        val tagName = "v1.7.4-ekyc"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
