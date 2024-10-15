@@ -8,7 +8,11 @@ interface BaseRouter {
         extras: Bundle = Bundle(),
     ): Boolean
 
-    fun onPopScreen(): Boolean
+    fun onPopScreen(
+        action: Int? = null,
+        inclusive: Boolean? = null,
+        saveState: Boolean? = null,
+    ): Boolean
 
     fun onSessionTimeout(
         action: Int,

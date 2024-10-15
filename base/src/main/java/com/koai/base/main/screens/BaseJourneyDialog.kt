@@ -125,11 +125,26 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
         return false
     }
 
-    override fun onPopScreen(): Boolean {
+    override fun onPopScreen(
+        action: Int?,
+        inclusive: Boolean?,
+        saveState: Boolean?,
+    ): Boolean {
         navController?.let { n ->
             n.previousBackStackEntry?.let {
                 n.currentBackStackEntry?.let {
-                    if (n.popBackStack()) return true
+                    action?.let { action ->
+                        if (n.popBackStack(
+                                destinationId = action,
+                                inclusive = inclusive != false,
+                                saveState = saveState == true,
+                            )
+                        ) {
+                            return true
+                        }
+                    } ?: run {
+                        if (n.popBackStack()) return true
+                    }
                     n.previousBackStackEntry
                     n.navigate(it.destination.id) // reload here
                 }

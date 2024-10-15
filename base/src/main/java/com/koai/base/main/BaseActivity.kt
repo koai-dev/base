@@ -49,7 +49,8 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     var statusBarHeight = 32
     var bottomNavigationHeight = 32
     var networkConnected = false
-    var onPermissionResult: ((requestCode: Int, permissions: Array<out String>, grantResults: IntArray, deviceId: Int) -> Unit)? = null
+    var onPermissionResult: ((requestCode: Int, permissions: Array<out String>, grantResults: IntArray, deviceId: Int) -> Unit)? =
+        null
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +91,13 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     open fun onNavigationEvent(event: NavigationEvent) {
         when (event) {
             is NextScreen -> onNextScreen(event.action, event.extras)
-            is PopScreen -> onPopScreen()
+            is PopScreen ->
+                onPopScreen(
+                    action = event.action,
+                    inclusive = event.inclusive,
+                    saveState = event.saveState,
+                )
+
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
             is OtherError -> onOtherErrorDefault(event.action, event.extras)
             is ShareFile -> onShareFile(event.extras)
@@ -98,7 +105,14 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is BackToHome -> backToHome(event.action, event.extras)
             is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
             is NotImplementedYet -> notImplemented()
-            is PermissionResultEvent -> onPermissionResult?.invoke(event.requestCode, event.permissions, event.grantResults, event.deviceId)
+            is PermissionResultEvent ->
+                onPermissionResult?.invoke(
+                    event.requestCode,
+                    event.permissions,
+                    event.grantResults,
+                    event.deviceId,
+                )
+
             else -> notRecognized()
         }
     }
@@ -129,11 +143,26 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         return false
     }
 
-    override fun onPopScreen(): Boolean {
+    override fun onPopScreen(
+        action: Int?,
+        inclusive: Boolean?,
+        saveState: Boolean?,
+    ): Boolean {
         navController?.let { n ->
             n.previousBackStackEntry?.let {
                 n.currentBackStackEntry?.let {
-                    if (n.popBackStack()) return true
+                    action?.let { action ->
+                        if (n.popBackStack(
+                                destinationId = action,
+                                inclusive = inclusive != false,
+                                saveState = saveState == true,
+                            )
+                        ) {
+                            return true
+                        }
+                    } ?: run {
+                        if (n.popBackStack()) return true
+                    }
                     n.previousBackStackEntry
                     n.navigate(it.destination.id) // reload here
                 }

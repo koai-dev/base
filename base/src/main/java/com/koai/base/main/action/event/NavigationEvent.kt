@@ -10,7 +10,12 @@ open class NavigationEvent {
 data class NextScreen(override val action: Int, override val extras: Bundle = Bundle()) :
     NavigationEvent()
 
-data class PopScreen(override val extras: Bundle? = null) : NavigationEvent()
+data class PopScreen(
+    override val action: Int = 0,
+    val inclusive: Boolean? = null,
+    val saveState: Boolean? = null,
+    override val extras: Bundle? = null,
+) : NavigationEvent()
 
 data class JourneyFinished(override val action: Int, override val extras: Bundle? = null) :
     NavigationEvent()
