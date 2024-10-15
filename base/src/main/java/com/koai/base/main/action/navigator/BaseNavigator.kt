@@ -73,7 +73,7 @@ open class BaseNavigator : BaseViewModel(), BaseRouter {
         inclusive: Boolean?,
         saveState: Boolean?,
     ): Boolean {
-        sendEvent(PopScreen(action = action ?: 0, inclusive = inclusive, saveState = saveState))
+        sendEvent(PopScreen(action = action ?: -1, inclusive = inclusive, saveState = saveState))
         return true
     }
 

@@ -93,7 +93,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is NextScreen -> onNextScreen(event.action, event.extras)
             is PopScreen ->
                 onPopScreen(
-                    action = event.action,
+                    action = if (event.action != -1) event.action else null,
                     inclusive = event.inclusive,
                     saveState = event.saveState,
                 )

@@ -88,7 +88,12 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     open fun onNavigationEvent(event: NavigationEvent) {
         when (event) {
             is NextScreen -> onNextScreen(event.action, event.extras)
-            is PopScreen -> onPopScreen()
+            is PopScreen ->
+                onPopScreen(
+                    action = if (event.action != -1) event.action else null,
+                    inclusive = event.inclusive,
+                    saveState = event.saveState,
+                )
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
             is OtherError -> onOtherErrorDefault(event.action, event.extras)
             is ShareFile -> onShareFile(event.extras)

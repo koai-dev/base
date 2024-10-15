@@ -11,7 +11,7 @@ data class NextScreen(override val action: Int, override val extras: Bundle = Bu
     NavigationEvent()
 
 data class PopScreen(
-    override val action: Int = 0,
+    override val action: Int = -1,
     val inclusive: Boolean? = null,
     val saveState: Boolean? = null,
     override val extras: Bundle? = null,
