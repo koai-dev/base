@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -47,7 +47,7 @@ dependencies {
     implementation(project(":base"))
 
     //firebase
-    implementation("com.google.firebase:firebase-perf:20.5.2")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.4.2")
-    implementation("com.google.firebase:firebase-config:21.6.3")
+    implementation("com.google.firebase:firebase-perf:21.0.2")
+    implementation("com.google.firebase:firebase-inappmessaging-display:21.0.1")
+    implementation("com.google.firebase:firebase-config:22.0.1")
 }
