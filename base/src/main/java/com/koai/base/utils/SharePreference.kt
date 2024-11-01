@@ -13,10 +13,10 @@ import android.content.SharedPreferences
 import com.koai.base.R
 
 class SharePreference(private val context: Context) {
-    fun getIntPref(key: String): Int {
+    fun getIntPref(key: String, default: Int = -1): Int {
         val pref: SharedPreferences =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return pref.getInt(key, -1)
+        return pref.getInt(key, default)
     }
 
     fun setIntPref(
@@ -28,10 +28,10 @@ class SharePreference(private val context: Context) {
         pref.edit().putInt(key, value).apply()
     }
 
-    fun getStringPref(key: String): String? {
+    fun getStringPref(key: String, default: String = ""): String? {
         val pref: SharedPreferences? =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return pref!!.getString(key, "")
+        return pref!!.getString(key, default)
     }
 
     fun setStringPref(
@@ -43,11 +43,11 @@ class SharePreference(private val context: Context) {
         pref.edit().putString(key, value).apply()
     }
 
-    fun getBooleanPref(key: String): Boolean {
+    fun getBooleanPref(key: String, default: Boolean = false): Boolean {
         val pref: SharedPreferences? =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
 
-        return pref!!.getBoolean(key, false)
+        return pref!!.getBoolean(key, default)
     }
 
     fun setBooleanPref(

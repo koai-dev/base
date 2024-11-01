@@ -9,6 +9,8 @@ object LogUtils {
         this.debugMode = debugMode
     }
 
+    fun getDebugMode(): Boolean  = this.debugMode
+
     fun log(
         tag: String,
         msg: String,
