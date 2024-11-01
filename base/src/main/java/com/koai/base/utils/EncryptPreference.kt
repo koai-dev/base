@@ -15,7 +15,7 @@ import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
 class EncryptPreference(context: Context) {
-    private lateinit var pref: SharedPreferences
+    private val pref: SharedPreferences
 
     init {
         val masterKey =
@@ -64,5 +64,9 @@ class EncryptPreference(context: Context) {
         value: Boolean,
     ) {
         pref.edit().putBoolean(key, value).apply()
+    }
+
+    fun removePref(key: String){
+        pref.edit().remove(key).apply()
     }
 }
