@@ -66,23 +66,31 @@ class EncryptPreference(context: Context) {
         pref.edit().putBoolean(key, value).apply()
     }
 
-    fun removePref(key: String){
+    fun removePref(key: String) {
         pref.edit().remove(key).apply()
     }
 
-    fun contains(key: String): Boolean{
+    fun contains(key: String): Boolean {
         return pref.contains(key)
     }
 
-    fun clear(){
+    fun clear() {
         pref.edit().clear().apply()
     }
 
-    fun getAll(): Map<String, *>{
+    fun getAll(): Map<String, *> {
         return pref.all
     }
 
-    fun edit(): SharedPreferences.Editor{
+    fun edit(): SharedPreferences.Editor {
         return pref.edit()
+    }
+
+    fun getLongPref(key: String, default: Long = 0): Long {
+        return pref.getLong(key, default)
+    }
+
+    fun setLongPref(key: String, value: Long) {
+        pref.edit().putLong(key, value).apply()
     }
 }
