@@ -65,4 +65,8 @@ class EncryptPreference(context: Context) {
     ) {
         pref.edit().putBoolean(key, value).apply()
     }
+
+    fun contains(key: String): Boolean{
+        return pref.contains(key)
+    }
 }

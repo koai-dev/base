@@ -58,4 +58,10 @@ class SharePreference(private val context: Context) {
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
         pref.edit().putBoolean(key, value).apply()
     }
+
+    fun contains(key: String): Boolean{
+        val pref: SharedPreferences =
+            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return pref.contains(key)
+    }
 }

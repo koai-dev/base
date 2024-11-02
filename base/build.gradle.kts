@@ -137,7 +137,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v1.8.0"
+        val tagName = "v1.8.1"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
