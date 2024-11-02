@@ -73,4 +73,16 @@ class EncryptPreference(context: Context) {
     fun contains(key: String): Boolean{
         return pref.contains(key)
     }
+
+    fun clear(){
+        pref.edit().clear().apply()
+    }
+
+    fun getAll(): Map<String, *>{
+        return pref.all
+    }
+
+    fun edit(): SharedPreferences.Editor{
+        return pref.edit()
+    }
 }
