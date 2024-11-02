@@ -93,4 +93,8 @@ class EncryptPreference(context: Context) {
     fun setLongPref(key: String, value: Long) {
         pref.edit().putLong(key, value).apply()
     }
+
+    fun getStringSetPref(key: String, default: Set<String> = emptySet()): Set<String>? {
+        return pref.getStringSet(key, default)
+    }
 }
