@@ -15,7 +15,7 @@ import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
 class EncryptPreference(context: Context) {
-    private lateinit var pref: SharedPreferences
+    private val pref: SharedPreferences
 
     init {
         val masterKey =
@@ -33,8 +33,8 @@ class EncryptPreference(context: Context) {
             )
     }
 
-    fun getIntPref(key: String): Int {
-        return pref.getInt(key, -1)
+    fun getIntPref(key: String, default: Int = -1): Int {
+        return pref.getInt(key, default)
     }
 
     fun setIntPref(
@@ -44,8 +44,8 @@ class EncryptPreference(context: Context) {
         pref.edit().putInt(key, value).apply()
     }
 
-    fun getStringPref(key: String): String? {
-        return pref.getString(key, "")
+    fun getStringPref(key: String, default: String = ""): String? {
+        return pref.getString(key, default)
     }
 
     fun setStringPref(
@@ -55,8 +55,8 @@ class EncryptPreference(context: Context) {
         pref.edit().putString(key, value).apply()
     }
 
-    fun getBooleanPref(key: String): Boolean {
-        return pref.getBoolean(key, false)
+    fun getBooleanPref(key: String, default: Boolean = false): Boolean {
+        return pref.getBoolean(key, default)
     }
 
     fun setBooleanPref(
@@ -64,6 +64,10 @@ class EncryptPreference(context: Context) {
         value: Boolean,
     ) {
         pref.edit().putBoolean(key, value).apply()
+    }
+
+    fun removePref(key: String){
+        pref.edit().remove(key).apply()
     }
 
     fun contains(key: String): Boolean{

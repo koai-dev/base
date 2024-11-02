@@ -38,13 +38,7 @@ abstract class BListAdapter<DATA : Any>(private val diffUtil: DiffUtil.ItemCallb
 
     class VH(val binding: ViewBinding) : ViewHolder(binding.root)
 
-    open fun getLayoutId(viewType: Int): Int = getLayoutId()
-
-    @Deprecated(
-        "Deprecated from v1.7.0",
-        replaceWith = ReplaceWith("getLayoutId(viewType: Int = 0): Int", imports = arrayOf("getLayoutId(viewType: Int = 0): Int")),
-    )
-    open fun getLayoutId(): Int = 0
+    abstract fun getLayoutId(viewType: Int): Int
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
