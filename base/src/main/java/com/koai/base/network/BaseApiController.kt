@@ -52,10 +52,8 @@ abstract class BaseApiController<T : Any> {
                             )
                         }
                     }
-                    getInterceptors()?.let {interceptors ->
-                        interceptors.forEach{
-                            addInterceptor(it)
-                        }
+                    getNetworkInterceptor()?.let { interceptor ->
+                        addNetworkInterceptor(interceptor)
                     }
                 }
                 .build()
@@ -77,5 +75,5 @@ abstract class BaseApiController<T : Any> {
 
     abstract fun getApiService(): Class<*>
 
-    open fun getInterceptors(): List<Interceptor>? = null
+    open fun getNetworkInterceptor(): Interceptor? = null
 }
