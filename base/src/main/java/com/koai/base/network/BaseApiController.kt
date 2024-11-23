@@ -13,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import okhttp3.Dispatcher
+import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -51,6 +52,11 @@ abstract class BaseApiController<T : Any> {
                             )
                         }
                     }
+                    getInterceptors()?.let {interceptors ->
+                        interceptors.forEach{
+                            addInterceptor(it)
+                        }
+                    }
                 }
                 .build()
 
@@ -70,4 +76,6 @@ abstract class BaseApiController<T : Any> {
     abstract fun getBaseUrl(): String
 
     abstract fun getApiService(): Class<*>
+
+    open fun getInterceptors(): List<Interceptor>? = null
 }
