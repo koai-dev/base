@@ -36,6 +36,9 @@ abstract class BaseApiController<T : Any> {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         builder.addInterceptor(logging)
+        getNetworkInterceptor()?.let { interceptor ->
+            builder.addNetworkInterceptor(interceptor)
+        }
 
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
@@ -51,9 +54,6 @@ abstract class BaseApiController<T : Any> {
                                     .build(),
                             )
                         }
-                    }
-                    getNetworkInterceptor()?.let { interceptor ->
-                        addNetworkInterceptor(interceptor)
                     }
                 }
                 .build()
