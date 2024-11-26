@@ -37,7 +37,7 @@ abstract class BaseApiController<T : Any> {
         logging.level = HttpLoggingInterceptor.Level.BODY
         builder.addInterceptor(logging)
         getNetworkInterceptor()?.let { interceptor ->
-            builder.addNetworkInterceptor(interceptor)
+            builder.addInterceptor(interceptor)
         }
 
         val dispatcher = Dispatcher()
