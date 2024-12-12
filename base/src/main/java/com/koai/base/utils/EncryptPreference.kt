@@ -15,7 +15,7 @@ import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
 class EncryptPreference(context: Context) {
-    private val pref: SharedPreferences
+    val pref: SharedPreferences
 
     init {
         val masterKey =
