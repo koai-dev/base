@@ -33,11 +33,13 @@ abstract class BaseApiController<T : Any> {
 
         val builder = okhttp3.OkHttpClient.Builder()
 
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        builder.addInterceptor(logging)
-        getNetworkInterceptor()?.let { interceptor ->
-            builder.addInterceptor(interceptor)
+        if(isDebug()){
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            builder.addInterceptor(logging)
+            getNetworkInterceptor()?.let { interceptor ->
+                builder.addInterceptor(interceptor)
+            }
         }
 
         val dispatcher = Dispatcher()
@@ -76,4 +78,5 @@ abstract class BaseApiController<T : Any> {
     abstract fun getApiService(): Class<*>
 
     open fun getNetworkInterceptor(): Interceptor? = null
+    open fun isDebug(): Boolean = false
 }
