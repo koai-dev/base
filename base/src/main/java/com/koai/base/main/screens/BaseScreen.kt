@@ -72,6 +72,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
     private fun observerError() {
         viewModel.msgException.observe(viewLifecycleOwner) { message ->
             navigator.sendEvent(ErrorEvent(message = message))
+            hideLoading()
         }
     }
 
