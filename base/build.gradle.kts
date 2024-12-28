@@ -65,7 +65,7 @@ dependencies {
 
     // firebase
     api("com.google.firebase:firebase-analytics:22.1.2")
-    api("com.google.firebase:firebase-crashlytics:19.2.1")
+    api("com.google.firebase:firebase-crashlytics:19.3.0")
 
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.2.1")
@@ -110,7 +110,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "1.9.3"
+                version = "1.9.4"
 
                 afterEvaluate {
                     from(components["release"])
@@ -137,7 +137,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v1.9.3"
+        val tagName = "v1.9.4"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")

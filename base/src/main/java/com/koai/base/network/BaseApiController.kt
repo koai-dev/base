@@ -45,8 +45,8 @@ abstract class BaseApiController<T : Any> {
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
         val okHttpClient =
-            builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            builder.connectTimeout(timeOut(), TimeUnit.SECONDS)
+                .readTimeout(timeOut(), TimeUnit.SECONDS)
                 .dispatcher(dispatcher).apply {
                     accessToken?.let {
                         addInterceptor {
@@ -78,5 +78,7 @@ abstract class BaseApiController<T : Any> {
     abstract fun getApiService(): Class<*>
 
     open fun getNetworkInterceptor(): Interceptor? = null
+
+    open fun timeOut() = TIME_OUT
     open fun isDebug(): Boolean = false
 }
