@@ -47,7 +47,6 @@ abstract class BaseApiController<T : Any> {
         val okHttpClient =
             builder.connectTimeout(timeOut(), TimeUnit.SECONDS)
                 .readTimeout(timeOut(), TimeUnit.SECONDS)
-                .writeTimeout(timeOut(), TimeUnit.SECONDS)
                 .dispatcher(dispatcher).apply {
                     accessToken?.let {
                         addInterceptor {
