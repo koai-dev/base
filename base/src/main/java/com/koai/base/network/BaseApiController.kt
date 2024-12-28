@@ -31,7 +31,7 @@ abstract class BaseApiController<T : Any> {
     ): T? {
         val baseUrl = getBaseUrl()
 
-        val builder = okhttp3.OkHttpClient.Builder()
+        val builder = okHttpClientBuilder()
 
         if(isDebug()){
             val logging = HttpLoggingInterceptor()
@@ -47,6 +47,7 @@ abstract class BaseApiController<T : Any> {
         val okHttpClient =
             builder.connectTimeout(timeOut(), TimeUnit.SECONDS)
                 .readTimeout(timeOut(), TimeUnit.SECONDS)
+                .writeTimeout(timeOut(), TimeUnit.SECONDS)
                 .dispatcher(dispatcher).apply {
                     accessToken?.let {
                         addInterceptor {
@@ -81,4 +82,5 @@ abstract class BaseApiController<T : Any> {
 
     open fun timeOut() = TIME_OUT
     open fun isDebug(): Boolean = false
+    open fun okHttpClientBuilder() = okhttp3.OkHttpClient.Builder()
 }
