@@ -33,7 +33,10 @@ class EncryptPreference(context: Context) {
             )
     }
 
-    fun getIntPref(key: String, default: Int = -1): Int {
+    fun getIntPref(
+        key: String,
+        default: Int = -1,
+    ): Int {
         return pref.getInt(key, default)
     }
 
@@ -44,7 +47,10 @@ class EncryptPreference(context: Context) {
         pref.edit().putInt(key, value).apply()
     }
 
-    fun getStringPref(key: String, default: String = ""): String? {
+    fun getStringPref(
+        key: String,
+        default: String = "",
+    ): String? {
         return pref.getString(key, default)
     }
 
@@ -55,7 +61,10 @@ class EncryptPreference(context: Context) {
         pref.edit().putString(key, value).apply()
     }
 
-    fun getBooleanPref(key: String, default: Boolean = false): Boolean {
+    fun getBooleanPref(
+        key: String,
+        default: Boolean = false,
+    ): Boolean {
         return pref.getBoolean(key, default)
     }
 
@@ -86,15 +95,24 @@ class EncryptPreference(context: Context) {
         return pref.edit()
     }
 
-    fun getLongPref(key: String, default: Long = 0): Long {
+    fun getLongPref(
+        key: String,
+        default: Long = 0,
+    ): Long {
         return pref.getLong(key, default)
     }
 
-    fun setLongPref(key: String, value: Long) {
+    fun setLongPref(
+        key: String,
+        value: Long,
+    ) {
         pref.edit().putLong(key, value).apply()
     }
 
-    fun getStringSetPref(key: String, default: Set<String> = emptySet()): Set<String>? {
+    fun getStringSetPref(
+        key: String,
+        default: Set<String> = emptySet(),
+    ): Set<String>? {
         return pref.getStringSet(key, default)
     }
 }
