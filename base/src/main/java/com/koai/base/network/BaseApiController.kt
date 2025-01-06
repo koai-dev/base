@@ -33,15 +33,14 @@ abstract class BaseApiController<T : Any> {
 
         val builder = okHttpClientBuilder()
 
-        if (isDebug())
-            {
-                val logging = HttpLoggingInterceptor()
-                logging.level = HttpLoggingInterceptor.Level.BODY
-                builder.addInterceptor(logging)
-                getNetworkInterceptor()?.let { interceptor ->
-                    builder.addInterceptor(interceptor)
-                }
+        if (isDebug()) {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            builder.addInterceptor(logging)
+            getNetworkInterceptor()?.let { interceptor ->
+                builder.addInterceptor(interceptor)
             }
+        }
 
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1

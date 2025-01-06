@@ -11,15 +11,13 @@ object SecurityUtils {
             "google_sdk" == Build.PRODUCT
 
     fun isAppSecured(): Boolean {
-        if (isRunningOnEmulator())
-            {
-                LogUtils.log("Security", "App is running on an emulator!")
-            }
+        if (isRunningOnEmulator()) {
+            LogUtils.log("Security", "App is running on an emulator!")
+        }
 
-        if (LogUtils.getDebugMode())
-            {
-                LogUtils.log("Security", "App is running in debug mode!")
-            }
+        if (LogUtils.getDebugMode()) {
+            LogUtils.log("Security", "App is running in debug mode!")
+        }
         return !isRunningOnEmulator() && !LogUtils.getDebugMode()
     }
 }
