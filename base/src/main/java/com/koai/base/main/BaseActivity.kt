@@ -289,7 +289,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     open fun setupOnBackPressEvent() {
         onBackPressedDispatcher.addCallback(
             this,
-            object : OnBackPressedCallback(!isPreventClicked) {
+            object : OnBackPressedCallback(false) {
                 override fun handleOnBackPressed() {
                     if (!isPreventClicked) {
                         onBackPressedDispatcher.onBackPressed()
