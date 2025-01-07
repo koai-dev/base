@@ -125,6 +125,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         extras: Bundle,
     ): Boolean {
         try {
+            toggleProgressLoading(isShow = false)
             navController?.navigate(
                 resId = action,
                 args = extras,
@@ -293,6 +294,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                 override fun handleOnBackPressed() {
                     if (!isPreventClicked) {
                         onBackPressedDispatcher.onBackPressed()
+                        toggleProgressLoading(isShow = false, isPreventClicked = false)
                     }
                 }
             },
