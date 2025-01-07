@@ -96,10 +96,14 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (!activity.isPreventClicked) {
-                        hideLoading()
-                        activity.onBackPressedDispatcher.onBackPressed()
+                    val currentJob = viewModel.currentJobs.toList()
+                    currentJob.forEach { job ->
+                        if (job.isActive) {
+                            viewModel.currentJobs.remove(job)
+                            job.cancel()
+                        }
                     }
+                    hideLoading()
                 }
             },
         )
