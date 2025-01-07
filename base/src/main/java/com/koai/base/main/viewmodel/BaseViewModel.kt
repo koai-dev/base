@@ -27,10 +27,20 @@ open class BaseViewModel : ViewModel() {
 
     val currentJobs = mutableListOf<Job>()
 
-    fun launchCoroutine(block: suspend CoroutineScope.() -> Unit): Job  {
+    fun launchCoroutine(block: suspend CoroutineScope.() -> Unit): Job {
         val job = viewModelScope.launch(context = baseCoroutineContext, block = block)
         currentJobs.add(job)
         job.invokeOnCompletion { currentJobs.remove(job) }
         return job
+    }
+
+    fun cancelAll()  {
+        val currentJob = currentJobs.toList()
+        currentJob.forEach { job ->
+            if (job.isActive) {
+                currentJobs.remove(job)
+                job.cancel()
+            }
+        }
     }
 }
