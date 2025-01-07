@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -54,6 +55,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         registerPermissionListener()
         observerError()
         initView(savedInstanceState, binding)
+        setupOnBackPressEvent()
     }
 
     private fun registerPermissionListener() {
@@ -87,5 +89,19 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
 
     fun hideLoading() {
         activity.toggleProgressLoading(isShow = false, isPreventClicked = false)
+    }
+
+    open fun setupOnBackPressEvent() {
+        activity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!activity.isPreventClicked) {
+                        hideLoading()
+                        activity.onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            },
+        )
     }
 }

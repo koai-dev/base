@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.service.chooser.ChooserAction
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +51,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     var networkConnected = false
     var onPermissionResult: ((requestCode: Int, permissions: Array<out String>, grantResults: IntArray, deviceId: Int) -> Unit)? =
         null
-    private var isPreventClicked = false
+    var isPreventClicked = false
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +77,6 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
 
         checkNetwork()
         onNavigationEvent()
-        setupOnBackPressEvent()
     }
 
     private fun onNavigationEvent() {
@@ -285,19 +283,5 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         rootView.hasLoading = isShow
         rootView.preventClicked = isPreventClicked
         this.isPreventClicked = isPreventClicked
-    }
-
-    open fun setupOnBackPressEvent() {
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
-                    if (!isPreventClicked) {
-                        onBackPressedDispatcher.onBackPressed()
-                        toggleProgressLoading(isShow = false, isPreventClicked = false)
-                    }
-                }
-            },
-        )
     }
 }
