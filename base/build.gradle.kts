@@ -103,9 +103,9 @@ dependencies {
     api("io.insert-koin:koin-androidx-navigation")
     api("io.insert-koin:koin-android-compat")
 
-    //paging
-    api ("androidx.paging:paging-runtime-ktx:3.3.6")
-    api( "androidx.paging:paging-common-ktx:3.3.6")
+    // paging
+    api("androidx.paging:paging-runtime-ktx:3.3.6")
+    api("androidx.paging:paging-common-ktx:3.3.6")
 }
 
 afterEvaluate {

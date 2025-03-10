@@ -24,11 +24,12 @@ abstract class IPagingSource<T : Any> : PagingSource<Int, T>() {
         return loadData(
             startKey = startKey,
             rangeKey = rangeKey,
-            prevKey = when (startKey) {
-                startKey() -> null
-                else -> ensureValidKey(key = rangeKey.first - params.loadSize)
-            },
-            nextKey = rangeKey.last + 1
+            prevKey =
+                when (startKey) {
+                    startKey() -> null
+                    else -> ensureValidKey(key = rangeKey.first - params.loadSize)
+                },
+            nextKey = rangeKey.last + 1,
         )
     }
 
@@ -39,5 +40,10 @@ abstract class IPagingSource<T : Any> : PagingSource<Int, T>() {
 
     open fun startKey() = STARTING_KEY
 
-    abstract suspend fun loadData(startKey: Int, rangeKey: IntRange, prevKey: Int? = null, nextKey: Int? = null): LoadResult<Int, T>
+    abstract suspend fun loadData(
+        startKey: Int,
+        rangeKey: IntRange,
+        prevKey: Int? = null,
+        nextKey: Int? = null,
+    ): LoadResult<Int, T>
 }

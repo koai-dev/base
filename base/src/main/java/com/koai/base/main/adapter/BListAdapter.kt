@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
+import com.koai.base.main.extension.safeClick
 
 @SuppressLint("DiffUtilEquals")
 class TComparator<DATA : Any> : DiffUtil.ItemCallback<DATA>() {
@@ -58,21 +59,9 @@ abstract class BListAdapter<DATA : Any>(private val diffUtil: DiffUtil.ItemCallb
         holder: VH,
         position: Int,
     ) {
-        holder.binding.root.setOnClickListener {
+        holder.binding.root.safeClick {
             listener?.click(holder.bindingAdapterPosition, getItem(holder.bindingAdapterPosition))
         }
-    }
-
-    interface Action<T> {
-        /**
-         * @param position of viewItem
-         * @param data of viewItem
-         */
-        fun click(
-            position: Int,
-            data: T,
-            code: Int = 0,
-        )
     }
 
     interface Observer<T> {
@@ -89,4 +78,16 @@ abstract class BListAdapter<DATA : Any>(private val diffUtil: DiffUtil.ItemCallb
             code: Int = 0,
         )
     }
+}
+
+interface Action<T> {
+    /**
+     * @param position of viewItem
+     * @param data of viewItem
+     */
+    fun click(
+        position: Int,
+        data: T,
+        code: Int = 0,
+    )
 }

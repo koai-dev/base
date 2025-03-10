@@ -34,7 +34,7 @@ open class BaseViewModel : ViewModel() {
         return job
     }
 
-    fun cancelAll()  {
+    fun cancelAll() {
         val currentJob = currentJobs.toList()
         currentJob.forEach { job ->
             if (job.isActive) {

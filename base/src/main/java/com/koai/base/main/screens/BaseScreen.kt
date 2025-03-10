@@ -96,11 +96,12 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (!activity.isPreventClicked){
-                        router?.onPopScreen()
-                        viewModel.cancelAll()
-                        hideLoading()
-                    }
+                    if (!activity.isPreventClicked)
+                        {
+                            router?.onPopScreen()
+                            viewModel.cancelAll()
+                            hideLoading()
+                        }
                 }
             },
         )
