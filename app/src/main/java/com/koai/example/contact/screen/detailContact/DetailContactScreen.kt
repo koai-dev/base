@@ -1,6 +1,10 @@
 package com.koai.example.contact.screen.detailContact
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.extension.ClickableViewExtensions.setClickableWithScale
@@ -36,5 +40,50 @@ class DetailContactScreen :
         deviceId: Int
     ) {
         Toast.makeText(requireContext(), "onPermissionResult", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("DetailContactScreen", "onViewCreated")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("DetailContactScreen", "onDestroy")
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("DetailContactScreen", "onCreateView")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("DetailContactScreen", "onDestroyView")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("DetailContactScreen", "onStart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("DetailContactScreen", "onStop")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("DetailContactScreen", "onCreate")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("DetailContactScreen", "onResume")
+
     }
 }

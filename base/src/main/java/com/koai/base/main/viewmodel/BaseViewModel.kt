@@ -1,14 +1,17 @@
 package com.koai.base.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.koai.base.main.action.state.UIState
 import com.koai.base.utils.LogUtils
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
@@ -19,10 +22,12 @@ open class BaseViewModel : ViewModel() {
                 throwable.message ?: "Unknown error",
                 type = LogUtils.LogType.ERROR,
             )
-            _msgException.postValue(throwable.message ?: "Unknown error")
+            _uiErrorState.update {
+                UIState.Error(message = throwable.message ?: "Unknown error")
+            }
         }
-    private val _msgException = MutableLiveData<String>()
-    val msgException: LiveData<String> = _msgException
+    private val _uiErrorState = MutableStateFlow(UIState.Error())
+    val uiErrorState: StateFlow<UIState.Error> = _uiErrorState.asStateFlow()
     val baseCoroutineContext = Dispatchers.IO + exceptionHandler
 
     val currentJobs = mutableListOf<Job>()

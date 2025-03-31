@@ -10,6 +10,7 @@ package com.koai.base.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.koai.base.R
 
 class SharePreference(private val context: Context) {
@@ -28,7 +29,7 @@ class SharePreference(private val context: Context) {
     ) {
         val pref: SharedPreferences =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit().putInt(key, value).apply()
+        pref.edit { putInt(key, value) }
     }
 
     fun getStringPref(
@@ -46,7 +47,7 @@ class SharePreference(private val context: Context) {
     ) {
         val pref: SharedPreferences =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit().putString(key, value).apply()
+        pref.edit { putString(key, value) }
     }
 
     fun getBooleanPref(
@@ -65,13 +66,13 @@ class SharePreference(private val context: Context) {
     ) {
         val pref: SharedPreferences =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit().putBoolean(key, value).apply()
+        pref.edit { putBoolean(key, value) }
     }
 
     fun removePref(key: String) {
         val pref: SharedPreferences =
             context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit().remove(key).apply()
+        pref.edit { remove(key) }
     }
 
     fun contains(key: String): Boolean {

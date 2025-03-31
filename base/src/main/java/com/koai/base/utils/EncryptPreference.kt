@@ -14,7 +14,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
-class EncryptPreference(context: Context) {
+open class EncryptPreference(context: Context) {
     val pref: SharedPreferences
 
     init {

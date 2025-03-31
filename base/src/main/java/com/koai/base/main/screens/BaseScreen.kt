@@ -5,9 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.event.ErrorEvent
@@ -15,6 +19,8 @@ import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
 import com.koai.base.main.extension.screenViewModel
 import com.koai.base.main.viewmodel.BaseViewModel
+import com.koai.base.utils.LogUtils
+import kotlinx.coroutines.launch
 
 /**
  * Base ui screen
@@ -45,6 +51,9 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        if (isSecureScreen()) {
+            activity.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        }
         try {
             (navigator as? Router?)?.let {
                 router = it
@@ -52,8 +61,8 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         } catch (e: Exception) {
             Log.e("Cast router error: ", e.message.toString())
         }
+        registerObserver()
         registerPermissionListener()
-        observerError()
         initView(savedInstanceState, binding)
         setupOnBackPressEvent()
     }
@@ -71,9 +80,22 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         deviceId: Int,
     ) = Unit
 
-    open fun observerError() {
-        viewModel.msgException.observe(viewLifecycleOwner) { message ->
-            navigator.sendEvent(ErrorEvent(message = message))
+    open fun registerObserver() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                observerError()
+                observer()
+            }
+        }
+    }
+
+    open suspend fun observer() = Unit
+
+    open suspend fun observerError() {
+        viewModel.uiErrorState.collect { errorState ->
+            if (LogUtils.getDebugMode()) {
+                navigator.sendEvent(ErrorEvent(message = errorState.message))
+            }
             hideLoading()
         }
     }
@@ -105,4 +127,13 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
             },
         )
     }
+
+    override fun onDestroyView() {
+        if (isSecureScreen()) {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        }
+        super.onDestroyView()
+    }
+
+    open fun isSecureScreen(): Boolean = false
 }

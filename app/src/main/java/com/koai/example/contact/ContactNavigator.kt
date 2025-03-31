@@ -7,7 +7,7 @@ import com.koai.example.contact.screen.listContact.ListContactRouter
 
 class ContactNavigator : BaseNavigator(), ContactRouter, DetailContactRouter, ListContactRouter {
     override fun goToListContact() {
-        offNavScreen(R.id.action_global_listContactScreen, isFinished = true)
+        offNavScreen(R.id.action_global_listContactScreen,)
     }
 
     override fun gotoDetailScreen() {
