@@ -1,4 +1,4 @@
-### Last version: v2.0.0
+### Last version: v2.0.3
 use: implementation("com.github.koai-dev:base:$lastVersion")
 
 ### Check module appp for example or 
