@@ -6,4 +6,6 @@ sealed class UIState<out T> {
     data class Error(val message: String? = null, val code: Int? = null) : UIState<Nothing>()
 
     data object Loading : UIState<Nothing>()
+
+    data object Init : UIState<Nothing>()
 }

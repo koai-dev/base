@@ -80,7 +80,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         deviceId: Int,
     ) = Unit
 
-    open fun registerObserver() {
+    private fun registerObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 observerError()
@@ -89,8 +89,14 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         }
     }
 
+    /**
+     * Register collect flow here
+     */
     open suspend fun observer() = Unit
 
+    /**
+     * Override default error flow here
+     */
     open suspend fun observerError() {
         viewModel.uiErrorState.collect { errorState ->
             if (LogUtils.getDebugMode()) {
@@ -100,6 +106,10 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         }
     }
 
+    /**
+     * Init view here
+     * This recall when screen visible
+     */
     abstract fun initView(
         savedInstanceState: Bundle?,
         binding: T,
@@ -120,7 +130,6 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
                 override fun handleOnBackPressed() {
                     if (!activity.isPreventClicked) {
                         router?.onPopScreen()
-                        viewModel.cancelAll()
                         hideLoading()
                     }
                 }
@@ -135,5 +144,14 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         super.onDestroyView()
     }
 
+    override fun onDestroy() {
+        viewModel.cancelAll()
+        super.onDestroy()
+    }
+
+    /**
+     * Register screen is secure or not
+     * Prevent capture screenshot and record video
+     */
     open fun isSecureScreen(): Boolean = false
 }

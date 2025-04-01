@@ -63,4 +63,10 @@ class ListContactScreen : BaseScreen<ScreenListContactBinding, ListContactRouter
         super.onDestroy()
         Log.d("ListContactScreen", "onDestroy")
     }
+
+    override suspend fun observer() {
+        viewModel.uiState.collect {
+            Log.d("ListContactScreen", "uiState: $it")
+        }
+    }
 }
