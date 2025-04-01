@@ -60,12 +60,12 @@ dependencies {
     api("androidx.constraintlayout:constraintlayout:2.2.1")
     api("androidx.recyclerview:recyclerview:1.4.0")
     api("androidx.security:security-crypto-ktx:1.1.0-alpha06")
-    api("androidx.navigation:navigation-fragment-ktx:2.8.8")
+    api("androidx.navigation:navigation-fragment-ktx:2.8.9")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     // firebase
-    api("com.google.firebase:firebase-analytics:22.3.0")
-    api("com.google.firebase:firebase-crashlytics:19.4.1")
+    api("com.google.firebase:firebase-analytics:22.4.0")
+    api("com.google.firebase:firebase-crashlytics:19.4.2")
 
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.2.1")
@@ -91,10 +91,10 @@ dependencies {
     api("androidx.fragment:fragment-ktx:1.8.6")
 
     api("androidx.multidex:multidex:2.0.1")
-    api("com.airbnb.android:lottie:6.4.1")
+    api("com.airbnb.android:lottie:6.6.4")
 
     // load image
-    api("io.coil-kt:coil:2.4.0")
+    api("io.coil-kt:coil:2.7.0")
 
     // di
     api(platform("io.insert-koin:koin-bom:3.5.4"))
@@ -114,7 +114,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "2.0.2"
+                version = "2.0.3"
 
                 afterEvaluate {
                     from(components["release"])
@@ -141,7 +141,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v2.0.2"
+        val tagName = "v2.0.3"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
