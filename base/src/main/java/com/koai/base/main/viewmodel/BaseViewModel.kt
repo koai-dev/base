@@ -27,7 +27,7 @@ open class BaseViewModel : ViewModel() {
     val uiErrorState = _uiErrorState.asStateFlow()
     val baseCoroutineContext = Dispatchers.IO + exceptionHandler
 
-    protected val _uiState = MutableStateFlow(UIState.Init)
+    protected val _uiState: MutableStateFlow<UIState<*>> = MutableStateFlow(UIState.Init)
     val uiState = _uiState.asStateFlow()
 
     val currentJobs = mutableListOf<Job>()

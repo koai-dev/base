@@ -54,18 +54,18 @@ android {
 
 dependencies {
 
-    api("androidx.core:core-ktx:1.15.0")
+    api("androidx.core:core-ktx:1.16.0")
     api("androidx.appcompat:appcompat:1.7.0")
     api("com.google.android.material:material:1.12.0")
     api("androidx.constraintlayout:constraintlayout:2.2.1")
     api("androidx.recyclerview:recyclerview:1.4.0")
-    api("androidx.security:security-crypto-ktx:1.1.0-alpha06")
+    api("androidx.security:security-crypto-ktx:1.1.0-alpha07")
     api("androidx.navigation:navigation-fragment-ktx:2.8.9")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     // firebase
     api("com.google.firebase:firebase-analytics:22.4.0")
-    api("com.google.firebase:firebase-crashlytics:19.4.2")
+    api("com.google.firebase:firebase-crashlytics:19.4.3")
 
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.2.1")
@@ -73,15 +73,15 @@ dependencies {
 
     // retrofit
     api("com.squareup.retrofit2:retrofit:2.11.0")
-    api("com.google.code.gson:gson:2.11.0")
+    api("com.google.code.gson:gson:2.12.1")
     api("com.squareup.retrofit2:converter-gson:2.11.0")
     api("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     api("com.facebook.stetho:stetho:1.6.0")
     api("com.facebook.stetho:stetho-okhttp3:1.6.0")
 
     // coroutine
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // lifecycle
     api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
@@ -91,7 +91,7 @@ dependencies {
     api("androidx.fragment:fragment-ktx:1.8.6")
 
     api("androidx.multidex:multidex:2.0.1")
-    api("com.airbnb.android:lottie:6.6.4")
+    api("com.airbnb.android:lottie:6.6.6")
 
     // load image
     api("io.coil-kt:coil:2.7.0")
@@ -114,7 +114,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "2.0.3"
+                version = "2.0.4"
 
                 afterEvaluate {
                     from(components["release"])
@@ -141,7 +141,7 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v2.0.3"
+        val tagName = "v2.0.4"
         try {
             exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
