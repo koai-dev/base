@@ -1,5 +1,6 @@
 package com.koai.base.main.action.navigator
 
+import android.net.Uri
 import android.os.Bundle
 import com.koai.base.main.action.event.BackToHome
 import com.koai.base.main.action.event.ComingSoon
@@ -110,10 +111,10 @@ open class BaseNavigator : BaseViewModel(), BaseRouter {
     }
 
     override fun openDeeplink(
-        action: Int,
+        uri: Uri?,
         extras: Bundle?,
     ) {
-        sendEvent(NavigateWithDeeplink(action, extras))
+        sendEvent(NavigateWithDeeplink(uri, extras))
     }
 
     override fun notImplemented() {

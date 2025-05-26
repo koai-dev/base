@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-
+typealias PermissionCallback = (granted: Boolean, retryCount: Int) -> Unit
 abstract class BasePermissionHelper {
     protected abstract fun permissions(): Array<String>
 
@@ -24,13 +24,60 @@ abstract class BasePermissionHelper {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
 
-    open fun requestPermissions(activity: Activity) {
+    open fun requestPermissions(activity: Activity, handleResult: ()-> Unit) {
         ActivityCompat.requestPermissions(
             activity,
             permissions(),
             PERMISSION_ALL,
         )
     }
+
+    fun handleResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == currentRequestCode) {
+            val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            currentCallback?.invoke(allGranted)
+            currentCallback = null
+        }
+    }
+
+//    private var currentCallback: PermissionCallback? = null
+//    private var currentRequestCode: Int = 0
+//
+//    fun requestPermissions(
+//        activity: Activity,
+//        permissions: Array<String>,
+//        requestCode: Int,
+//        callback: PermissionCallback
+//    ) {
+//        currentCallback = callback
+//        currentRequestCode = requestCode
+//
+//        val notGranted = permissions.filter {
+//            ContextCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED
+//        }
+//
+//        if (notGranted.isEmpty()) {
+//            callback(true)
+//        } else {
+//            ActivityCompat.requestPermissions(activity, notGranted.toTypedArray(), requestCode)
+//        }
+//    }
+//
+//    fun handleResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        if (requestCode == currentRequestCode) {
+//            val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+//            currentCallback?.invoke(allGranted)
+//            currentCallback = null
+//        }
+//    }
 }
 
 sealed class PermissionHelper {

@@ -1,10 +1,10 @@
 package com.koai.base.main.screens
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
-import com.koai.base.main.BaseActivity
 import com.koai.base.main.action.event.BackToHome
 import com.koai.base.main.action.event.ComingSoon
 import com.koai.base.main.action.event.NavigateWithDeeplink
@@ -38,8 +37,8 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
 ) : DialogFragment(), BaseRouter {
     lateinit var binding: T
     var navController: NavController? = null
-    lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F
+    abstract val mainNavigator: BaseNavigator
     protected var router: Router? = null
 
     override fun onCreateView(
@@ -48,7 +47,6 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
         savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        activity = requireActivity() as BaseActivity<*, *, *>
         return binding.root
     }
 
@@ -68,8 +66,9 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
         }
         initView(savedInstanceState, binding)
         val navHostFragment =
-            childFragmentManager
-                .findFragmentById(R.id.container) as NavHostFragment?
+            (childFragmentManager
+                .findFragmentById(R.id.container) as NavHostFragment?)
+                ?: (childFragmentManager.findFragmentByTag(this::class.java.simpleName) as? NavHostFragment)
         navController = navHostFragment?.navController
         onNavigationEvent()
     }
@@ -93,12 +92,13 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
                     inclusive = event.inclusive,
                     saveState = event.saveState,
                 )
+
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
             is OtherError -> onOtherErrorDefault(event.action, event.extras)
             is ShareFile -> onShareFile(event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
-            is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
+            is NavigateWithDeeplink -> openDeeplink(event.uri, event.extras)
             is NotImplementedYet -> notImplemented()
             else -> notRecognized()
         }
@@ -162,40 +162,47 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
         action: Int,
         extras: Bundle?,
     ) {
-        Toast.makeText(activity, "Hello recognized sasdnjas", Toast.LENGTH_SHORT).show()
+        mainNavigator.onSessionTimeout(action, extras)
     }
 
     override fun onOtherErrorDefault(
         action: Int,
         extras: Bundle?,
     ) {
+        mainNavigator.onOtherErrorDefault(action, extras)
     }
 
     override fun onShareFile(extras: Bundle?) {
+        mainNavigator.onShareFile(extras = extras)
     }
 
     override fun gotoComingSoon(
         action: Int,
         extras: Bundle?,
     ) {
+        mainNavigator.gotoComingSoon(action, extras = extras)
     }
 
     override fun backToHome(
         action: Int,
         extras: Bundle?,
     ) {
+        mainNavigator.backToHome(action, extras)
     }
 
     override fun openDeeplink(
-        action: Int,
+        uri: Uri?,
         extras: Bundle?,
     ) {
+        mainNavigator.openDeeplink(uri, extras)
     }
 
     override fun notImplemented() {
+        mainNavigator.notImplemented()
     }
 
     override fun notRecognized() {
+        mainNavigator.notRecognized()
     }
 
     abstract fun initView(

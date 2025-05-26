@@ -3,6 +3,7 @@ package com.koai.base.main
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.service.chooser.ChooserAction
@@ -43,7 +44,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     AppCompatActivity(), BaseRouter {
     var navController: NavController? = null
     lateinit var binding: T
-    abstract val navigator: F
+    abstract val navigator: BaseNavigator
     protected var router: Router? = null
     private lateinit var rootView: ActivityBaseBinding
     var statusBarHeight = 32
@@ -62,8 +63,9 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         rootView.loading.addView(getLoadingView())
         setContentView(rootView.root)
         val navHostFragment =
-            supportFragmentManager
-                .findFragmentById(R.id.container) as NavHostFragment?
+            (supportFragmentManager
+                .findFragmentById(R.id.container) as NavHostFragment?) ?: supportFragmentManager.findFragmentByTag(this::class.java.simpleName) as? NavHostFragment
+
         navController = navHostFragment?.navController
         try {
             (navigator as? Router?)?.let {
@@ -237,9 +239,12 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     }
 
     override fun openDeeplink(
-        action: Int,
+        uri: Uri?,
         extras: Bundle?,
     ) {
+        navController?.handleDeepLink(Intent(Intent.ACTION_VIEW, uri).apply {
+            putExtra(extras)
+        })
     }
 
     override fun notImplemented() {

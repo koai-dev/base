@@ -1,5 +1,6 @@
 package com.koai.base.main.action.event
 
+import android.net.Uri
 import android.os.Bundle
 
 open class NavigationEvent {
@@ -46,7 +47,7 @@ data class ComingSoon(override val action: Int = 0, override val extras: Bundle?
 data class InvalidLocalTime(override val action: Int = 0, override val extras: Bundle? = null) :
     NavigationEvent()
 
-data class NavigateWithDeeplink(override val action: Int = 0, override val extras: Bundle? = null) :
+class NavigateWithDeeplink(val uri: Uri? = null, override val extras: Bundle?) :
     NavigationEvent()
 
 data class BackToHome(override val action: Int = 0, override val extras: Bundle? = null) :

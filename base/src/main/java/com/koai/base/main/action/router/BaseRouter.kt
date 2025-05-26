@@ -1,5 +1,6 @@
 package com.koai.base.main.action.router
 
+import android.net.Uri
 import android.os.Bundle
 
 interface BaseRouter {
@@ -16,12 +17,12 @@ interface BaseRouter {
 
     fun onSessionTimeout(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle? = null,
     )
 
     fun onOtherErrorDefault(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle? = null,
     )
 
     fun onShareFile(extras: Bundle?)
@@ -33,12 +34,12 @@ interface BaseRouter {
 
     fun backToHome(
         action: Int,
-        extras: Bundle?,
+        extras: Bundle? = null,
     )
 
     fun openDeeplink(
-        action: Int,
-        extras: Bundle?,
+        uri: Uri? = null,
+        extras: Bundle? = null,
     )
 
     fun notImplemented()
