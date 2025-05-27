@@ -13,7 +13,9 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.koai.base.R
 
-class SharePreference(private val context: Context) {
+class SharePreference(
+    private val context: Context,
+) {
     fun getIntPref(
         key: String,
         default: Int = -1,

@@ -20,13 +20,15 @@ object SecurityUtils {
         if (LogUtils.getDebugMode()) {
             LogUtils.log("Security", "App is running in debug mode!")
         }
-        return !isRunningOnEmulator() && !LogUtils.getDebugMode() && !CommonUtils.isRooted() && !CommonUtils.isDebuggerAttached() && !CommonUtils.isEmulator()
+        return !isRunningOnEmulator() &&
+            !LogUtils.getDebugMode() &&
+            !CommonUtils.isRooted() &&
+            !CommonUtils.isDebuggerAttached() &&
+            !CommonUtils.isEmulator()
     }
 
     private fun isPackageNameTampered(
         context: Context,
         packageName: String,
-    ): Boolean {
-        return context.packageName != packageName
-    }
+    ): Boolean = context.packageName != packageName
 }

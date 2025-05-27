@@ -6,9 +6,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("maven-publish")
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
-
+val libVersion = "2.0.5"
 android {
     namespace = "com.koai.base"
     compileSdk = 35
@@ -60,7 +60,7 @@ dependencies {
     api("androidx.constraintlayout:constraintlayout:2.2.1")
     api("androidx.recyclerview:recyclerview:1.4.0")
     api("androidx.security:security-crypto-ktx:1.1.0-alpha07")
-    api("androidx.navigation:navigation-fragment-ktx:2.8.9")
+    api("androidx.navigation:navigation-fragment-ktx:2.9.0")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     // firebase
@@ -84,11 +84,11 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // lifecycle
-    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    api("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
+    api("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
     api("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    api("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
-    api("androidx.fragment:fragment-ktx:1.8.6")
+    api("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
+    api("androidx.fragment:fragment-ktx:1.8.7")
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.6.6")
@@ -97,7 +97,7 @@ dependencies {
     api("io.coil-kt:coil:2.7.0")
 
     // di
-    api(platform("io.insert-koin:koin-bom:3.5.4"))
+    api(platform("io.insert-koin:koin-bom:4.0.3"))
     api("io.insert-koin:koin-core")
     api("io.insert-koin:koin-android")
     api("io.insert-koin:koin-androidx-navigation")
@@ -114,7 +114,7 @@ afterEvaluate {
             register<MavenPublication>("release") {
                 groupId = "com.koai"
                 artifactId = "base"
-                version = "2.0.4"
+                version = libVersion
 
                 afterEvaluate {
                     from(components["release"])
@@ -141,13 +141,13 @@ tasks.register("localBuild") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v2.0.4"
+        val tagName = "v$libVersion"
         try {
-            exec {
+            providers.exec {
                 commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
             }
 
-            exec {
+            providers.exec {
                 commandLine("git", "push", "origin", tagName)
             }
         } catch (e: Exception) {
@@ -168,5 +168,20 @@ tasks.register("cleanBuildPublish") {
     if (assembleReleaseTask != null) {
         assembleReleaseTask.mustRunAfter("clean")
         assembleReleaseTask.finalizedBy("publishReleasePublicationToMavenRepository")
+    }
+}
+
+ktlint {
+    version.set("1.6.0") // Or the latest
+    android.set(true) // Enables Android-specific formatting rules
+    outputColorName.set("GREEN") // Optional: terminal color
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    enableExperimentalRules.set(true) // Optional
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
     }
 }

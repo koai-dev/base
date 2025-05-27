@@ -10,12 +10,11 @@ abstract class IPagingSource<T : Any> : PagingSource<Int, T>() {
         const val LOAD_DELAY_MILLIS = 3_000L
     }
 
-    override fun getRefreshKey(state: PagingState<Int, T>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
+    override fun getRefreshKey(state: PagingState<Int, T>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
-    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val startKey = params.key ?: startKey()

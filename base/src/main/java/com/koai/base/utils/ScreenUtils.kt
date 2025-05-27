@@ -42,7 +42,12 @@ object ScreenUtils {
         try {
             val clazz = Class.forName("com.android.internal.R\$dimen")
             val `object` = clazz.newInstance()
-            val height = clazz.getField("status_bar_height").get(`object`)!!.toString().toInt()
+            val height =
+                clazz
+                    .getField("status_bar_height")
+                    .get(`object`)!!
+                    .toString()
+                    .toInt()
             statusHeight = context.resources.getDimensionPixelSize(height)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -79,8 +84,7 @@ object ScreenUtils {
         return titleHeight
     }
 
-    private fun getWindowManager(context: Context): WindowManager {
-        return context
+    private fun getWindowManager(context: Context): WindowManager =
+        context
             .getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    }
 }

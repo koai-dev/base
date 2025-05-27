@@ -1,5 +1,6 @@
 package com.koai.base.main.extension
 
+import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
@@ -28,6 +29,7 @@ inline fun <reified T : ViewModel> Module.navigatorViewModel(
     noinline definition: Definition<T>,
 ): KoinDefinition<T> = factory(qualifier, definition)
 
+@MainThread
 inline fun <reified T : ViewModel> BaseScreen<*, *, *>.screenViewModel(
     qualifier: Qualifier? = null,
     noinline ownerProducer: () -> ViewModelStoreOwner = { this },
@@ -38,9 +40,13 @@ inline fun <reified T : ViewModel> BaseScreen<*, *, *>.screenViewModel(
         getViewModel(qualifier, ownerProducer, extrasProducer, parameters)
     }
 
+@MainThread
 inline fun <reified T : ViewModel> Fragment.journeyViewModel(
     qualifier: Qualifier? = null,
-    noinline ownerProducer: () -> ViewModelStoreOwner = { requireActivity() },
+    noinline ownerProducer: () -> ViewModelStoreOwner = {
+        requireActivity()
+        requireNotNull(activity) { "Fragment not attached to an activity." }
+    },
     noinline extrasProducer: (() -> CreationExtras)? = null,
     noinline parameters: (() -> ParametersHolder)? = null,
 ): Lazy<T> =
@@ -48,6 +54,7 @@ inline fun <reified T : ViewModel> Fragment.journeyViewModel(
         getActivityViewModel(qualifier, ownerProducer, extrasProducer, parameters)
     }
 
+@MainThread
 inline fun <reified T : ViewModel> Fragment.navigatorViewModel(
     qualifier: Qualifier? = null,
     noinline ownerProducer: () -> ViewModelStoreOwner = { requireActivity() },

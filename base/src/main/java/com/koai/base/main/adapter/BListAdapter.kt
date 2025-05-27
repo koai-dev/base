@@ -32,20 +32,23 @@ class TComparator<DATA : Any> : DiffUtil.ItemCallback<DATA>() {
     ): Boolean = oldItem == newItem
 }
 
-abstract class BListAdapter<DATA : Any>(private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator()) :
-    ListAdapter<DATA, BListAdapter.VH>(diffUtil) {
+abstract class BListAdapter<DATA : Any>(
+    private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator(),
+) : ListAdapter<DATA, BListAdapter.VH>(diffUtil) {
     var listener: Action<DATA>? = null
     var observer: Observer<DATA>? = null
 
-    class VH(val binding: ViewBinding) : ViewHolder(binding.root)
+    class VH(
+        val binding: ViewBinding,
+    ) : ViewHolder(binding.root)
 
     abstract fun getLayoutId(viewType: Int): Int
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): VH {
-        return VH(
+    ): VH =
+        VH(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 getLayoutId(viewType),
@@ -53,7 +56,6 @@ abstract class BListAdapter<DATA : Any>(private val diffUtil: DiffUtil.ItemCallb
                 false,
             ),
         )
-    }
 
     override fun onBindViewHolder(
         holder: VH,

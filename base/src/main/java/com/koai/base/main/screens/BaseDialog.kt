@@ -20,7 +20,9 @@ import com.koai.base.main.action.router.BaseRouter
 /**
  * Base ui dialog fragment
  */
-abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int = 0) : DialogFragment() {
+abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
+    private val layoutId: Int = 0,
+) : DialogFragment() {
     lateinit var binding: T
     lateinit var activity: BaseActivity<*, *, *>
     abstract val navigator: F
@@ -28,13 +30,12 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
     open var gravity: Int = Gravity.CENTER
     open var canceledOnTouchOutside: Boolean = false
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState).apply {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        super.onCreateDialog(savedInstanceState).apply {
             this.requestWindowFeature(Window.FEATURE_NO_TITLE)
             this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             this.setCanceledOnTouchOutside(canceledOnTouchOutside)
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

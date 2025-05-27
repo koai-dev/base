@@ -44,10 +44,9 @@ fun View.safeClick(
 fun <T : Parcelable> Intent.getSafeParcelableExtra(
     name: String,
     clazz: Class<T>,
-): T? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+): T? =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         this.getParcelableExtra(name, clazz)
     } else {
         this.getParcelableExtra(name)
     }
-}

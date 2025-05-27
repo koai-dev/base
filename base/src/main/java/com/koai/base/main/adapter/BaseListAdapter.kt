@@ -13,8 +13,9 @@ import androidx.viewbinding.ViewBinding
 import com.koai.base.utils.LogUtils
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator()) :
-    BListAdapter<DATA>(diffUtil) {
+abstract class BaseListAdapter<DATA : Any, VIEW_BINDING : ViewBinding>(
+    private val diffUtil: DiffUtil.ItemCallback<DATA> = TComparator(),
+) : BListAdapter<DATA>(diffUtil) {
     abstract fun bindView(
         holder: VH,
         binding: VIEW_BINDING,

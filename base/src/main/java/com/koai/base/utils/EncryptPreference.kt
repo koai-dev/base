@@ -14,12 +14,15 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
-open class EncryptPreference(context: Context) {
+open class EncryptPreference(
+    context: Context,
+) {
     val pref: SharedPreferences
 
     init {
         val masterKey =
-            MasterKey.Builder(context)
+            MasterKey
+                .Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
 
@@ -36,9 +39,7 @@ open class EncryptPreference(context: Context) {
     fun getIntPref(
         key: String,
         default: Int = -1,
-    ): Int {
-        return pref.getInt(key, default)
-    }
+    ): Int = pref.getInt(key, default)
 
     fun setIntPref(
         key: String,
@@ -50,9 +51,7 @@ open class EncryptPreference(context: Context) {
     fun getStringPref(
         key: String,
         default: String = "",
-    ): String? {
-        return pref.getString(key, default)
-    }
+    ): String? = pref.getString(key, default)
 
     fun setStringPref(
         key: String,
@@ -64,9 +63,7 @@ open class EncryptPreference(context: Context) {
     fun getBooleanPref(
         key: String,
         default: Boolean = false,
-    ): Boolean {
-        return pref.getBoolean(key, default)
-    }
+    ): Boolean = pref.getBoolean(key, default)
 
     fun setBooleanPref(
         key: String,
@@ -79,28 +76,20 @@ open class EncryptPreference(context: Context) {
         pref.edit().remove(key).apply()
     }
 
-    fun contains(key: String): Boolean {
-        return pref.contains(key)
-    }
+    fun contains(key: String): Boolean = pref.contains(key)
 
     fun clear() {
         pref.edit().clear().apply()
     }
 
-    fun getAll(): Map<String, *> {
-        return pref.all
-    }
+    fun getAll(): Map<String, *> = pref.all
 
-    fun edit(): SharedPreferences.Editor {
-        return pref.edit()
-    }
+    fun edit(): SharedPreferences.Editor = pref.edit()
 
     fun getLongPref(
         key: String,
         default: Long = 0,
-    ): Long {
-        return pref.getLong(key, default)
-    }
+    ): Long = pref.getLong(key, default)
 
     fun setLongPref(
         key: String,
@@ -112,7 +101,5 @@ open class EncryptPreference(context: Context) {
     fun getStringSetPref(
         key: String,
         default: Set<String> = emptySet(),
-    ): Set<String>? {
-        return pref.getStringSet(key, default)
-    }
+    ): Set<String>? = pref.getStringSet(key, default)
 }

@@ -4,8 +4,9 @@ import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class EndlessParentScrollListener(layoutManager: RecyclerView.LayoutManager) :
-    NestedScrollView.OnScrollChangeListener {
+abstract class EndlessParentScrollListener(
+    layoutManager: RecyclerView.LayoutManager,
+) : NestedScrollView.OnScrollChangeListener {
     // The current offset index of data you have loaded
     private var currentPage = 0
 

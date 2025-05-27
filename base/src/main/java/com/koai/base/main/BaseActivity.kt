@@ -30,18 +30,18 @@ import com.koai.base.main.action.event.NavigationEvent
 import com.koai.base.main.action.event.NextScreen
 import com.koai.base.main.action.event.NotImplementedYet
 import com.koai.base.main.action.event.OtherError
-import com.koai.base.main.action.event.PermissionResultEvent
 import com.koai.base.main.action.event.PopScreen
 import com.koai.base.main.action.event.SessionTimeout
 import com.koai.base.main.action.event.ShareFile
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.action.router.BaseRouter
-import com.koai.base.utils.NetworkUtil
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
-abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(private val layoutId: Int) :
-    AppCompatActivity(), BaseRouter {
+abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
+    private val layoutId: Int,
+) : AppCompatActivity(),
+    BaseRouter {
     var navController: NavController? = null
     lateinit var binding: T
     abstract val navigator: BaseNavigator
@@ -49,9 +49,6 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     private lateinit var rootView: ActivityBaseBinding
     var statusBarHeight = 32
     var bottomNavigationHeight = 32
-    var networkConnected = false
-    var onPermissionResult: ((requestCode: Int, permissions: Array<out String>, grantResults: IntArray, deviceId: Int) -> Unit)? =
-        null
     var isPreventClicked = false
 
     @Suppress("UNCHECKED_CAST")
@@ -63,8 +60,10 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         rootView.loading.addView(getLoadingView())
         setContentView(rootView.root)
         val navHostFragment =
-            (supportFragmentManager
-                .findFragmentById(R.id.container) as NavHostFragment?) ?: supportFragmentManager.findFragmentByTag(this::class.java.simpleName) as? NavHostFragment
+            (
+                supportFragmentManager
+                    .findFragmentById(R.id.container) as NavHostFragment?
+            ) ?: supportFragmentManager.findFragmentByTag(this::class.java.simpleName) as? NavHostFragment
 
         navController = navHostFragment?.navController
         try {
@@ -76,8 +75,6 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         }
 
         initView(savedInstanceState, binding)
-
-        checkNetwork()
         onNavigationEvent()
     }
 
@@ -106,16 +103,8 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
             is ShareFile -> onShareFile(event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)
-            is NavigateWithDeeplink -> openDeeplink(event.action, event.extras)
+            is NavigateWithDeeplink -> openDeeplink(event.uri, event.extras)
             is NotImplementedYet -> notImplemented()
-            is PermissionResultEvent ->
-                onPermissionResult?.invoke(
-                    event.requestCode,
-                    event.permissions,
-                    event.grantResults,
-                    event.deviceId,
-                )
-
             else -> notRecognized()
         }
     }
@@ -210,16 +199,17 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val customActions =
                 arrayOf(
-                    ChooserAction.Builder(
-                        Icon.createWithResource(this, R.drawable.baseline_mode_edit_outline_24),
-                        "Custom",
-                        PendingIntent.getBroadcast(
-                            this,
-                            1,
-                            Intent(Intent.ACTION_VIEW),
-                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
-                        ),
-                    ).build(),
+                    ChooserAction
+                        .Builder(
+                            Icon.createWithResource(this, R.drawable.baseline_mode_edit_outline_24),
+                            "Custom",
+                            PendingIntent.getBroadcast(
+                                this,
+                                1,
+                                Intent(Intent.ACTION_VIEW),
+                                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
+                            ),
+                        ).build(),
                 )
             shareIntent.putExtra(Intent.EXTRA_CHOOSER_CUSTOM_ACTIONS, customActions)
         }
@@ -242,9 +232,11 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         uri: Uri?,
         extras: Bundle?,
     ) {
-        navController?.handleDeepLink(Intent(Intent.ACTION_VIEW, uri).apply {
-            putExtra(extras)
-        })
+        navController?.handleDeepLink(
+            Intent(Intent.ACTION_VIEW, uri).apply {
+                extras?.let {extras-> putExtra("", extras) }
+            },
+        )
     }
 
     override fun notImplemented() {
@@ -253,33 +245,19 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     override fun notRecognized() {
     }
 
-    private fun checkNetwork() {
-        NetworkUtil(this).observe(this) {
-            if (!it) {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.you_are_offline),
-                    Toast.LENGTH_SHORT,
-                ).show()
-            }
-            networkConnected = it
-        }
-    }
-
     abstract fun initView(
         savedInstanceState: Bundle?,
         binding: T,
     )
 
-    open fun getLoadingView(): View {
-        return BaseLoadingView(this).apply {
+    open fun getLoadingView(): View =
+        BaseLoadingView(this).apply {
             layoutParams =
                 ConstraintLayout.LayoutParams(
                     ConstraintLayout.LayoutParams.MATCH_PARENT,
                     ConstraintLayout.LayoutParams.MATCH_PARENT,
                 )
         }
-    }
 
     fun toggleProgressLoading(
         isShow: Boolean,

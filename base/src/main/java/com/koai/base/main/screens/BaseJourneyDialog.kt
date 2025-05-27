@@ -34,7 +34,8 @@ import kotlinx.coroutines.launch
  */
 abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
     private val layoutId: Int = 0,
-) : DialogFragment(), BaseRouter {
+) : DialogFragment(),
+    BaseRouter {
     lateinit var binding: T
     var navController: NavController? = null
     abstract val navigator: F
@@ -66,8 +67,10 @@ abstract class BaseJourneyDialog<T : ViewBinding, Router : BaseRouter, F : BaseN
         }
         initView(savedInstanceState, binding)
         val navHostFragment =
-            (childFragmentManager
-                .findFragmentById(R.id.container) as NavHostFragment?)
+            (
+                childFragmentManager
+                    .findFragmentById(R.id.container) as NavHostFragment?
+            )
                 ?: (childFragmentManager.findFragmentByTag(this::class.java.simpleName) as? NavHostFragment)
         navController = navHostFragment?.navController
         onNavigationEvent()

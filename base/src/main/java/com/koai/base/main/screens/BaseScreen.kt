@@ -29,8 +29,8 @@ import kotlinx.coroutines.launch
  */
 abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavigator>(
     private val layoutId: Int = 0,
-) :
-    Fragment(), ActivityCompat.OnRequestPermissionsResultCallback {
+) : Fragment(),
+    ActivityCompat.OnRequestPermissionsResultCallback {
     protected lateinit var binding: T
     abstract val navigator: F
     protected var router: Router? = null
@@ -55,7 +55,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
             if (isSecureScreen()) {
                 activity.window.setFlags(
                     WindowManager.LayoutParams.FLAG_SECURE,
-                    WindowManager.LayoutParams.FLAG_SECURE
+                    WindowManager.LayoutParams.FLAG_SECURE,
                 )
             }
             try {

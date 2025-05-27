@@ -17,7 +17,9 @@ import com.koai.base.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 
-open class BaseNavigator : BaseViewModel(), BaseRouter {
+open class BaseNavigator :
+    BaseViewModel(),
+    BaseRouter {
     val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
 
     val receive: ReceiveChannel<NavigationEvent> get() = navigation

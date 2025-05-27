@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 typealias PermissionCallback = (granted: Boolean, retryCount: Int) -> Unit
+
 abstract class BasePermissionHelper {
     protected abstract fun permissions(): Array<String>
 
@@ -24,7 +25,10 @@ abstract class BasePermissionHelper {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
 
-    open fun requestPermissions(activity: Activity, handleResult: ()-> Unit) {
+    open fun requestPermissions(
+        activity: Activity,
+        handleResult: () -> Unit,
+    ) {
         ActivityCompat.requestPermissions(
             activity,
             permissions(),
@@ -35,7 +39,7 @@ abstract class BasePermissionHelper {
     fun handleResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         if (requestCode == currentRequestCode) {
             val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
@@ -88,68 +92,51 @@ sealed class PermissionHelper {
 
     object Camera :
         BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.CAMERA)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.CAMERA)
     }
 
     object ReadContact : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.READ_CONTACTS)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.READ_CONTACTS)
     }
 
     object CallPhone : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.CALL_PHONE)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.CALL_PHONE)
     }
 
     object ReadExternalStorage : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
     object WriteExternalStorage : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
     object Location : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     object RecordAudio : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.RECORD_AUDIO)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
     }
 
     object WakeLock : BasePermissionHelper() {
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.WAKE_LOCK)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.WAKE_LOCK)
     }
 
     object PostNotification : BasePermissionHelper() {
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        override fun permissions(): Array<String> {
-            return arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-        }
+        override fun permissions(): Array<String> = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
 
-        override fun hasPermissions(context: Context): Boolean {
-            return NotificationManagerCompat.from(context)
+        override fun hasPermissions(context: Context): Boolean =
+            NotificationManagerCompat
+                .from(context)
                 .areNotificationsEnabled()
-        }
 
         override fun requestPermissions(activity: Activity) {
             try {
                 val intent = Intent()
-                if (!NotificationManagerCompat.from(activity)
+                if (!NotificationManagerCompat
+                        .from(activity)
                         .areNotificationsEnabled()
                 ) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -195,21 +182,22 @@ sealed class PermissionHelper {
                 )
             }
 
-        override fun hasPermissions(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        override fun hasPermissions(context: Context): Boolean =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 super.hasPermissions(context) &&
-                    NotificationManagerCompat.from(context)
+                    NotificationManagerCompat
+                        .from(context)
                         .areNotificationsEnabled()
             } else {
                 super.hasPermissions(context)
             }
-        }
 
         override fun requestPermissions(activity: Activity) {
             super.requestPermissions(activity)
             try {
                 val intent = Intent()
-                if (!NotificationManagerCompat.from(activity)
+                if (!NotificationManagerCompat
+                        .from(activity)
                         .areNotificationsEnabled()
                 ) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

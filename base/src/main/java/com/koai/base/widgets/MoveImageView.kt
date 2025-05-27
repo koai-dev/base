@@ -99,7 +99,8 @@ class MoveImageView : AppCompatImageView {
             MotionEvent.ACTION_UP -> {
                 val rawX = event.rawX.toInt()
                 if (rawX >= width / 2) {
-                    animate().setInterpolator(DecelerateInterpolator())
+                    animate()
+                        .setInterpolator(DecelerateInterpolator())
                         .setDuration(500)
                         .xBy(width - getWidth() - x)
                         .start()

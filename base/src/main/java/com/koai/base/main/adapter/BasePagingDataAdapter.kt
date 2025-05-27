@@ -4,8 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.viewbinding.ViewBinding
 import com.koai.base.utils.LogUtils
 
-abstract class BasePagingDataAdapter<T : Any, VIEW_BINDING : ViewBinding>(private val diffUtil: DiffUtil.ItemCallback<T> = TComparator()) :
-    IPagingDataAdapter<T>(diffUtil) {
+abstract class BasePagingDataAdapter<T : Any, VIEW_BINDING : ViewBinding>(
+    private val diffUtil: DiffUtil.ItemCallback<T> = TComparator(),
+) : IPagingDataAdapter<T>(diffUtil) {
     abstract fun bindView(
         holder: VH,
         binding: VIEW_BINDING,

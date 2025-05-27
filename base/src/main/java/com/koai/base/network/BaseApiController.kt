@@ -45,23 +45,29 @@ abstract class BaseApiController<T : Any> {
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
         val okHttpClient =
-            builder.connectTimeout(timeOut(), TimeUnit.SECONDS)
+            builder
+                .connectTimeout(timeOut(), TimeUnit.SECONDS)
                 .readTimeout(timeOut(), TimeUnit.SECONDS)
-                .dispatcher(dispatcher).apply {
+                .dispatcher(dispatcher)
+                .apply {
                     accessToken?.let {
                         addInterceptor {
                             it.proceed(
-                                it.request().newBuilder()
+                                it
+                                    .request()
+                                    .newBuilder()
                                     .addHeader("Authorization", "Bearer $accessToken")
                                     .build(),
                             )
                         }
                     }
-                }
-                .build()
+                }.build()
 
         val retrofit =
-            Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create())
+            Retrofit
+                .Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
         val connectivityManager =

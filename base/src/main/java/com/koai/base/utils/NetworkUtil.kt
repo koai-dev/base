@@ -11,13 +11,16 @@ import android.net.NetworkInfo
 import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 
-class NetworkUtil(context: Context) : LiveData<Boolean>() {
+class NetworkUtil(
+    context: Context,
+) : LiveData<Boolean>() {
     private var connectivityManager: ConnectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private lateinit var connectivityManagerCallback: ConnectivityManager.NetworkCallback
 
     private val networkRequestBuilder: NetworkRequest.Builder =
-        NetworkRequest.Builder()
+        NetworkRequest
+            .Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
 
@@ -62,7 +65,9 @@ class NetworkUtil(context: Context) : LiveData<Boolean>() {
                     networkCapabilities: NetworkCapabilities,
                 ) {
                     networkCapabilities.let { capabilities ->
-                        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+                        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                        ) {
                             postValue(true)
                         }
                     }
