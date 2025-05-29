@@ -2,7 +2,7 @@ package com.koai.example
 
 import android.content.Context
 import android.widget.Toast
-import com.koai.base.main.action.navigator.BaseNavigator
+import com.koai.base.core.action.navigator.BaseNavigator
 
 class MainNavigator : BaseNavigator(), MainRouter {
     override fun openSomeDestination(context: Context) {

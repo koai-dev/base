@@ -1,9 +1,9 @@
 package com.koai.example
 
 import android.os.Bundle
-import com.koai.base.main.BaseActivity
-import com.koai.base.main.action.event.PermissionResultEvent
-import com.koai.base.main.extension.ClickableViewExtensions
+import com.koai.base.app.BaseActivity
+import com.koai.base.core.action.event.PermissionResultEvent
+import com.koai.base.core.ui.extension.ClickableViewExtensions
 import com.koai.example.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

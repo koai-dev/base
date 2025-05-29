@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.koai.base.main.action.event.PermissionResultEvent
-import com.koai.base.main.extension.navigatorViewModel
-import com.koai.base.main.screens.BaseScreen
+import com.koai.base.core.action.event.PermissionResultEvent
+import com.koai.base.core.ui.extension.navigatorViewModel
+import com.koai.base.core.ui.screens.BaseScreen
 import com.koai.example.R
 import com.koai.example.contact.ContactNavigator
 import com.koai.example.databinding.ScreenListContactBinding

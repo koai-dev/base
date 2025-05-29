@@ -1,6 +1,6 @@
 package com.koai.example.contact
 
-import com.koai.base.main.action.navigator.BaseNavigator
+import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.example.R
 import com.koai.example.contact.screen.detailContact.DetailContactRouter
 import com.koai.example.contact.screen.listContact.ListContactRouter

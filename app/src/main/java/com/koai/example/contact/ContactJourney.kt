@@ -1,10 +1,10 @@
 package com.koai.example.contact
 
 import android.os.Bundle
-import com.koai.base.main.SDKInitializer
-import com.koai.base.main.action.navigator.BaseNavigator
-import com.koai.base.main.extension.navigatorViewModel
-import com.koai.base.main.screens.BaseJourney
+import com.koai.base.app.SDKInitializer
+import com.koai.base.core.action.navigator.BaseNavigator
+import com.koai.base.core.ui.extension.navigatorViewModel
+import com.koai.base.core.ui.screens.BaseJourney
 import com.koai.example.R
 import com.koai.example.databinding.JourneyContactBinding
 

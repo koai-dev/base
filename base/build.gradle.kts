@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -9,6 +6,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
 val libVersion = "2.0.5"
+val devApi by configurations.creating
 android {
     namespace = "com.koai.base"
     compileSdk = 35
@@ -31,6 +29,13 @@ android {
                 "proguard-rules.pro",
             )
         }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -45,9 +50,18 @@ android {
         buildConfig = true
     }
     publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
+//        singleVariant("proRelease") {
+//            withSourcesJar()
+//            withJavadocJar()
+//        }
+    }
+    setFlavorDimensions(arrayListOf("default"))
+    productFlavors {
+        create("dev"){
+            dimension = "default"
+        }
+        create("prod"){
+            dimension = "default"
         }
     }
 }
@@ -75,9 +89,9 @@ dependencies {
     api("com.squareup.retrofit2:retrofit:2.11.0")
     api("com.google.code.gson:gson:2.12.1")
     api("com.squareup.retrofit2:converter-gson:2.11.0")
-    api("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
-    api("com.facebook.stetho:stetho:1.6.0")
-    api("com.facebook.stetho:stetho-okhttp3:1.6.0")
+    devApi("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
+    devApi("com.facebook.stetho:stetho:1.6.0")
+    devApi("com.facebook.stetho:stetho-okhttp3:1.6.0")
 
     // coroutine
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
@@ -111,32 +125,21 @@ dependencies {
 afterEvaluate {
     publishing {
         publications {
-            register<MavenPublication>("release") {
+            register<MavenPublication>("proRelease") {
                 groupId = "com.koai"
                 artifactId = "base"
                 version = libVersion
 
-                afterEvaluate {
-                    from(components["release"])
-                }
-            }
-        }
-        repositories {
-            val propsFile = rootProject.file("github.properties")
-            val props = Properties()
-            props.load(FileInputStream(propsFile))
-            maven(url = "${props["mavenRepo"]}") {
-                credentials {
-                    username = props["username"].toString()
-                    password = props["token"].toString()
-                }
+//                afterEvaluate {
+//                    from(components["release"])
+//                }
             }
         }
     }
 }
 
 tasks.register("localBuild") {
-    dependsOn("assembleRelease")
+    dependsOn("assembleProRelease")
 }
 
 tasks.register("createReleaseTag") {
