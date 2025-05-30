@@ -50,10 +50,10 @@ android {
         buildConfig = true
     }
     publishing {
-//        singleVariant("proRelease") {
-//            withSourcesJar()
-//            withJavadocJar()
-//        }
+        singleVariant("proRelease") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
     setFlavorDimensions(arrayListOf("default"))
     productFlavors {
@@ -120,6 +120,9 @@ dependencies {
     // paging
     api("androidx.paging:paging-runtime-ktx:3.3.6")
     api("androidx.paging:paging-common-ktx:3.3.6")
+
+    //wm
+    api("androidx.work:work-runtime-ktx:2.10.1")
 }
 
 afterEvaluate {

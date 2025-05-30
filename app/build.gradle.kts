@@ -41,6 +41,18 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    setFlavorDimensions(arrayListOf("default"))
+    productFlavors {
+        create("dev"){
+            dimension = "default"
+        }
+        create("prod"){
+            dimension = "default"
+        }
+        create("sit"){
+            dimension = "default"
+        }
+    }
 }
 
 dependencies {
