@@ -3,9 +3,11 @@ package com.koai.base
 import android.app.Application
 import com.koai.base.main.action.navigator.BaseNavigator
 import com.koai.base.main.viewmodel.BaseViewModel
-import com.koai.base.utils.EncryptPreference
+import com.koai.base.utils.EncryptPreferenceApp
+import com.koai.base.utils.EncryptPreferenceAppImpl
 import com.koai.base.utils.LogUtils
-import com.koai.base.utils.SharePreference
+import com.koai.base.utils.SharePreferenceApp
+import com.koai.base.utils.SharePreferenceAppImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -34,7 +36,7 @@ abstract class BaseApplication : Application() {
         module {
             viewModel<BaseNavigator> { BaseNavigator() }
             viewModel { BaseViewModel() }
-            factory<SharePreference> { SharePreference(get()) }
-            factory { EncryptPreference(get()) }
+            single <SharePreferenceApp> { SharePreferenceAppImpl(get()) }
+            single <EncryptPreferenceApp> { EncryptPreferenceAppImpl(get()) }
         }
 }
