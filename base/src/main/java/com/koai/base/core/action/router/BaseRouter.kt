@@ -16,7 +16,7 @@ interface BaseRouter {
     ): Boolean
 
     fun onSessionTimeout(
-        action: Int,
+        action: Int = 0,
         extras: Bundle? = null,
     )
 

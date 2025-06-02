@@ -123,6 +123,10 @@ dependencies {
 
     //wm
     api("androidx.work:work-runtime-ktx:2.10.1")
+
+    //new encrypt sharepreferences
+    api("androidx.datastore:datastore-preferences:1.1.7")
+    api("com.google.crypto.tink:tink-android:1.10.0")
 }
 
 afterEvaluate {
