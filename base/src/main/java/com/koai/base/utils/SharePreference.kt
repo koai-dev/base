@@ -13,73 +13,66 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.koai.base.R
 
-class SharePreference(
+interface SharePreferenceApp {
+    fun getIntPref(key: String, default: Int = -1): Int
+    fun setIntPref(key: String, value: Int)
+    fun getStringPref(key: String, default: String = ""): String?
+    fun setStringPref(key: String, value: String)
+    fun getBooleanPref(key: String, default: Boolean = false): Boolean
+    fun setBooleanPref(key: String, value: Boolean)
+    fun removePref(key: String)
+    fun contains(key: String): Boolean
+}
+
+class SharePreferenceAppImpl(
     private val context: Context,
-) {
-    fun getIntPref(
-        key: String,
-        default: Int = -1,
-    ): Int {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return pref.getInt(key, default)
+) : SharePreferenceApp {
+    private val sharedPreferences: SharedPreferences by lazy {
+        context.getSharedPreferences(
+            context.resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE
+        )
     }
 
-    fun setIntPref(
+    override fun getIntPref(
+        key: String,
+        default: Int,
+    ): Int = sharedPreferences.getInt(key, default)
+
+    override fun setIntPref(
         key: String,
         value: Int,
     ) {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit { putInt(key, value) }
+        sharedPreferences.edit { putInt(key, value) }
     }
 
-    fun getStringPref(
+    override fun getStringPref(
         key: String,
-        default: String = "",
-    ): String? {
-        val pref: SharedPreferences? =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return pref!!.getString(key, default)
-    }
+        default: String,
+    ): String? = sharedPreferences.getString(key, default)
 
-    fun setStringPref(
+    override fun setStringPref(
         key: String,
         value: String,
     ) {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit { putString(key, value) }
+        sharedPreferences.edit { putString(key, value) }
     }
 
-    fun getBooleanPref(
+    override fun getBooleanPref(
         key: String,
-        default: Boolean = false,
-    ): Boolean {
-        val pref: SharedPreferences? =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+        default: Boolean,
+    ): Boolean = sharedPreferences.getBoolean(key, default)
 
-        return pref!!.getBoolean(key, default)
-    }
-
-    fun setBooleanPref(
+    override fun setBooleanPref(
         key: String,
         value: Boolean,
     ) {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit { putBoolean(key, value) }
+        sharedPreferences.edit { putBoolean(key, value) }
     }
 
-    fun removePref(key: String) {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        pref.edit { remove(key) }
+    override fun removePref(key: String) {
+        sharedPreferences.edit { remove(key) }
     }
 
-    fun contains(key: String): Boolean {
-        val pref: SharedPreferences =
-            context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return pref.contains(key)
-    }
+    override fun contains(key: String): Boolean = sharedPreferences.contains(key)
 }

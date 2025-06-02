@@ -10,96 +10,102 @@ package com.koai.base.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.koai.base.R
 
-open class EncryptPreference(
-    context: Context,
-) {
-    val pref: SharedPreferences
+interface EncryptPreferenceApp : SharePreferenceApp {
+    fun clear()
+    fun getAll(): Map<String, *>
+    fun edit(): SharedPreferences.Editor
+    fun getLongPref(key: String, default: Long = 0): Long
+    fun setLongPref(key: String, value: Long)
+    fun getStringSetPref(key: String, default: Set<String> = emptySet()): Set<String>?
+}
 
-    init {
-        val masterKey =
-            MasterKey
-                .Builder(context)
-                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                .build()
+class EncryptPreferenceAppImpl(
+    private val context: Context,
+) : EncryptPreferenceApp {
+    private val sharedPreferences: SharedPreferences by lazy {
+        val masterKey = MasterKey
+            .Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
 
-        pref =
-            EncryptedSharedPreferences.create(
-                context,
-                "secret_" + context.resources.getString(R.string.app_name),
-                masterKey,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-            )
+        EncryptedSharedPreferences.create(
+            context,
+            "secret_" + context.resources.getString(R.string.app_name),
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+        )
     }
 
-    fun getIntPref(
+    override fun getIntPref(
         key: String,
-        default: Int = -1,
-    ): Int = pref.getInt(key, default)
+        default: Int,
+    ): Int = sharedPreferences.getInt(key, default)
 
-    fun setIntPref(
+    override fun setIntPref(
         key: String,
         value: Int,
     ) {
-        pref.edit().putInt(key, value).apply()
+        sharedPreferences.edit { putInt(key, value) }
     }
 
-    fun getStringPref(
+    override fun getStringPref(
         key: String,
-        default: String = "",
-    ): String? = pref.getString(key, default)
+        default: String,
+    ): String? = sharedPreferences.getString(key, default)
 
-    fun setStringPref(
+    override fun setStringPref(
         key: String,
         value: String,
     ) {
-        pref.edit().putString(key, value).apply()
+        sharedPreferences.edit { putString(key, value) }
     }
 
-    fun getBooleanPref(
+    override fun getBooleanPref(
         key: String,
-        default: Boolean = false,
-    ): Boolean = pref.getBoolean(key, default)
+        default: Boolean,
+    ): Boolean = sharedPreferences.getBoolean(key, default)
 
-    fun setBooleanPref(
+    override fun setBooleanPref(
         key: String,
         value: Boolean,
     ) {
-        pref.edit().putBoolean(key, value).apply()
+        sharedPreferences.edit { putBoolean(key, value) }
     }
 
-    fun removePref(key: String) {
-        pref.edit().remove(key).apply()
+    override fun removePref(key: String) {
+        sharedPreferences.edit { remove(key) }
     }
 
-    fun contains(key: String): Boolean = pref.contains(key)
+    override fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
-    fun clear() {
-        pref.edit().clear().apply()
+    override fun clear() {
+        sharedPreferences.edit { clear() }
     }
 
-    fun getAll(): Map<String, *> = pref.all
+    override fun getAll(): Map<String, *> = sharedPreferences.all
 
-    fun edit(): SharedPreferences.Editor = pref.edit()
+    override fun edit(): SharedPreferences.Editor = sharedPreferences.edit()
 
-    fun getLongPref(
+    override fun getLongPref(
         key: String,
-        default: Long = 0,
-    ): Long = pref.getLong(key, default)
+        default: Long,
+    ): Long = sharedPreferences.getLong(key, default)
 
-    fun setLongPref(
+    override fun setLongPref(
         key: String,
         value: Long,
     ) {
-        pref.edit().putLong(key, value).apply()
+        sharedPreferences.edit { putLong(key, value) }
     }
 
-    fun getStringSetPref(
+    override fun getStringSetPref(
         key: String,
-        default: Set<String> = emptySet(),
-    ): Set<String>? = pref.getStringSet(key, default)
+        default: Set<String>,
+    ): Set<String>? = sharedPreferences.getStringSet(key, default)
 }
