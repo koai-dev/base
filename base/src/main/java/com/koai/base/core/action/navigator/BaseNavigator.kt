@@ -128,9 +128,9 @@ open class BaseNavigator :
         sendEvent(NavigationEvent())
     }
 
-    fun startCountdownSession(){
+    fun startCountdownSession() {
         launchCoroutine {
-            delay(5*60*1000)
+            delay(5 * 60 * 1000)
         }.invokeOnCompletion {
             onSessionTimeout()
         }

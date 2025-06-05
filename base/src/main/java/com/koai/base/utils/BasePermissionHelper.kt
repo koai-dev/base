@@ -13,29 +13,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
-abstract class BasePermissionHelper() {
+abstract class BasePermissionHelper {
     protected abstract fun permissions(): Array<String>
-    protected abstract fun handleResult(isGranted: Boolean, notGrantedPermissions: Array<String>? = null)
+
+    protected abstract fun handleResult(
+        isGranted: Boolean,
+        notGrantedPermissions: Array<String>? = null,
+    )
 
     private val permissionResults = mutableMapOf<String, Boolean>()
-    private lateinit var  requestPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
-    fun initLauncher(activity: AppCompatActivity){
-        requestPermissionLauncher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            permissions.forEach { permission ->
-                permissionResults[permission.key] = permission.value
+    fun initLauncher(activity: AppCompatActivity) {
+        requestPermissionLauncher =
+            activity.registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions(),
+            ) { permissions ->
+                permissions.forEach { permission ->
+                    permissionResults[permission.key] = permission.value
+                }
+                handleResult(permissionResults.all { it.value }, permissionResults.filter { !it.value }.map { it.key }.toTypedArray())
             }
-            handleResult(permissionResults.all { it.value }, permissionResults.filter { !it.value }.map { it.key }.toTypedArray())
-        }
     }
 
     fun getNotGrantedPermissions(): Array<String> = permissionResults.filter { !it.value }.map { it.key }.toTypedArray()
 
     open fun hasPermissions(context: Context): Boolean {
         permissionResults.clear()
-        permissions().forEach { permission->
+        permissions().forEach { permission ->
             permissionResults[permission] = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
         return permissionResults.all { it.value }
@@ -48,11 +53,15 @@ abstract class BasePermissionHelper() {
         if (hasPermissions(activity)) {
             handleResult(true)
         } else {
-            val notGrantedPermissions = permissionResults.filter { !it.value }.map{permissionResult -> permissionResult.key}.toTypedArray()
+            val notGrantedPermissions =
+                permissionResults
+                    .filter { !it.value }
+                    .map { permissionResult ->
+                        permissionResult.key
+                    }.toTypedArray()
             requestPermissionLauncher.launch(notGrantedPermissions)
         }
     }
-
 }
 
 sealed class PermissionHelper {
@@ -61,8 +70,7 @@ sealed class PermissionHelper {
         private const val KEY_APP_UID = "app_uid"
     }
 
-    abstract class Camera :
-        BasePermissionHelper() {
+    abstract class Camera : BasePermissionHelper() {
         override fun permissions(): Array<String> = arrayOf(Manifest.permission.CAMERA)
     }
 

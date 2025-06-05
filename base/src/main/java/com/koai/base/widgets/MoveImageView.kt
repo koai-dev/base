@@ -1,6 +1,7 @@
 package com.koai.base.widgets
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
@@ -10,8 +11,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.koai.base.utils.ScreenUtils
 
 class MoveImageView : AppCompatImageView {
-    private var start_x = 0
-    private var start_y = 0
+    private var startX = 0
+    private var startY = 0
     var exitTi: Long = 0
     private var width = 0
     private var screenHeight = 0
@@ -58,11 +59,12 @@ class MoveImageView : AppCompatImageView {
         onClickCallBack = clickImageViewCallBack
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                start_x = event.x.toInt()
-                start_y = event.y.toInt()
+                startX = event.x.toInt()
+                startY = event.y.toInt()
                 exitTi = System.currentTimeMillis() // 记录按下时间
                 val sideEndX = (getWidth() / 5 * 4).toFloat()
                 val sideTopY = (height / 5).toFloat()
@@ -74,10 +76,10 @@ class MoveImageView : AppCompatImageView {
             }
 
             MotionEvent.ACTION_MOVE -> {
-                val loast_x = event.x.toInt()
-                val loast_y = event.y.toInt()
-                val px = loast_x - start_x
-                val py = loast_y - start_y
+                val lastX = event.x.toInt()
+                val lastY = event.y.toInt()
+                val px = lastX - startX
+                val py = lastY - startY
                 val x = x + px
                 var y = y + py
 

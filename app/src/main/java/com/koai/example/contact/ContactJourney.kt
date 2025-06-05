@@ -3,7 +3,7 @@ package com.koai.example.contact
 import android.os.Bundle
 import com.koai.base.app.SDKInitializer
 import com.koai.base.core.action.navigator.BaseNavigator
-import com.koai.base.core.ui.extension.navigatorViewModel
+import com.koai.base.di.navigatorViewModel
 import com.koai.base.core.ui.extension.withSafeContext
 import com.koai.base.core.ui.screens.BaseJourney
 import com.koai.base.utils.PermissionHelper

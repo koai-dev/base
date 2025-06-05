@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">akdaksda</string>
     <string name="you_are_offline">You are offline, please check your internet!</string>
+    <string name="key_is_empty">Key must not be empty!</string>
 </resources>

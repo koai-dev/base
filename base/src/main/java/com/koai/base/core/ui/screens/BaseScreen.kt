@@ -14,13 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.koai.base.app.BaseActivity
 import com.koai.base.core.action.event.ErrorEvent
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
-import com.koai.base.core.ui.extension.screenViewModel
 import com.koai.base.core.ui.extension.withSafeContext
-import com.koai.base.app.BaseActivity
 import com.koai.base.core.viewmodel.BaseViewModel
+import com.koai.base.di.screenViewModel
 import com.koai.base.utils.LogUtils
 import kotlinx.coroutines.launch
 

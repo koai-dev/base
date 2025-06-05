@@ -13,9 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import okhttp3.Dispatcher
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -28,21 +26,10 @@ abstract class BaseApiController<T : Any> {
     fun getService(
         context: Context,
         allowVpn: Boolean = true,
-        accessToken: String? = null,
     ): T? {
         val baseUrl = getBaseUrl()
 
-        val builder = okHttpClientBuilder()
-
-        if (isDebug()) {
-            val logging = HttpLoggingInterceptor()
-            logging.level = HttpLoggingInterceptor.Level.BODY
-            builder.addInterceptor(logging)
-            getNetworkInterceptor()?.let { interceptor ->
-                builder.addInterceptor(interceptor)
-            }
-        }
-
+        val builder = OkHttpClient.Builder()
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
         val okHttpClient =
@@ -50,19 +37,7 @@ abstract class BaseApiController<T : Any> {
                 .connectTimeout(timeOut(), TimeUnit.SECONDS)
                 .readTimeout(timeOut(), TimeUnit.SECONDS)
                 .dispatcher(dispatcher)
-                .apply {
-                    accessToken?.let {
-                        addInterceptor {
-                            it.proceed(
-                                it
-                                    .request()
-                                    .newBuilder()
-                                    .addHeader("Authorization", "Bearer $accessToken")
-                                    .build(),
-                            )
-                        }
-                    }
-                }.build()
+                .build()
 
         val retrofit =
             Retrofit
@@ -84,11 +59,5 @@ abstract class BaseApiController<T : Any> {
 
     abstract fun getApiService(): Class<*>
 
-    open fun getNetworkInterceptor(): Interceptor? = null
-
     open fun timeOut() = TIME_OUT
-
-    open fun isDebug(): Boolean = false
-
-    open fun okHttpClientBuilder() = OkHttpClient.Builder()
 }

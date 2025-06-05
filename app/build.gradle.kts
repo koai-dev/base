@@ -49,9 +49,6 @@ android {
         create("prod"){
             dimension = "default"
         }
-        create("sit"){
-            dimension = "default"
-        }
     }
 }
 

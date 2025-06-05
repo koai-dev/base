@@ -22,7 +22,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.koai.base.R
-import com.koai.base.databinding.ActivityBaseBinding
 import com.koai.base.core.action.event.BackToHome
 import com.koai.base.core.action.event.ComingSoon
 import com.koai.base.core.action.event.NavigateWithDeeplink
@@ -35,6 +34,7 @@ import com.koai.base.core.action.event.SessionTimeout
 import com.koai.base.core.action.event.ShareFile
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
+import com.koai.base.databinding.ActivityBaseBinding
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
@@ -168,7 +168,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         action: Int,
         extras: Bundle?,
     ) {
-        Toast.makeText(this, "Hello recognized sasdnjas", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Session timeout! Do something.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onOtherErrorDefault(
@@ -234,7 +234,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
     ) {
         navController?.handleDeepLink(
             Intent(Intent.ACTION_VIEW, uri).apply {
-                extras?.let {extras-> putExtra("", extras) }
+                extras?.let { extras -> putExtras(extras) }
             },
         )
     }

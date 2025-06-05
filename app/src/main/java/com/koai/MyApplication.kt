@@ -1,12 +1,11 @@
 package com.koai
 
 import com.koai.base.app.BaseApplication
-import com.koai.base.core.ui.extension.navigatorViewModel
+import com.koai.base.di.navigatorViewModel
 import com.koai.base.utils.GsonUtils
-import com.koai.base.utils.SharePreference
 import com.koai.example.MainNavigator
 import com.koai.example.contact.ContactNavigator
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 class MyApplication : BaseApplication() {

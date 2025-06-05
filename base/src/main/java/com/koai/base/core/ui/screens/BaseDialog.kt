@@ -13,9 +13,9 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import com.koai.base.app.BaseActivity
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
-import com.koai.base.app.BaseActivity
 
 /**
  * Base ui dialog fragment

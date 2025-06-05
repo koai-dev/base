@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
-val libVersion = "2.0.5"
+val libVersion = "3.0.0"
 val devApi by configurations.creating
 android {
     namespace = "com.koai.base"
@@ -50,17 +50,21 @@ android {
         buildConfig = true
     }
     publishing {
-        singleVariant("proRelease") {
+        singleVariant("prodRelease") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+        singleVariant("devRelease") {
             withSourcesJar()
             withJavadocJar()
         }
     }
     setFlavorDimensions(arrayListOf("default"))
     productFlavors {
-        create("dev"){
+        create("dev") {
             dimension = "default"
         }
-        create("prod"){
+        create("prod") {
             dimension = "default"
         }
     }
@@ -69,11 +73,10 @@ android {
 dependencies {
 
     api("androidx.core:core-ktx:1.16.0")
-    api("androidx.appcompat:appcompat:1.7.0")
+    api("androidx.appcompat:appcompat:1.7.1")
     api("com.google.android.material:material:1.12.0")
     api("androidx.constraintlayout:constraintlayout:2.2.1")
     api("androidx.recyclerview:recyclerview:1.4.0")
-    api("androidx.security:security-crypto-ktx:1.1.0-alpha07")
     api("androidx.navigation:navigation-fragment-ktx:2.9.0")
     api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
@@ -86,10 +89,10 @@ dependencies {
     androidTestApi("androidx.test.espresso:espresso-core:3.6.1")
 
     // retrofit
-    api("com.squareup.retrofit2:retrofit:2.11.0")
-    api("com.google.code.gson:gson:2.12.1")
-    api("com.squareup.retrofit2:converter-gson:2.11.0")
-    devApi("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
+    api("com.squareup.retrofit2:retrofit:3.0.0")
+    api("com.google.code.gson:gson:2.13.1")
+    api("com.squareup.retrofit2:converter-gson:3.0.0")
+    devApi("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.16")
     devApi("com.facebook.stetho:stetho:1.6.0")
     devApi("com.facebook.stetho:stetho-okhttp3:1.6.0")
 
@@ -98,11 +101,11 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // lifecycle
-    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
-    api("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
+    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    api("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1")
     api("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    api("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
-    api("androidx.fragment:fragment-ktx:1.8.7")
+    api("androidx.lifecycle:lifecycle-livedata-ktx:2.9.1")
+    api("androidx.fragment:fragment-ktx:1.8.8")
 
     api("androidx.multidex:multidex:2.0.1")
     api("com.airbnb.android:lottie:6.6.6")
@@ -111,7 +114,7 @@ dependencies {
     api("io.coil-kt:coil:2.7.0")
 
     // di
-    api(platform("io.insert-koin:koin-bom:4.0.3"))
+    api(platform("io.insert-koin:koin-bom:4.0.4"))
     api("io.insert-koin:koin-core")
     api("io.insert-koin:koin-android")
     api("io.insert-koin:koin-androidx-navigation")
@@ -121,25 +124,39 @@ dependencies {
     api("androidx.paging:paging-runtime-ktx:3.3.6")
     api("androidx.paging:paging-common-ktx:3.3.6")
 
-    //wm
+    // wm
     api("androidx.work:work-runtime-ktx:2.10.1")
 
-    //new encrypt sharepreferences
+    // new encrypt sharepreferences
     api("androidx.datastore:datastore-preferences:1.1.7")
-    api("com.google.crypto.tink:tink-android:1.10.0")
+
+    // Room components
+    api("androidx.room:room-runtime:2.7.1")
+    annotationProcessor("androidx.room:room-runtime:2.7.1")
+    androidTestApi("androidx.room:room-testing:2.7.1")
 }
 
 afterEvaluate {
     publishing {
         publications {
-            register<MavenPublication>("proRelease") {
+            register<MavenPublication>("prodRelease") {
                 groupId = "com.koai"
                 artifactId = "base"
                 version = libVersion
 
-//                afterEvaluate {
-//                    from(components["release"])
-//                }
+                afterEvaluate {
+                    from(components["prodRelease"])
+                }
+            }
+
+            register<MavenPublication>("devRelease") {
+                groupId = "com.koai"
+                artifactId = "base"
+                version = libVersion
+
+                afterEvaluate {
+                    from(components["devRelease"])
+                }
             }
         }
     }
@@ -186,7 +203,7 @@ ktlint {
     android.set(true) // Enables Android-specific formatting rules
     outputColorName.set("GREEN") // Optional: terminal color
     reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
     }
     enableExperimentalRules.set(true) // Optional

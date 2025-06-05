@@ -1,4 +1,4 @@
-package com.koai.base.core.ui.extension
+package com.koai.base.di
 
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment

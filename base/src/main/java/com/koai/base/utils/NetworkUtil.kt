@@ -35,28 +35,6 @@ class NetworkUtil(
         connectivityManager.unregisterNetworkCallback(connectivityManagerCallback)
     }
 
-    private fun lollipopNetworkAvailableRequest() {
-        connectivityManager.registerNetworkCallback(networkRequestBuilder.build(), getConnectivityLollipopManagerCallback())
-    }
-
-    private fun marshmallowNetworkAvailableRequest() {
-        connectivityManager.registerNetworkCallback(networkRequestBuilder.build(), getConnectivityMarshmallowManagerCallback())
-    }
-
-    private fun getConnectivityLollipopManagerCallback(): ConnectivityManager.NetworkCallback {
-        connectivityManagerCallback =
-            object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    postValue(true)
-                }
-
-                override fun onLost(network: Network) {
-                    postValue(false)
-                }
-            }
-        return connectivityManagerCallback
-    }
-
     private fun getConnectivityMarshmallowManagerCallback(): ConnectivityManager.NetworkCallback {
         connectivityManagerCallback =
             object : ConnectivityManager.NetworkCallback() {
