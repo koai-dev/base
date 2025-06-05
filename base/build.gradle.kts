@@ -168,24 +168,21 @@ tasks.register("localBuildProd") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val flavors = listOf("prod", "dev")
-        flavors.forEach { flavor ->
-            val tagName = if(flavor == "prod") "v$libVersion" else "dev$libVersion"
-            try {
-                println("Creating tag: $tagName")
+        val tagName ="v$libVersion"
+        try {
+            println("Creating tag: $tagName")
 
-                providers.exec {
-                    commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
-                }.result
+            providers.exec {
+                commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
+            }.result.get()
 
-                providers.exec {
-                    commandLine("git", "push", "origin", tagName)
-                }.result
+            providers.exec {
+                commandLine("git", "push", "origin", tagName)
+            }.result.get()
 
-                println("Successfully created and pushed tag: $tagName")
-            } catch (e: Exception) {
-                println("❌ Failed to create/push tag $tagName: ${e.message}")
-            }
+            println("Successfully created and pushed tag: $tagName")
+        } catch (e: Exception) {
+            println("❌ Failed to create/push tag $tagName: ${e.message}")
         }
     }
 }
@@ -198,7 +195,8 @@ tasks.register("cleanBuildPublish") {
     dependsOn("clean")
     dependsOn("localBuild")
     dependsOn("publishProdReleasePublicationToMavenRepository")
-    val assembleReleaseTask = getTasksByName("localBuildProd", false).stream().findFirst().orElse(null)
+    val assembleReleaseTask =
+        getTasksByName("localBuildProd", false).stream().findFirst().orElse(null)
     if (assembleReleaseTask != null) {
         assembleReleaseTask.mustRunAfter("clean")
         assembleReleaseTask.finalizedBy("publishProdReleasePublicationToMavenRepository")
