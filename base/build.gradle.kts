@@ -162,23 +162,30 @@ afterEvaluate {
     }
 }
 
-tasks.register("localBuild") {
-    dependsOn("assembleProRelease")
+tasks.register("localBuildProd") {
+    dependsOn("assembleProdRelease")
 }
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName = "v$libVersion"
-        try {
-            providers.exec {
-                commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
-            }
+        val flavors = listOf("prod", "dev")
+        flavors.forEach { flavor ->
+            val tagName = if(flavor == "prod") "v$libVersion" else "dev$libVersion"
+            try {
+                println("Creating tag: $tagName")
 
-            providers.exec {
-                commandLine("git", "push", "origin", tagName)
+                providers.exec {
+                    commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
+                }.result
+
+                providers.exec {
+                    commandLine("git", "push", "origin", tagName)
+                }.result
+
+                println("Successfully created and pushed tag: $tagName")
+            } catch (e: Exception) {
+                println("❌ Failed to create/push tag $tagName: ${e.message}")
             }
-        } catch (e: Exception) {
-            println(e.toString())
         }
     }
 }
@@ -190,11 +197,11 @@ tasks.register("createReleaseTag") {
 tasks.register("cleanBuildPublish") {
     dependsOn("clean")
     dependsOn("localBuild")
-    dependsOn("publishReleasePublicationToMavenRepository")
-    val assembleReleaseTask = getTasksByName("localBuild", false).stream().findFirst().orElse(null)
+    dependsOn("publishProdReleasePublicationToMavenRepository")
+    val assembleReleaseTask = getTasksByName("localBuildProd", false).stream().findFirst().orElse(null)
     if (assembleReleaseTask != null) {
         assembleReleaseTask.mustRunAfter("clean")
-        assembleReleaseTask.finalizedBy("publishReleasePublicationToMavenRepository")
+        assembleReleaseTask.finalizedBy("publishProdReleasePublicationToMavenRepository")
     }
 }
 
