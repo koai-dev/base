@@ -10,21 +10,28 @@ import com.koai.base.utils.Constants
 
 object SessionManager {
     private var onSessionTimeout: (() -> Unit)? = null
-    private val sessionTimeoutReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == context.packageName.plus(Constants.ACTION_SESSION_TIMEOUT)) {
-                onSessionTimeout?.invoke()
+    private val sessionTimeoutReceiver =
+        object : BroadcastReceiver() {
+            override fun onReceive(
+                context: Context,
+                intent: Intent,
+            ) {
+                if (intent.action == context.packageName.plus(Constants.ACTION_SESSION_TIMEOUT)) {
+                    onSessionTimeout?.invoke()
+                }
             }
         }
-    }
 
-    fun register(activity: AppCompatActivity, onSessionTimeout: () -> Unit) {
+    fun register(
+        activity: AppCompatActivity,
+        onSessionTimeout: () -> Unit,
+    ) {
         this.onSessionTimeout = onSessionTimeout
         ContextCompat.registerReceiver(
             activity,
             sessionTimeoutReceiver,
             IntentFilter(Constants.ACTION_SESSION_TIMEOUT),
-            ContextCompat.RECEIVER_NOT_EXPORTED
+            ContextCompat.RECEIVER_NOT_EXPORTED,
         )
     }
 

@@ -1,8 +1,6 @@
 package com.koai.base.app
 
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -39,7 +37,6 @@ import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
 import com.koai.base.core.worker.sessiontimeout.SessionManager
 import com.koai.base.databinding.ActivityBaseBinding
-import com.koai.base.utils.Constants
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
@@ -292,7 +289,7 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
 
     override fun onResume() {
         super.onResume()
-        SessionManager.register(this){
+        SessionManager.register(this) {
             onSessionTimeout()
         }
     }
