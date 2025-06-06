@@ -25,8 +25,8 @@ import com.koai.base.utils.LogUtils
 abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
     private val layoutId: Int = 0,
 ) : DialogFragment() {
-    private var _binding: T? = null
-    protected val binding: T get() = _binding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
+    private var mBinding: T? = null
+    protected val binding: T get() = mBinding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     abstract val navigator: F
     protected var router: Router? = null
     open var gravity: Int = Gravity.CENTER
@@ -53,8 +53,8 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        _binding ?: router?.onOtherErrorDefault(
+        mBinding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        mBinding ?: router?.onOtherErrorDefault(
             ErrorCode.ERROR_BINDING_NULL,
             bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
         )
@@ -85,7 +85,7 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        mBinding = null
     }
 
     override fun onDestroy() {

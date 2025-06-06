@@ -16,7 +16,6 @@ import com.koai.base.core.action.router.BaseRouter
 import com.koai.base.core.viewmodel.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.delay
 
 open class BaseNavigator :
     BaseViewModel(),
@@ -126,13 +125,5 @@ open class BaseNavigator :
 
     override fun notRecognized() {
         sendEvent(NavigationEvent())
-    }
-
-    fun startCountdownSession() {
-        launchCoroutine {
-            delay(5 * 60 * 1000)
-        }.invokeOnCompletion {
-            onSessionTimeout()
-        }
     }
 }

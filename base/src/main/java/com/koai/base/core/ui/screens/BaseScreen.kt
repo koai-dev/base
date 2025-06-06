@@ -32,10 +32,10 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
     private val layoutId: Int = 0,
 ) : Fragment(),
     ActivityCompat.OnRequestPermissionsResultCallback {
-    private var _binding: T? = null
+    private var mBinding: T? = null
     protected val binding: T
         get() =
-            _binding
+            mBinding
                 ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     abstract val navigator: F
     protected var router: Router? = null
@@ -58,8 +58,8 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        _binding ?: router?.onOtherErrorDefault(
+        mBinding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        mBinding ?: router?.onOtherErrorDefault(
             ErrorCode.ERROR_BINDING_NULL,
             bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
         )
@@ -159,7 +159,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
                 activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
             }
         }
-        _binding = null
+        mBinding = null
         super.onDestroyView()
     }
 

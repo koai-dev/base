@@ -42,8 +42,8 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     private val layoutId: Int = 0,
 ) : Fragment(),
     BaseRouter {
-    private var _binding: T? = null
-    protected val binding: T get() = _binding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
+    private var mBinding: T? = null
+    protected val binding: T get() = mBinding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     private var navController: NavController? = null
     abstract val navigator: F
     abstract val mainNavigator: BaseNavigator
@@ -66,8 +66,8 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        _binding ?: router?.onOtherErrorDefault(
+        mBinding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        mBinding ?: router?.onOtherErrorDefault(
             ErrorCode.ERROR_BINDING_NULL,
             bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
         )
@@ -240,6 +240,6 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        mBinding = null
     }
 }

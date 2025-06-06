@@ -21,10 +21,10 @@ import com.koai.base.utils.LogUtils
 abstract class BaseBottomSheetDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
     private val layoutId: Int = 0,
 ) : BottomSheetDialogFragment() {
-    private var _binding: T? = null
+    private var mBinding: T? = null
     protected val binding: T
         get() =
-            _binding
+            mBinding
                 ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     abstract val navigator: F
     protected var router: Router? = null
@@ -47,8 +47,8 @@ abstract class BaseBottomSheetDialog<T : ViewBinding, Router : BaseRouter, F : B
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        _binding ?: router?.onOtherErrorDefault(
+        mBinding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        mBinding ?: router?.onOtherErrorDefault(
             ErrorCode.ERROR_BINDING_NULL,
             bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
         )
@@ -80,7 +80,7 @@ abstract class BaseBottomSheetDialog<T : ViewBinding, Router : BaseRouter, F : B
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        mBinding = null
     }
 
     override fun onDestroy() {
