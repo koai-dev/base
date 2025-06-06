@@ -2,6 +2,7 @@ package com.koai.base.utils
 
 class Constants {
     companion object {
+        const val ACTION_SESSION_TIMEOUT = "ACTION_SESSION_TIMEOUT"
         const val ERROR_MESSAGE = "error_message"
     }
 }

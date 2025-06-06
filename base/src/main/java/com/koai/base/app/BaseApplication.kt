@@ -3,6 +3,8 @@ package com.koai.base.app
 import android.app.Application
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.viewmodel.BaseViewModel
+import com.koai.base.core.worker.sessiontimeout.SessionTimeout
+import com.koai.base.core.worker.sessiontimeout.SessionTimeoutImpl
 import com.koai.base.utils.EncryptionHelper
 import com.koai.base.utils.EncryptionHelperImpl
 import com.koai.base.utils.LogUtils
@@ -38,5 +40,6 @@ abstract class BaseApplication : Application() {
             viewModel { BaseViewModel() }
             single<EncryptionHelper> { EncryptionHelperImpl() }
             single<SharePreference> { SharePreferenceImpl(get(), get()) }
+            single<SessionTimeout> { SessionTimeoutImpl(get()) }
         }
 }

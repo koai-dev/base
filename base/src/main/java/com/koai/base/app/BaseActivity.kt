@@ -1,6 +1,8 @@
 package com.koai.base.app
 
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -35,7 +37,9 @@ import com.koai.base.core.action.event.SessionTimeout
 import com.koai.base.core.action.event.ShareFile
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
+import com.koai.base.core.worker.sessiontimeout.SessionManager
 import com.koai.base.databinding.ActivityBaseBinding
+import com.koai.base.utils.Constants
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
@@ -87,7 +91,6 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         } catch (e: Exception) {
             throw e
         }
-
         initView(savedInstanceState, binding)
         onNavigationEvent()
     }
@@ -285,5 +288,17 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         rootView.hasLoading = isShow
         rootView.preventClicked = isPreventClicked
         this.isPreventClicked = isPreventClicked
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SessionManager.register(this){
+            onSessionTimeout()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SessionManager.unregister(this)
     }
 }
