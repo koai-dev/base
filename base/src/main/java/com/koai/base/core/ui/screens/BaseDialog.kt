@@ -3,19 +3,21 @@ package com.koai.base.core.ui.screens
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
-import com.koai.base.app.BaseActivity
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
+import com.koai.base.utils.Constants
+import com.koai.base.utils.ErrorCode
+import com.koai.base.utils.LogUtils
 
 /**
  * Base ui dialog fragment
@@ -23,18 +25,27 @@ import com.koai.base.core.action.router.BaseRouter
 abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
     private val layoutId: Int = 0,
 ) : DialogFragment() {
-    lateinit var binding: T
-    lateinit var activity: BaseActivity<*, *, *>
+    private var _binding: T? = null
+    protected val binding: T get() = _binding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     abstract val navigator: F
     protected var router: Router? = null
     open var gravity: Int = Gravity.CENTER
     open var canceledOnTouchOutside: Boolean = false
 
+    @Suppress("UNCHECKED_CAST")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         super.onCreateDialog(savedInstanceState).apply {
             this.requestWindowFeature(Window.FEATURE_NO_TITLE)
             this.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
             this.setCanceledOnTouchOutside(canceledOnTouchOutside)
+
+            try {
+                (navigator as? Router)?.let {
+                    router = it
+                }
+            } catch (e: Exception) {
+                LogUtils.log("Cast router error: ", e.message.toString())
+            }
         }
 
     override fun onCreateView(
@@ -42,8 +53,11 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
-        activity = requireActivity() as BaseActivity<*, *, *>
+        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        _binding ?: router?.onOtherErrorDefault(
+            ErrorCode.ERROR_BINDING_NULL,
+            bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
+        )
         return binding.root
     }
 
@@ -55,19 +69,11 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        try {
-            (navigator as? Router?)?.let {
-                router = it
-            }
-        } catch (e: Exception) {
-            Log.e("Cast router error: ", e.message.toString())
-        }
         dialog?.window?.setGravity(gravity)
         initView(savedInstanceState, binding)
     }
@@ -76,4 +82,14 @@ abstract class BaseDialog<T : ViewBinding, Router : BaseRouter, F : BaseNavigato
         savedInstanceState: Bundle?,
         binding: T,
     )
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        router = null
+    }
 }

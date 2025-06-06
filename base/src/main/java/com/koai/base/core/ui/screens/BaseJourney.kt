@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +30,9 @@ import com.koai.base.core.action.event.SessionTimeout
 import com.koai.base.core.action.event.ShareFile
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
+import com.koai.base.utils.Constants
+import com.koai.base.utils.ErrorCode
+import com.koai.base.utils.LogUtils
 import kotlinx.coroutines.launch
 
 /**
@@ -37,35 +42,43 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
     private val layoutId: Int = 0,
 ) : Fragment(),
     BaseRouter {
-    lateinit var binding: T
-    var navController: NavController? = null
+    private var _binding: T? = null
+    protected val binding: T get() = _binding ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
+    private var navController: NavController? = null
     abstract val navigator: F
     abstract val mainNavigator: BaseNavigator
     protected var router: Router? = null
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            (navigator as? Router)?.let {
+                router = it
+            }
+        } catch (e: Exception) {
+            LogUtils.log("Cast router error: ", e.message.toString())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        _binding ?: router?.onOtherErrorDefault(
+            ErrorCode.ERROR_BINDING_NULL,
+            bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
+        )
         return binding.root
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        try {
-            (navigator as? Router?)?.let {
-                router = it
-            }
-        } catch (e: Exception) {
-            throw e
-        }
         initView(savedInstanceState, binding)
         val navHostFragment =
             (
@@ -78,7 +91,7 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
 
     private fun onNavigationEvent() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 for (event in navigator.receive) {
                     onNavigationEvent(event)
                 }
@@ -176,7 +189,10 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         action: Int,
         extras: Bundle?,
     ) {
-        mainNavigator.onOtherErrorDefault(action, extras)
+        val topFragment = childFragmentManager.primaryNavigationFragment
+        if (topFragment !is DialogFragment) {
+            mainNavigator.onOtherErrorDefault(action, extras)
+        }
     }
 
     override fun onShareFile(extras: Bundle?) {
@@ -216,4 +232,14 @@ abstract class BaseJourney<T : ViewBinding, Router : BaseRouter, F : BaseNavigat
         savedInstanceState: Bundle?,
         binding: T,
     )
+
+    override fun onDestroy() {
+        super.onDestroy()
+        router = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

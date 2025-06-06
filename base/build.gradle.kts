@@ -50,13 +50,10 @@ android {
         buildConfig = true
     }
     publishing {
-        singleVariant("prodRelease") {
-            withSourcesJar()
+        multipleVariants {
+            includeBuildTypeValues("release")
             withJavadocJar()
-        }
-        singleVariant("devRelease") {
             withSourcesJar()
-            withJavadocJar()
         }
     }
     setFlavorDimensions(arrayListOf("default"))
@@ -151,7 +148,7 @@ afterEvaluate {
 
             register<MavenPublication>("devRelease") {
                 groupId = "com.koai"
-                artifactId = "base"
+                artifactId = "basedev"
                 version = libVersion
 
                 afterEvaluate {
@@ -168,17 +165,21 @@ tasks.register("localBuildProd") {
 
 tasks.register("createReleaseTag") {
     doLast {
-        val tagName ="v$libVersion"
+        val tagName = "v$libVersion"
         try {
             println("Creating tag: $tagName")
 
-            providers.exec {
-                commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
-            }.result.get()
+            providers
+                .exec {
+                    commandLine("git", "tag", "-a", tagName, "-m", "Release tag $tagName")
+                }.result
+                .get()
 
-            providers.exec {
-                commandLine("git", "push", "origin", tagName)
-            }.result.get()
+            providers
+                .exec {
+                    commandLine("git", "push", "origin", tagName)
+                }.result
+                .get()
 
             println("Successfully created and pushed tag: $tagName")
         } catch (e: Exception) {

@@ -3,6 +3,7 @@ package com.koai.base.core.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.koai.base.core.state.UIState
+import com.koai.base.utils.ErrorCode
 import com.koai.base.utils.LogUtils
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Suppress("PropertyName")
 open class BaseViewModel : ViewModel() {
     protected val exceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
@@ -21,11 +23,16 @@ open class BaseViewModel : ViewModel() {
                 throwable.message ?: "Unknown error",
                 type = LogUtils.LogType.ERROR,
             )
-            _uiErrorState.update { UIState.Error(message = throwable.message ?: "Unknown error") }
+            _uiErrorState.update {
+                UIState.Error(
+                    message = throwable.message ?: "Unknown error",
+                    code = ErrorCode.ERROR_IN_VIEWMODEL,
+                )
+            }
         }
     private val _uiErrorState = MutableStateFlow(UIState.Error())
     val uiErrorState = _uiErrorState.asStateFlow()
-    val baseCoroutineContext = Dispatchers.IO + exceptionHandler
+    protected val baseCoroutineContext = Dispatchers.IO + exceptionHandler
 
     protected val _uiState: MutableStateFlow<UIState<*>> = MutableStateFlow(UIState.Init)
     val uiState = _uiState.asStateFlow()

@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 open class BaseNavigator :
     BaseViewModel(),
     BaseRouter {
-    val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
+    private val navigation = Channel<NavigationEvent>(Channel.RENDEZVOUS)
 
     val receive: ReceiveChannel<NavigationEvent> get() = navigation
 

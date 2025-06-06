@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -38,11 +39,24 @@ import com.koai.base.databinding.ActivityBaseBinding
 import com.koai.base.widgets.BaseLoadingView
 import kotlinx.coroutines.launch
 
+/***
+ * Example:
+ * class MainActivity :
+ *     BaseActivity<ActivityMainBinding, MainRouter, MainNavigator>(R.layout.activity_main) {
+ *         private val share by inject<SharePreference>()
+ *
+ *     override fun initView(savedInstanceState: Bundle?, binding: ActivityMainBinding) {
+ *         router?.openSomeDestination(this)
+ *     }
+ *
+ *     override val navigator: MainNavigator by viewModel()
+ * }
+ */
 abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNavigator>(
     private val layoutId: Int,
 ) : AppCompatActivity(),
     BaseRouter {
-    var navController: NavController? = null
+    private var navController: NavController? = null
     lateinit var binding: T
     abstract val navigator: BaseNavigator
     protected var router: Router? = null
@@ -99,7 +113,12 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
                 )
 
             is SessionTimeout -> onSessionTimeout(event.action, event.extras)
-            is OtherError -> onOtherErrorDefault(event.action, event.extras)
+            is OtherError -> {
+                val topFragment = supportFragmentManager.primaryNavigationFragment
+                if (topFragment !is DialogFragment) {
+                    onOtherErrorDefault(event.action, event.extras)
+                }
+            }
             is ShareFile -> onShareFile(event.extras)
             is ComingSoon -> gotoComingSoon(event.action, event.extras)
             is BackToHome -> backToHome(event.action, event.extras)

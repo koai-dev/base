@@ -26,7 +26,7 @@ class ContactJourney :
                 isGranted: Boolean,
                 notGrantedPermissions: Array<String>?
             ) {
-                TODO("Not yet implemented")
+                
             }
 
         }

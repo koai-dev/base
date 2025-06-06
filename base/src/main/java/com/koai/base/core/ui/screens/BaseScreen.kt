@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
+import androidx.core.bundle.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -15,13 +16,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.koai.base.app.BaseActivity
-import com.koai.base.core.action.event.ErrorEvent
 import com.koai.base.core.action.navigator.BaseNavigator
 import com.koai.base.core.action.router.BaseRouter
 import com.koai.base.core.ui.extension.withSafeContext
 import com.koai.base.core.viewmodel.BaseViewModel
 import com.koai.base.di.screenViewModel
-import com.koai.base.utils.LogUtils
+import com.koai.base.utils.Constants
+import com.koai.base.utils.ErrorCode
 import kotlinx.coroutines.launch
 
 /**
@@ -31,21 +32,40 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
     private val layoutId: Int = 0,
 ) : Fragment(),
     ActivityCompat.OnRequestPermissionsResultCallback {
-    protected lateinit var binding: T
+    private var _binding: T? = null
+    protected val binding: T
+        get() =
+            _binding
+                ?: throw IllegalStateException("Binding is null in ${this::class.java.simpleName}")
     abstract val navigator: F
     protected var router: Router? = null
     open val viewModel: BaseViewModel by screenViewModel()
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            (navigator as? Router?)?.let {
+                router = it
+            }
+        } catch (e: Exception) {
+            Log.e("Cast router error: ", e.message.toString())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(layoutInflater, layoutId, container, false)
+        _binding ?: router?.onOtherErrorDefault(
+            ErrorCode.ERROR_BINDING_NULL,
+            bundleOf(Constants.ERROR_MESSAGE to "Binding is null in ${this::class.java.simpleName}"),
+        )
         return binding.root
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -57,13 +77,6 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
                     WindowManager.LayoutParams.FLAG_SECURE,
                     WindowManager.LayoutParams.FLAG_SECURE,
                 )
-            }
-            try {
-                (navigator as? Router?)?.let {
-                    router = it
-                }
-            } catch (e: Exception) {
-                Log.e("Cast router error: ", e.message.toString())
             }
             registerObserver()
             initView(savedInstanceState, binding)
@@ -80,7 +93,7 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
 
     private fun registerObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 observerError()
                 observer()
             }
@@ -97,9 +110,10 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
      */
     open suspend fun observerError() {
         viewModel.uiErrorState.collect { errorState ->
-            if (LogUtils.getDebugMode()) {
-                navigator.sendEvent(ErrorEvent(message = errorState.message))
-            }
+            navigator.onOtherErrorDefault(
+                errorState.code ?: ErrorCode.ERROR_DEFAULT,
+                bundleOf(Constants.ERROR_MESSAGE to errorState.message),
+            )
             hideLoading()
         }
     }
@@ -145,12 +159,14 @@ abstract class BaseScreen<T : ViewBinding, Router : BaseRouter, out F : BaseNavi
                 activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
             }
         }
+        _binding = null
         super.onDestroyView()
     }
 
     override fun onDestroy() {
         viewModel.cancelAll()
         super.onDestroy()
+        router = null
     }
 
     /**
