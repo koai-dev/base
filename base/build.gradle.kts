@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
-val libVersion = "3.0.0"
+val libVersion = "3.0.3"
 val devApi by configurations.creating
 android {
     namespace = "com.koai.base"
@@ -79,7 +79,7 @@ dependencies {
 
     // firebase
     api("com.google.firebase:firebase-analytics:22.4.0")
-    api("com.google.firebase:firebase-crashlytics:19.4.3")
+    api("com.google.firebase:firebase-crashlytics:19.4.4")
 
     testApi("junit:junit:4.13.2")
     androidTestApi("androidx.test.ext:junit:1.2.1")
