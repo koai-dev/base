@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
-val libVersion = "3.0.3"
+val libVersion = "3.0.4"
 val devApi by configurations.creating
 android {
     namespace = "com.koai.base"
@@ -129,7 +129,7 @@ dependencies {
 
     // Room components
     api("androidx.room:room-runtime:2.7.1")
-    annotationProcessor("androidx.room:room-runtime:2.7.1")
+//    annotationProcessor("androidx.room:room-runtime:2.7.1")
     androidTestApi("androidx.room:room-testing:2.7.1")
 }
 
