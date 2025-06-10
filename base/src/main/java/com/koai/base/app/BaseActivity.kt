@@ -298,4 +298,9 @@ abstract class BaseActivity<T : ViewBinding, Router : BaseRouter, F : BaseNaviga
         super.onPause()
         SessionManager.unregister(this)
     }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        //calculate timeout here
+    }
 }
