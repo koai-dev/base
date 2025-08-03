@@ -13,6 +13,7 @@ abstract class BasePagingDataAdapter<T : Any, VIEW_BINDING : ViewBinding>(
         position: Int,
     )
 
+    @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(
         holder: VH,
         viewType: Int,

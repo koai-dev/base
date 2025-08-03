@@ -1,32 +1,22 @@
 package com.koai.base.utils
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
-import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 
 class NetworkUtil(
     context: Context,
 ) : LiveData<Boolean>() {
-    private var connectivityManager: ConnectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+    private var connectivityManager: ConnectivityManager =
+        context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private lateinit var connectivityManagerCallback: ConnectivityManager.NetworkCallback
 
-    private val networkRequestBuilder: NetworkRequest.Builder =
-        NetworkRequest
-            .Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-
     override fun onActive() {
         super.onActive()
-        updateConnection()
         connectivityManager.registerDefaultNetworkCallback(getConnectivityMarshmallowManagerCallback())
     }
 
@@ -56,20 +46,5 @@ class NetworkUtil(
                 }
             }
         return connectivityManagerCallback
-    }
-
-    private val networkReceiver =
-        object : BroadcastReceiver() {
-            override fun onReceive(
-                context: Context,
-                intent: Intent,
-            ) {
-                updateConnection()
-            }
-        }
-
-    private fun updateConnection() {
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        postValue(activeNetwork?.isConnected == true)
     }
 }
