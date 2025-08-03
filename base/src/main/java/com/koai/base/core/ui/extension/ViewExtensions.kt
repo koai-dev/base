@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.koai.base.core.ui.extension
 
 import android.content.Intent

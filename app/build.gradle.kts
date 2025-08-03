@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(21)
     }
     buildFeatures {
         viewBinding = true
@@ -43,10 +43,10 @@ android {
     }
     setFlavorDimensions(arrayListOf("default"))
     productFlavors {
-        create("dev"){
+        create("dev") {
             dimension = "default"
         }
-        create("prod"){
+        create("prod") {
             dimension = "default"
         }
     }
@@ -56,7 +56,7 @@ dependencies {
     implementation(project(":base"))
 
     //firebase
-    implementation("com.google.firebase:firebase-perf:21.0.5")
-    implementation("com.google.firebase:firebase-inappmessaging-display:21.0.2")
-    implementation("com.google.firebase:firebase-config:22.1.2")
+    implementation("com.google.firebase:firebase-perf:22.0.0")
+    implementation("com.google.firebase:firebase-inappmessaging-display:22.0.0")
+    implementation("com.google.firebase:firebase-config:23.0.0")
 }
