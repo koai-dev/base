@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
 }
-val libVersion = "4.0.0"
+val libVersion = "4.0.1"
 android {
     namespace = "com.koai.base"
     compileSdk = 36
